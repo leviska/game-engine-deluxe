@@ -1,85 +1,74 @@
 #include "window.h"
+#include "resources.h"
+#include "sprite.h"
 
 #include <cassert>
+#include <stdexcept>
+#include <chrono>
 #include <iostream>
 
 #include <glad/glad.h>
+#include <SDL_image.h>
 #include <windows.h>
 
-const float vertices[] = {
-	 0.5f,  0.5f, 0.0f,  // top right
-	 0.5f, -0.5f, 0.0f,  // bottom right
-	-0.5f, -0.5f, 0.0f,  // bottom left
-	-0.5f,  0.5f, 0.0f   // top left 
-};
-const unsigned int indices[] = {  // note that we start from 0!
-	0, 1, 3,   // first triangle
-	1, 2, 3    // second triangle
-};
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 
-Window::Window()
+Window::~Window()
 {
-	//Initialize SDL
+	Reset();
+}
+
+void Window::LoadSDL() {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		std::cerr << "SDL could not initialize! SDL_Error: " << SDL_GetError() << std::endl;
-		return;
+		throw std::runtime_error("SDL could not initialize! SDL_Error: " + std::string(SDL_GetError()));
+	}
+
+	int imgFlags = IMG_INIT_PNG;
+	if ((IMG_Init(imgFlags) & imgFlags) != imgFlags) {
+		throw std::runtime_error("SDL_image could not initialize! SDL_Error: " + std::string(IMG_GetError()));
 	}
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
-	window = SDL_CreateWindow("OpenGL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, 800, 600, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow("OpenGL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 	if (!window) {
-		std::cerr << "Window could not be created! SDL_Error: " << SDL_GetError() << std::endl;
-		return;
+		throw std::runtime_error("Window could not be created! SDL_Error: " + std::string(SDL_GetError()));
 	}
 
 	glcontext = SDL_GL_CreateContext(window);
 	if (!glcontext) {
-		std::cerr << "Unable to create GL context: " << SDL_GetError() << std::endl;
-		return;
+		throw std::runtime_error("Unable to create GL context: " + std::string(SDL_GetError()));
 	}
 
 	if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
-		std::cerr << "Failed to initialize GLAD" << std::endl;
+		throw std::runtime_error("Failed to initialize GLAD");
 		return;
 	}
+}
 
-	// OpenGL
-	glViewport(0, 0, 800, 600);
+void Window::LoadOpenGL() {
+	glViewport(0, 0, width, height);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+}
 
-	// Shaders
-	shader.Init();
-	if (!shader.Load("vertex.glsl", "fragment.glsl")) {
-		std::cerr << "Failed to load shaders" << std::endl;
-		return;
-	}
+void Window::Load() {
+	LoadSDL();
+	LoadOpenGL();
 
-	// Triangle
-	glGenBuffers(1, &VBO);
-	glGenVertexArrays(1, &VAO);
-	glBindVertexArray(VAO);
-	glGenBuffers(1, &EBO);
+	Resources().Load();
+	Resources().GetShader(0).Select();
+	Resources().GetShader(0).UpdateProjection(width, height);
 
-	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+	gui.Load(window, glcontext);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-	
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-	glEnableVertexAttribArray(0);
-
-	good = true;
+	SDL_MaximizeWindow(window);
 	open = true;
 }
 
-Window::~Window()
-{
-	glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteBuffers(1, &EBO);
-
+void Window::Reset() {
 	if (glcontext)
 		SDL_GL_DeleteContext(glcontext);
 
@@ -87,41 +76,59 @@ Window::~Window()
 		SDL_DestroyWindow(window);
 
 	SDL_Quit();
+	open = false;
 }
 
-void Window::Process()
-{
-	assert(good);
+void Window::ProcessEvents() {
 	SDL_Event event;
-	while (open) {
-		while (SDL_PollEvent(&event) != 0) {
-			//User requests quit
-			if (event.type == SDL_QUIT) {
-				open = false;
-			}
-			if (event.type == SDL_WINDOWEVENT) {
-				if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
-					glViewport(0, 0, event.window.data1, event.window.data2);
-				}
+	while (SDL_PollEvent(&event) != 0) {
+		if (event.type == SDL_QUIT) {
+			open = false;
+		}
+		if (event.type == SDL_WINDOWEVENT) {
+			if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
+				width = event.window.data1;
+				height = event.window.data2;
+				glViewport(0, 0, width, height);
+				Resources().GetShader(0).UpdateProjection(width, height);
 			}
 		}
+	}
+}
 
-		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-		glClear(GL_COLOR_BUFFER_BIT);
-		
-		shader.Select();
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+void Window::Clear() {
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClear(GL_COLOR_BUFFER_BIT);
+	gui.Clear();
+}
 
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-		shader.Set("shift", 0);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+void Window::Render() {
+	gui.Render();
+	glFlush();
+	SDL_GL_SwapWindow(window);
+}
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		shader.Set("shift", 0.5f);
-		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-		//glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+void Window::Draw() {
+	Sprite sprite;
+	sprite.Load(rand() % 3 + 1);
+	sprite.PrepareForDraw();
+	for (int y = 0; y <= height; y += 16) {
+		for (int x = 0; x <= width; x += 16) {
+			sprite.Load((y < height / 2 ? 3 : 2));
+			sprite.SetPos({ x, y });
+			sprite.FastDraw();
+		}
+	}
+	sprite.ClearAfterDraw();
 
-		glFlush();
-		SDL_GL_SwapWindow(window);
+	gui.DrawDebugInfo(fps.Update());
+}
+
+void Window::Run() {
+	while (open) {
+		ProcessEvents();
+		Clear();
+		Draw();
+		Render();
 	}
 }

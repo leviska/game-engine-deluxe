@@ -1,14 +1,12 @@
 #pragma once
 #include <string>
 #include <cstdint>
+#include <glm/glm.hpp>
 
 class Shader {
 	uint32_t id = 0;
 
 public:
-	Shader() = default;
-	Shader(const std::string& vertexFile, const std::string& fragmentFile);
-	~Shader();
 
 	enum class Type {
 		None,
@@ -16,18 +14,26 @@ public:
 		Fragment
 	};
 
-	void Init();
-	bool Load(const std::string& vertexFile, const std::string& fragmentFile);
+	void Load(const std::string& vertexFile, const std::string& fragmentFile);
+	void Reset();
 
 	void Select() const;
 
-	void Set(const std::string& name, bool value) const;
-	void Set(const std::string& name, int32_t value) const;
-	void Set(const std::string& name, float value) const;
+	void SetBool(const std::string& name, bool value);
+	void SetInt32(const std::string& name, int32_t value);
+	void SetFloat(const std::string& name, float value);
+	void SetVec2(const std::string& name, const glm::vec2& value);
+	void SetVec3(const std::string& name, const glm::vec3& value);
+	void SetVec4(const std::string& name, const glm::vec4& value);
+	void SetMat2(const std::string& name, const glm::mat2& value);
+	void SetMat3(const std::string& name, const glm::mat3& value);
+	void SetMat4(const std::string& name, const glm::mat4& value);
+
+	void UpdateProjection(float width, float height);
 
 	uint32_t GetId() const;
 
-	bool Link(uint32_t vertex, uint32_t fragment);
+	void Link(uint32_t vertex, uint32_t fragment);
 	static uint32_t LoadShader(const std::string& fileName, Shader::Type type);
 	static void DeleteShader(uint32_t shader);
 

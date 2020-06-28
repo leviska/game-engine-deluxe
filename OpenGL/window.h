@@ -1,27 +1,37 @@
 #pragma once
 #include "shader.h"
+#include "utility.h"
+#include "gui.h"
 
 #include <SDL.h>
 
 class Window
 {
-public:
-    Window();
-    ~Window();
-
-	bool IsGood() { return good; }
-
-    void Process();
-private:
-	bool good = false;
 	bool open = false;
-	
+
 	SDL_Window* window = nullptr;
 	SDL_GLContext glcontext = nullptr;
 
-	Shader shader;
+	uint32_t width = 800;
+	uint32_t height = 600;
+	
+	FPS fps;
+	GUI gui;
 
-	unsigned int VBO = 0;
-	unsigned int VAO = 0;
-	unsigned int EBO = 0;
+	void LoadSDL();
+	void LoadOpenGL();
+
+	void ProcessEvents();
+
+	void Clear();
+	void Draw();
+	void Render();
+public:
+	Window() = default;
+    ~Window();
+
+	void Load();
+	void Reset();
+
+    void Run();
 };

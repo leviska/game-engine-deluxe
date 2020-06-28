@@ -1,0 +1,38 @@
+[
+	{
+		"texture": {
+			"x": 0,
+			"y": 0,
+			"width": 0,
+			"height": 0
+		},
+		"name": "None"
+	},
+	{
+		"texture": {
+			"x": 0,
+			"y": 0,
+			"width": 16,
+			"height": 16
+		},
+		"name": "Player"
+	},
+	{
+		"texture": {
+			"x": 16,
+			"y": 32,
+			"width": 16,
+			"height": 16
+		},
+		"name": "Wall"
+	},
+	{
+		"texture": {
+			"x": 64,
+			"y": 32,
+			"width": 16,
+			"height": 16
+		},
+		"name": "Floor"
+	}
+]
