@@ -30,14 +30,18 @@ ResourcesInst::~ResourcesInst() {
 void ResourcesInst::_Load() {
 	Shader spriteShader;
 	spriteShader.Load("shaders/sprite_vertex.glsl", "shaders/sprite_fragment.glsl");
-	shaders.Add(spriteShader, "SpriteShader");
-	
+	shaders.Add(std::move(spriteShader), "SpriteShader");
+	Shader batchShader;
+	batchShader.Load("shaders/batch_vertex.glsl", "shaders/sprite_fragment.glsl");
+	shaders.Add(std::move(batchShader), "BatchShader");
+
 	Texture spritesheet;
 	spritesheet.Load("assets/spritesheet.png");
-	textures.Add(spritesheet, "Spritesheet");
+	textures.Add(std::move(spritesheet), "Spritesheet");
 
 	LoadSpriteInfo();
 	LoadSpriteVAO();
+	LoadBatchVAO();
 }
 
 void ResourcesInst::_Reset() {
@@ -48,6 +52,9 @@ void ResourcesInst::_Reset() {
 	glDeleteVertexArrays(1, &SpriteVAO);
 	glDeleteBuffers(1, &SpriteVBO);
 	glDeleteBuffers(1, &SpriteEBO);
+	glDeleteVertexArrays(1, &BatchVAO);
+	glDeleteBuffers(1, &BatchVBO);
+	glDeleteBuffers(1, &BatchEBO);
 }
 
 void ResourcesInst::LoadSpriteInfo() {
@@ -70,30 +77,69 @@ void ResourcesInst::LoadSpriteInfo() {
 }
 
 void ResourcesInst::LoadSpriteVAO() {
-	const float SpriteVertices[] = {
+	const float RectVertices[] = {
 		1.0f, 1.0f,  // top right
 		1.0f, 0.0f,  // bottom right
 		0.0f, 0.0f,  // bottom left
 		0.0f, 1.0f   // top left 
 	};
-	const unsigned int SpriteIndices[] = {
+	const uint32_t RectIndices[] = {
 		0, 1, 3,   // first triangle
 		1, 2, 3    // second triangle
 	};
 
-	glGenBuffers(1, &SpriteVBO);
 	glGenVertexArrays(1, &SpriteVAO);
 	glBindVertexArray(SpriteVAO);
+	glGenBuffers(1, &SpriteVBO);
 	glGenBuffers(1, &SpriteEBO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, SpriteVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(SpriteVertices), SpriteVertices, GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(RectVertices), RectVertices, GL_STATIC_DRAW);
 
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, SpriteEBO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(SpriteIndices), SpriteIndices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(RectIndices), RectIndices, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
 	glEnableVertexAttribArray(0);
+
+	glBindVertexArray(0);
+}
+
+void ResourcesInst::LoadBatchVAO() {
+	const float RectVertices[] = {
+		1.0f, 1.0f,  // top right
+		1.0f, 0.0f,  // bottom right
+		0.0f, 0.0f,  // bottom left
+		0.0f, 1.0f   // top left 
+	};
+	const uint32_t RectIndices[] = {
+		0, 1, 3,   // first triangle
+		1, 2, 3    // second triangle
+	};
+
+	glGenVertexArrays(1, &BatchVAO);
+	glBindVertexArray(BatchVAO);
+	glGenBuffers(1, &BatchVBO);
+	glGenBuffers(1, &BatchEBO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, BatchVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(RectVertices), RectVertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, BatchEBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(RectIndices), RectIndices, GL_STATIC_DRAW);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(1);
+	glEnableVertexAttribArray(2);
+	glEnableVertexAttribArray(3);
+	glEnableVertexAttribArray(4);
+	glEnableVertexAttribArray(5);
+	glVertexAttribDivisor(1, 1);
+	glVertexAttribDivisor(2, 1);
+	glVertexAttribDivisor(3, 1);
+	glVertexAttribDivisor(4, 1);
+	glVertexAttribDivisor(5, 1);
 
 	glBindVertexArray(0);
 }

@@ -6,6 +6,15 @@
 #include <SDL_image.h>
 #include <glad/glad.h>
 
+Texture::Texture(Texture&& other) noexcept {
+	id = other.id;
+	width = other.width;
+	height = other.height;
+	other.id = -1;
+	other.width = 0;
+	other.height = 0;
+}
+
 void Texture::Load(const std::string& name) {
 	glGenTextures(1, &id);
 	glBindTexture(GL_TEXTURE_RECTANGLE, id);

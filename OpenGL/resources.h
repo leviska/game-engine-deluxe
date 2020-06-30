@@ -28,10 +28,23 @@ public:
 		return id;
 	}
 
+	size_t Add(T&& value) {
+		size_t id = values.size();
+		values.push_back(std::move(value));
+		return id;
+	}
+
 	size_t Add(const T& value, const std::string& name) {
 		size_t id = values.size();
 		names[name] = id;
 		values.push_back(value);
+		return id;
+	}
+
+	size_t Add(T&& value, const std::string& name) {
+		size_t id = values.size();
+		names[name] = id;
+		values.push_back(std::move(value));
 		return id;
 	}
 
@@ -70,6 +83,7 @@ public:
 
 enum class Shaders {
 	Sprite,
+	Batch
 };
 
 class ResourcesInst {
@@ -77,9 +91,13 @@ class ResourcesInst {
 	NamedVector<Texture> textures;
 	NamedVector<SpriteInfo> spriteInfo;
 
-	unsigned int SpriteVAO = 0;
-	unsigned int SpriteVBO = 0;
-	unsigned int SpriteEBO = 0;
+	uint32_t SpriteVAO = 0;
+	uint32_t SpriteVBO = 0;
+	uint32_t SpriteEBO = 0;
+
+	uint32_t BatchVAO = 0;
+	uint32_t BatchVBO = 0;
+	uint32_t BatchEBO = 0;
 
 public:
 	ResourcesInst(const ResourcesInst &) = delete;
@@ -98,7 +116,8 @@ public:
 	SpriteInfo& GetSpriteInfo(uint32_t Id) { return spriteInfo[Id]; }
 	SpriteInfo& GetSpriteInfo(const std::string& name) { return spriteInfo[name]; }
 
-	unsigned int GetSpriteVAO() { return SpriteVAO; }
+	uint32_t GetSpriteVAO() { return SpriteVAO; }
+	uint32_t GetBatchVAO() { return BatchVAO; }
 
 private:
 	ResourcesInst() = default;

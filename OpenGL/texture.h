@@ -8,6 +8,12 @@ class Texture {
 	uint32_t height = 0;
 
 public:
+	Texture() = default;
+	~Texture() { Reset(); }
+	Texture(Texture&& other) noexcept;
+	Texture(const Texture&) = delete;
+	Texture& operator=(const Texture&) = delete;
+
 	void Load(const std::string& name);
 	void Reset();
 	void Select() const;

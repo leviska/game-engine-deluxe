@@ -129,6 +129,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="batching.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="gui.cpp" />
     <ClCompile Include="main.cpp" />
@@ -140,6 +141,7 @@
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="batching.h" />
     <ClInclude Include="gui.h" />
     <ClInclude Include="resources.h" />
     <ClInclude Include="shader.h" />

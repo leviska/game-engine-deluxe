@@ -1,6 +1,5 @@
 #include "window.h"
 #include "resources.h"
-#include "sprite.h"
 
 #include <cassert>
 #include <stdexcept>
@@ -61,11 +60,16 @@ void Window::Load() {
 	Resources().Load();
 	Resources().GetShader(0).Select();
 	Resources().GetShader(0).UpdateProjection(width, height);
+	Resources().GetShader(1).Select();
+	Resources().GetShader(1).UpdateProjection(width, height);
 
 	gui.Load(window, glcontext);
 
 	SDL_MaximizeWindow(window);
 	open = true;
+
+	sprites.Load();
+	sprites.Sprites().resize(100000);
 }
 
 void Window::Reset() {
@@ -90,7 +94,10 @@ void Window::ProcessEvents() {
 				width = event.window.data1;
 				height = event.window.data2;
 				glViewport(0, 0, width, height);
+				Resources().GetShader(0).Select();
 				Resources().GetShader(0).UpdateProjection(width, height);
+				Resources().GetShader(1).Select();
+				Resources().GetShader(1).UpdateProjection(width, height);
 			}
 		}
 	}
@@ -109,17 +116,12 @@ void Window::Render() {
 }
 
 void Window::Draw() {
-	Sprite sprite;
-	sprite.Load(rand() % 3 + 1);
-	sprite.PrepareForDraw();
-	for (int y = 0; y <= height; y += 16) {
-		for (int x = 0; x <= width; x += 16) {
-			sprite.Load((y < height / 2 ? 3 : 2));
-			sprite.SetPos({ x, y });
-			sprite.FastDraw();
-		}
+	for (int i = 0; i < 100000; i++) {
+		sprites.Sprites()[i].Load(rand() % 3 + 1);
+		sprites.Sprites()[i].SetPos({ rand() % width, rand() % height });
 	}
-	sprite.ClearAfterDraw();
+	sprites.Update();
+	sprites.Draw();
 
 	gui.DrawDebugInfo(fps.Update());
 }

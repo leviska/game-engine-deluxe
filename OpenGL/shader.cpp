@@ -9,6 +9,10 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+Shader::Shader(Shader&& other) noexcept {
+	id = other.id;
+	other.id = 0;
+}
 
 void Shader::Load(const std::string& vertexFile, const std::string& fragmentFile) {
 	id = glCreateProgram();

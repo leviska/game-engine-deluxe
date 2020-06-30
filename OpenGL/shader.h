@@ -7,6 +7,11 @@ class Shader {
 	uint32_t id = 0;
 
 public:
+	Shader() = default;
+	~Shader() { Reset(); }
+	Shader(Shader&& other) noexcept;
+	Shader(const Shader&) = delete;
+	Shader& operator=(const Shader&) = delete;
 
 	enum class Type {
 		None,

@@ -2,6 +2,7 @@
 #include "shader.h"
 #include "utility.h"
 #include "gui.h"
+#include "batching.h"
 
 #include <SDL.h>
 
@@ -14,7 +15,8 @@ class Window
 
 	uint32_t width = 800;
 	uint32_t height = 600;
-	
+
+	BatchedSprites sprites;
 	FPS fps;
 	GUI gui;
 
