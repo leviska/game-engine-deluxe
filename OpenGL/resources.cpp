@@ -32,7 +32,7 @@ void ResourcesInst::_Load() {
 	spriteShader.Load("shaders/sprite_vertex.glsl", "shaders/sprite_fragment.glsl");
 	shaders.Add(std::move(spriteShader), "SpriteShader");
 	Shader batchShader;
-	batchShader.Load("shaders/batch_vertex.glsl", "shaders/sprite_fragment.glsl");
+	batchShader.Load("shaders/batch_vertex.glsl", "shaders/batch_fragment.glsl");
 	shaders.Add(std::move(batchShader), "BatchShader");
 
 	Texture spritesheet;
@@ -134,12 +134,10 @@ void ResourcesInst::LoadBatchVAO() {
 	glEnableVertexAttribArray(2);
 	glEnableVertexAttribArray(3);
 	glEnableVertexAttribArray(4);
-	glEnableVertexAttribArray(5);
 	glVertexAttribDivisor(1, 1);
 	glVertexAttribDivisor(2, 1);
 	glVertexAttribDivisor(3, 1);
 	glVertexAttribDivisor(4, 1);
-	glVertexAttribDivisor(5, 1);
 
 	glBindVertexArray(0);
 }

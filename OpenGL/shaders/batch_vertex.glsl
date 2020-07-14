@@ -1,14 +1,28 @@
 #version 330 core
-layout (location = 0) in vec2 position;
-layout (location = 1) in vec4 textCoords;
-layout (location = 2) in mat4 model;
+layout (location = 0) in vec2 Vertex;
+layout (location = 1) in vec2 Position;
+layout (location = 2) in vec4 TextCoords;
+layout (location = 3) in vec4 Color;
+// x,y - scale; z = rotation
+layout (location = 4) in vec3 Transforms;
 
-out vec2 TextCoords;
+out vec2 TextCoordsFrag;
+out vec4 ColorFrag;
 
-uniform mat4 projection;
+uniform mat4 Projection;
 
 void main()
 {
-	TextCoords = textCoords.xy + textCoords.zw * position;
-    gl_Position = projection * model * vec4(position.xy, 0, 1.0);
+	TextCoordsFrag = TextCoords.xy + TextCoords.zw * Vertex;
+	ColorFrag = Color;
+	// rotate
+	// then scale
+	// then move
+	float cs = cos(Transforms.z);
+	float sn = sin(Transforms.z);
+    gl_Position = Projection * vec4(
+		(Vertex * mat2(cs, sn, -sn, cs))
+		* Transforms.xy
+		+ Position, 
+		0, 1.0);
 }

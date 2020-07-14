@@ -1,11 +1,11 @@
 #version 330 core
 in vec2 TextCoordsFrag;
+in vec4 ColorFrag;
 out vec4 Result;
 
 uniform sampler2DRect Texture;
-uniform vec4 Color;
 
 void main()
 {
-    Result = Color * texture(Texture, TextCoordsFrag);
+    Result = ColorFrag * texture(Texture, TextCoordsFrag);
 }

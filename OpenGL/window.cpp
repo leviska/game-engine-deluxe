@@ -116,12 +116,18 @@ void Window::Render() {
 }
 
 void Window::Draw() {
-	for (int i = 0; i < 100000; i++) {
+	sprites.Sprites()[0].Load(1);
+	sprites.Sprites()[0].PrepareForDraw();
+	for (int i = 0; i < 1000; i++) {
 		sprites.Sprites()[i].Load(rand() % 3 + 1);
+		sprites.Sprites()[i].SetColor(glm::vec4(rand() * 1.0f / RAND_MAX, rand() * 1.0f / RAND_MAX, rand() * 1.0f / RAND_MAX, 1.0));
+		sprites.Sprites()[i].SetRotation(rand() * 3.14f / RAND_MAX);
 		sprites.Sprites()[i].SetPos({ rand() % width, rand() % height });
+		sprites[i].Draw();
 	}
-	sprites.Update();
-	sprites.Draw();
+	sprites.Sprites()[0].ClearAfterDraw();
+	//sprites.Update();
+	//sprites.Draw();
 
 	gui.DrawDebugInfo(fps.Update());
 }

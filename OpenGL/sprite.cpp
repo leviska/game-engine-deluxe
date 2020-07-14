@@ -42,25 +42,29 @@ glm::vec4 Sprite::GetRect() {
 	return glm::vec4(pos.x, pos.y, info.Size.x, info.Size.y);
 }
 
-glm::mat4 Sprite::GetModel() {
-	const auto& info = Resources().GetSpriteInfo(dataId);
-	glm::mat4 model = glm::mat4(1.0f);
-	model = glm::translate(model, glm::vec3(pos, 0.0f));
-	model = glm::scale(model, glm::vec3(info.Size, 1.0f));
-	return model;
-}
-
 glm::vec4 Sprite::GetTextCoords() {
 	const auto& info = Resources().GetSpriteInfo(dataId);
 	return glm::vec4(info.Position.x, info.Position.y + info.Size.y, info.Size.x, -info.Size.y);
+}
+
+glm::vec3 Sprite::GetTransform() {
+	const auto& info = Resources().GetSpriteInfo(dataId);
+	return glm::vec3(info.Size, rotation);
+}
+
+glm::vec2 Sprite::GetSize() {
+	const auto& info = Resources().GetSpriteInfo(dataId);
+	return info.Size;
 }
 
 void Sprite::FastDraw() {
 	if (!visible)
 		return;
 
-	Resources().GetShader(0).SetMat4("model", GetModel());
-	Resources().GetShader(0).SetVec4("textCoords", GetTextCoords());
+	Resources().GetShader(0).SetVec2("Position", pos);
+	Resources().GetShader(0).SetVec4("TextCoords", GetTextCoords());
+	Resources().GetShader(0).SetVec4("Color", color);
+	Resources().GetShader(0).SetVec3("Transform", GetTransform());
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }

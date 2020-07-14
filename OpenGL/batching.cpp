@@ -6,40 +6,50 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 void BatchedSprites::Load() {
+	glGenBuffers(1, &positionsBuffer);
 	glGenBuffers(1, &textCoordsBuffer);
-	glGenBuffers(1, &modelsBuffer);
+	glGenBuffers(1, &colorsBuffer);
+	glGenBuffers(1, &transformsBuffer);
 }
 
 void BatchedSprites::Reset() {
 	sprites.clear();
+	glDeleteBuffers(1, &positionsBuffer);
 	glDeleteBuffers(1, &textCoordsBuffer);
-	glDeleteBuffers(1, &modelsBuffer);
+	glDeleteBuffers(1, &colorsBuffer);
+	glDeleteBuffers(1, &transformsBuffer);
 }
 
 void BatchedSprites::Update() {
 	glBindVertexArray(Resources().GetBatchVAO());
 
-	std::vector<glm::vec4> textCoords(sprites.size());
-	std::vector<glm::mat4> models(sprites.size());
+	positions.resize(sprites.size());
+	textCoords.resize(sprites.size());
+	colors.resize(sprites.size());
+	transforms.resize(sprites.size());
+
+	for (size_t i = 0; i < sprites.size(); i++) {
+		positions[i] = sprites[i].GetPos();
+	}
 	for (size_t i = 0; i < sprites.size(); i++) {
 		textCoords[i] = sprites[i].GetTextCoords();
-		models[i] = sprites[i].GetModel();
+	}
+	
+	for (size_t i = 0; i < sprites.size(); i++) {
+		colors[i] = sprites[i].GetColor();
+	}
+	for (size_t i = 0; i < sprites.size(); i++) {
+		transforms[i] = sprites[i].GetTransform();
 	}
 
+	glBindBuffer(GL_ARRAY_BUFFER, positionsBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec2) * sprites.size(), &positions[0], GL_STATIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, textCoordsBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * sprites.size(), &textCoords[0], GL_STATIC_DRAW);
-	
-	glBindBuffer(GL_ARRAY_BUFFER, modelsBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::mat4) * sprites.size(), &models[0], GL_STATIC_DRAW);
-}
-
-void BatchedSprites::Update(size_t index) {
-	glm::vec4 textCoords = sprites[index].GetTextCoords();
-	glm::mat4 model = sprites[index].GetModel();
-	glBindBuffer(GL_ARRAY_BUFFER, textCoordsBuffer);
-	glBufferSubData(GL_ARRAY_BUFFER, index * sizeof(textCoords), sizeof(textCoords), &textCoords);
-	glBindBuffer(GL_ARRAY_BUFFER, modelsBuffer);
-	glBufferSubData(GL_ARRAY_BUFFER, index * sizeof(model), sizeof(model), &model);
+	glBindBuffer(GL_ARRAY_BUFFER, colorsBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * sprites.size(), &colors[0], GL_STATIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, transformsBuffer);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec3) * sprites.size(), &transforms[0], GL_STATIC_DRAW);
 }
 
 void BatchedSprites::Draw() {
@@ -50,13 +60,14 @@ void BatchedSprites::Draw() {
 	uint32_t textureId = Resources().GetSpriteInfo(sprites.front().GetDataId()).TextureId;
 	Resources().GetTexture(textureId).Select();
 	glBindVertexArray(Resources().GetBatchVAO());
+	glBindBuffer(GL_ARRAY_BUFFER, positionsBuffer);
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), (void*)0);
 	glBindBuffer(GL_ARRAY_BUFFER, textCoordsBuffer);
-	glVertexAttribPointer(1, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
-	glBindBuffer(GL_ARRAY_BUFFER, modelsBuffer);
-	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
-	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
-	glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
-	glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
+	glBindBuffer(GL_ARRAY_BUFFER, colorsBuffer);
+	glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
+	glBindBuffer(GL_ARRAY_BUFFER, transformsBuffer);
+	glVertexAttribPointer(4, 3, GL_FLOAT, GL_FALSE, sizeof(glm::vec3), (void*)0);
 
 	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, sprites.size());
 
