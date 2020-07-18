@@ -1,6 +1,8 @@
 #include "window.h"
 #include "resources.h"
 
+#include "imgui.h"
+
 #include <cassert>
 #include <stdexcept>
 #include <chrono>
@@ -68,8 +70,7 @@ void Window::Load() {
 	SDL_MaximizeWindow(window);
 	open = true;
 
-	sprites.Load();
-	sprites.Sprites().resize(100000);
+	render.Load(0);
 }
 
 void Window::Reset() {
@@ -116,20 +117,23 @@ void Window::Render() {
 }
 
 void Window::Draw() {
-	sprites.Sprites()[0].Load(1);
-	sprites.Sprites()[0].PrepareForDraw();
-	for (int i = 0; i < 1000; i++) {
-		sprites.Sprites()[i].Load(rand() % 3 + 1);
-		sprites.Sprites()[i].SetColor(glm::vec4(rand() * 1.0f / RAND_MAX, rand() * 1.0f / RAND_MAX, rand() * 1.0f / RAND_MAX, 1.0));
-		sprites.Sprites()[i].SetRotation(rand() * 3.14f / RAND_MAX);
-		sprites.Sprites()[i].SetPos({ rand() % width, rand() % height });
-		sprites[i].Draw();
+	auto fpsInfo = fps.Update();
+	ImGui::Begin("Count", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+	ImGui::SliderInt("Entities", &ENTITIES, 1, 1000);
+	ImGui::End();
+	sprites.resize(ENTITIES);
+	for (int i = 0; i < ENTITIES; i++) {
+		sprites[i].Load(0);
+		sprites[i].Update(fpsInfo.dt);
+		const int SCALE = 8;
+		sprites[i].Scale = SCALE;
+		sprites[i].Pos = { (i * 16 * SCALE) % width, ((i * 16 * SCALE) / width * 16 * SCALE) % height };
+		//sprites[i].Pos = { rand() % width, rand() % height };
 	}
-	sprites.Sprites()[0].ClearAfterDraw();
-	//sprites.Update();
-	//sprites.Draw();
-
-	gui.DrawDebugInfo(fps.Update());
+	render.Clear();
+	render.Update(sprites);
+	render.Draw();
+	gui.DrawDebugInfo(fpsInfo.fps);
 }
 
 void Window::Run() {

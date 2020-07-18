@@ -2,6 +2,8 @@
 #include "shader.h"
 #include "texture.h"
 
+#include "animated_sprite.h"
+
 #include <memory>
 #include <vector>
 #include <array>
@@ -9,12 +11,6 @@
 #include <unordered_map>
 
 #include <glm/glm.hpp>
-
-struct SpriteInfo {
-	uint32_t TextureId;
-	glm::vec2 Position; // texture pos
-	glm::vec2 Size; // texture size
-};
 
 template<typename T>
 class NamedVector {
@@ -63,6 +59,10 @@ public:
 		return names.at(name);
 	}
 
+	size_t Size() const {
+		return values.size();
+	}
+
 
 	T& operator[](size_t id) {
 		return values[id];
@@ -81,6 +81,17 @@ public:
 	}
 };
 
+struct SpriteInfo {
+	uint32_t TextureId;
+	glm::vec2 Position; // texture pos
+	glm::vec2 Size; // texture size
+};
+
+struct AnimationInfo {
+	uint32_t SpriteId;
+	uint32_t Delay; // in ms
+};
+
 enum class Shaders {
 	Sprite,
 	Batch
@@ -90,6 +101,7 @@ class ResourcesInst {
 	NamedVector<Shader> shaders;
 	NamedVector<Texture> textures;
 	NamedVector<SpriteInfo> spriteInfo;
+	NamedVector<std::vector<AnimationInfo>> animationInfo;
 
 	uint32_t SpriteVAO = 0;
 	uint32_t SpriteVBO = 0;
@@ -111,10 +123,12 @@ public:
 	Shader& GetShader(Shaders Id) { return shaders[static_cast<size_t>(Id)]; }
 	Shader& GetShader(uint32_t Id) { return shaders[Id]; }
 	Shader& GetShader(const std::string& name) { return shaders[name]; }
-	Texture& GetTexture(uint32_t Id) { return textures[Id]; }
-	Texture& GetTexture(const std::string& name) { return textures[name]; }
-	SpriteInfo& GetSpriteInfo(uint32_t Id) { return spriteInfo[Id]; }
-	SpriteInfo& GetSpriteInfo(const std::string& name) { return spriteInfo[name]; }
+	const Texture& GetTexture(uint32_t Id) { return textures[Id]; }
+	const Texture& GetTexture(const std::string& name) { return textures[name]; }
+	const SpriteInfo& GetSpriteInfo(uint32_t Id) { return spriteInfo[Id]; }
+	const SpriteInfo& GetSpriteInfo(const std::string& name) { return spriteInfo[name]; }
+	const std::vector<AnimationInfo>& GetAnimationInfo(uint32_t Id) { return animationInfo[Id]; }
+	const std::vector<AnimationInfo>& GetAnimationInfo(const std::string& name) { return animationInfo[name]; }
 
 	uint32_t GetSpriteVAO() { return SpriteVAO; }
 	uint32_t GetBatchVAO() { return BatchVAO; }
@@ -127,6 +141,7 @@ private:
 	void _Reset();
 
 	void LoadSpriteInfo();
+	void LoadAnimationInfo();
 	void LoadSpriteVAO();
 	void LoadBatchVAO();
 };

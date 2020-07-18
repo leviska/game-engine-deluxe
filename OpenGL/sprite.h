@@ -6,33 +6,25 @@
 #include <glm/glm.hpp>
 
 class Sprite {
-	uint32_t dataId = 0;
-	glm::vec2 pos;
-	glm::vec4 color = glm::vec4(1, 1, 1, 1);
-	float rotation = 0;
-	bool visible = false;
 public:
-	void Load(uint32_t DataId);
-	void Reset();
+	uint32_t DataId = 0;
+	glm::vec2 Pos;
+	glm::vec4 Color = glm::vec4(1, 1, 1, 1);
+	float Scale = 1;
+	float Rotation = 0;
+	bool Visible = false;
+	
+	virtual void Load(uint32_t dataId);
+	virtual void Reset();
 
-	glm::vec4 GetRect();
-	glm::vec4 GetTextCoords();
-	glm::vec3 GetTransform();
-	glm::vec2 GetSize();
+	glm::vec4 GetRect() const;
+	glm::vec4 GetTextCoords() const;
+	glm::vec3 GetTransform() const;
+	glm::vec2 GetSize() const;
 
-	void PrepareForDraw();
-	void FastDraw();
-	void ClearAfterDraw();
+	void PrepareForDraw() const;
+	void FastDraw() const;
+	void ClearAfterDraw() const;
 
-	void Draw();
-
-	void SetVisible(bool Visible) { visible = Visible; }
-	bool IsVisible() { return visible; }
-	void SetPos(const glm::vec2 Pos) { pos = Pos; }
-	const glm::vec2& GetPos() { return pos; }
-	glm::vec4 GetColor() { return color; }
-	void SetColor(glm::vec4 Color) { color = Color; }
-	float GetRotation() { return rotation; }
-	void SetRotation(float Rotation) { rotation = Rotation; }
-	uint32_t GetDataId() { return dataId; }
+	void Draw() const;
 };

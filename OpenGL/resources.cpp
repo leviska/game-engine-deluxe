@@ -4,6 +4,15 @@
 #include <stdexcept>
 #include <glad/glad.h>
 
+// disable intellisense errors for json library
+// this is only an IDE setting, compilation is not affected
+#ifdef __INTELLISENSE__
+#pragma diag_suppress 349
+#pragma diag_suppress 79
+#pragma diag_suppress 65
+#pragma diag_suppress 260
+#endif
+
 #include <nlohmann/json.hpp>
 
 ResourcesInst& Resources() {
@@ -40,6 +49,7 @@ void ResourcesInst::_Load() {
 	textures.Add(std::move(spritesheet), "Spritesheet");
 
 	LoadSpriteInfo();
+	LoadAnimationInfo();
 	LoadSpriteVAO();
 	LoadBatchVAO();
 }
@@ -72,7 +82,26 @@ void ResourcesInst::LoadSpriteInfo() {
 		info.Position.y = textureInfo["y"].get<float>();
 		info.Size.x = textureInfo["width"].get<float>();
 		info.Size.y = textureInfo["height"].get<float>();
-		spriteInfo.Add(info, el["name"].get<std::string>());
+		spriteInfo.Add(std::move(info), el["name"].get<std::string>());
+	}
+}
+
+void ResourcesInst::LoadAnimationInfo() {
+	std::ifstream file("assets/animations.json");
+	if (!file.good()) {
+		throw std::invalid_argument("Cannot open animations.json file");
+	}
+	nlohmann::json jsoninfo;
+	file >> jsoninfo;
+	for (const auto& anim : jsoninfo) {
+		std::vector<AnimationInfo> buffer;
+		for (const auto& el : anim["frames"]) {
+			AnimationInfo info;
+			info.SpriteId = spriteInfo.GetId(el["sprite"]);
+			info.Delay = el["delay"].get<uint32_t>();
+			buffer.push_back(std::move(info));
+		}
+		animationInfo.Add(std::move(buffer), anim["name"].get<std::string>());
 	}
 }
 

@@ -4,6 +4,8 @@
 #include "gui.h"
 #include "batching.h"
 
+#include "animated_sprite.h"
+
 #include <SDL.h>
 
 class Window
@@ -16,7 +18,11 @@ class Window
 	uint32_t width = 800;
 	uint32_t height = 600;
 
-	BatchedSprites sprites;
+	int ENTITIES = 50;
+
+	std::vector<AnimatedSprite> sprites;
+	BatchedRender render;
+
 	FPS fps;
 	GUI gui;
 

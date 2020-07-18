@@ -1,8 +1,11 @@
 #include "utility.h"
 
-
-float FPS::Update() {
+FPSInfo FPS::Update() {
 	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+	FPSInfo res{ 0, 0 };
+	if (!frames.empty()) {
+		res.dt = std::chrono::duration_cast<std::chrono::milliseconds>(end - frames.back()).count();
+	}
 	frames.push(end);
 	while (!frames.empty()) {
 		auto dur = std::chrono::duration_cast<std::chrono::milliseconds>(end - frames.front()).count();
@@ -14,8 +17,11 @@ float FPS::Update() {
 		}
 	}
 	if (frames.empty()) {
-		return 0;
+		res.fps = 0;
 	}
-	auto dur = std::chrono::duration_cast<std::chrono::milliseconds>(end - frames.front()).count();
-	return static_cast<float>(frames.size() * 1000) / dur;
+	else {
+		auto dur = std::chrono::duration_cast<std::chrono::milliseconds>(end - frames.front()).count();
+		res.fps = static_cast<float>(frames.size() * 1000) / dur;
+	}
+	return res;
 }

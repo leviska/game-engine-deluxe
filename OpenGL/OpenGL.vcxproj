@@ -129,10 +129,12 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="animated_sprite.cpp" />
     <ClCompile Include="batching.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="gui.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="particles.cpp" />
     <ClCompile Include="resources.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="sprite.cpp" />
@@ -141,8 +143,10 @@
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="animated_sprite.h" />
     <ClInclude Include="batching.h" />
     <ClInclude Include="gui.h" />
+    <ClInclude Include="particles.h" />
     <ClInclude Include="resources.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="sprite.h" />

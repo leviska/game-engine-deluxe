@@ -45,6 +45,12 @@
     <ClCompile Include="batching.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="animated_sprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="particles.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="window.h">
@@ -69,6 +75,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="batching.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="animated_sprite.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="particles.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

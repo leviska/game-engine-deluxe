@@ -1,38 +1,74 @@
 [
 	{
+		"name": "None",
 		"texture": {
 			"x": 0,
 			"y": 0,
 			"width": 0,
 			"height": 0
-		},
-		"name": "None"
+		}
 	},
 	{
+		"name": "Player",
 		"texture": {
 			"x": 0,
 			"y": 0,
 			"width": 16,
 			"height": 16
-		},
-		"name": "Player"
+		}
 	},
 	{
+		"name": "Wall",
 		"texture": {
 			"x": 16,
 			"y": 32,
 			"width": 16,
 			"height": 16
-		},
-		"name": "Wall"
+		}
 	},
 	{
+		"name": "Floor",
 		"texture": {
 			"x": 64,
 			"y": 32,
 			"width": 16,
 			"height": 16
-		},
-		"name": "Floor"
+		}
+	},
+	{
+		"name": "Torch00",
+		"texture": {
+			"x": 0,
+			"y": 48,
+			"width": 16,
+			"height": 16
+		}
+	},
+	{
+		"name": "Torch01",
+		"texture": {
+			"x": 16,
+			"y": 48,
+			"width": 16,
+			"height": 16
+		}
+	},
+	{
+		"name": "Torch02",
+		"texture": {
+			"x": 32,
+			"y": 48,
+			"width": 16,
+			"height": 16
+		}
+	},
+	{
+		"name": "Torch03",
+		"texture": {
+			"x": 48,
+			"y": 48,
+			"width": 16,
+			"height": 16
+		}
 	}
 ]
