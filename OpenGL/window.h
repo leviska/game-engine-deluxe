@@ -3,6 +3,7 @@
 #include "utility.h"
 #include "gui.h"
 #include "batching.h"
+#include "particles.h"
 
 #include "animated_sprite.h"
 
@@ -20,8 +21,9 @@ class Window
 
 	int ENTITIES = 50;
 
-	std::vector<AnimatedSprite> sprites;
 	BatchedRender render;
+	BatchedRender render2;
+	ParticleRender particle;
 
 	FPS fps;
 	GUI gui;

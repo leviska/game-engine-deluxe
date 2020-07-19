@@ -14,6 +14,8 @@ void BatchedRender::Load(uint32_t TextureId) {
 }
 
 void BatchedRender::Reset() {
+	Clear();
+	textureId = 0;
 	glDeleteBuffers(1, &positionsBuffer);
 	glDeleteBuffers(1, &textCoordsBuffer);
 	glDeleteBuffers(1, &colorsBuffer);

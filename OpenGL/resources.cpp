@@ -43,6 +43,9 @@ void ResourcesInst::_Load() {
 	Shader batchShader;
 	batchShader.Load("shaders/batch_vertex.glsl", "shaders/batch_fragment.glsl");
 	shaders.Add(std::move(batchShader), "BatchShader");
+	Shader particleShader;
+	particleShader.Load("shaders/particle_vertex.glsl", "shaders/particle_fragment.glsl");
+	shaders.Add(std::move(particleShader), "ParticleShader");
 
 	Texture spritesheet;
 	spritesheet.Load("assets/spritesheet.png");
@@ -52,6 +55,9 @@ void ResourcesInst::_Load() {
 	LoadAnimationInfo();
 	LoadSpriteVAO();
 	LoadBatchVAO();
+	LoadParticleVAO();
+
+	LoadMap();
 }
 
 void ResourcesInst::_Reset() {
@@ -59,12 +65,13 @@ void ResourcesInst::_Reset() {
 	textures.Clear();
 	spriteInfo.Clear();
 
-	glDeleteVertexArrays(1, &SpriteVAO);
-	glDeleteBuffers(1, &SpriteVBO);
-	glDeleteBuffers(1, &SpriteEBO);
-	glDeleteVertexArrays(1, &BatchVAO);
-	glDeleteBuffers(1, &BatchVBO);
-	glDeleteBuffers(1, &BatchEBO);
+	glDeleteVertexArrays(1, &SpriteBuffer.VAO);
+	glDeleteBuffers(1, &SpriteBuffer.VBO);
+	glDeleteBuffers(1, &SpriteBuffer.EBO);
+	glDeleteVertexArrays(1, &BatchBuffer.VAO);
+	glDeleteBuffers(1, &BatchBuffer.VBO);
+	glDeleteBuffers(1, &BatchBuffer.EBO);
+	glDeleteVertexArrays(1, &ParticleBuffer.VAO);
 }
 
 void ResourcesInst::LoadSpriteInfo() {
@@ -117,15 +124,15 @@ void ResourcesInst::LoadSpriteVAO() {
 		1, 2, 3    // second triangle
 	};
 
-	glGenVertexArrays(1, &SpriteVAO);
-	glBindVertexArray(SpriteVAO);
-	glGenBuffers(1, &SpriteVBO);
-	glGenBuffers(1, &SpriteEBO);
+	glGenVertexArrays(1, &SpriteBuffer.VAO);
+	glBindVertexArray(SpriteBuffer.VAO);
+	glGenBuffers(1, &SpriteBuffer.VBO);
+	glGenBuffers(1, &SpriteBuffer.EBO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, SpriteVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, SpriteBuffer.VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(RectVertices), RectVertices, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, SpriteEBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, SpriteBuffer.EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(RectIndices), RectIndices, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
@@ -146,15 +153,15 @@ void ResourcesInst::LoadBatchVAO() {
 		1, 2, 3    // second triangle
 	};
 
-	glGenVertexArrays(1, &BatchVAO);
-	glBindVertexArray(BatchVAO);
-	glGenBuffers(1, &BatchVBO);
-	glGenBuffers(1, &BatchEBO);
+	glGenVertexArrays(1, &BatchBuffer.VAO);
+	glBindVertexArray(BatchBuffer.VAO);
+	glGenBuffers(1, &BatchBuffer.VBO);
+	glGenBuffers(1, &BatchBuffer.EBO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, BatchVBO);
+	glBindBuffer(GL_ARRAY_BUFFER, BatchBuffer.VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(RectVertices), RectVertices, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, BatchEBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, BatchBuffer.EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(RectIndices), RectIndices, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
@@ -169,4 +176,47 @@ void ResourcesInst::LoadBatchVAO() {
 	glVertexAttribDivisor(4, 1);
 
 	glBindVertexArray(0);
+}
+
+void ResourcesInst::LoadParticleVAO() {
+	glGenVertexArrays(1, &ParticleBuffer.VAO);
+	glBindVertexArray(ParticleBuffer.VAO);
+
+	glEnableVertexAttribArray(0);
+	glVertexAttribDivisor(0, 1);
+	glBindVertexArray(0);
+}
+
+void ResourcesInst::LoadMap() {
+	const int W = 14;
+	const int H = 7;
+	const char MAP[H][W+1] = {
+		"##############",
+		"##T########T##",
+		"##############",
+		"#************#",
+		"#*****G******#",
+		"#************#",
+		"##############"
+	};
+	const int SCALE = 8;
+	for (int y = 0; y < H; y++) {
+		for (int x = 0; x < W; x++) {
+			if (MAP[y][x] == 'T' || MAP[y][x] == 'G') {
+				AnimatedSprite sprite;
+				sprite.Load(animationInfo.GetId("Torch"));
+				sprite.Scale = SCALE;
+				sprite.Pos = { (x * 16 * SCALE) + 52, (y * 16 * SCALE) + 52 };
+				AnimatedSprites.push_back(std::move(sprite));
+			}
+			Sprite sprite;
+			sprite.Scale = SCALE;
+			sprite.Pos = { (x * 16 * SCALE) + 52, (y * 16 * SCALE) + 52 };
+			if (MAP[y][x] == '#' || MAP[y][x] == 'T')
+				sprite.Load(spriteInfo.GetId("Wall"));
+			else
+				sprite.Load(spriteInfo.GetId("Floor"));
+			Sprites.push_back(std::move(sprite));
+		}
+	}
 }

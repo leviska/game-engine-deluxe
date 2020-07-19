@@ -94,7 +94,14 @@ struct AnimationInfo {
 
 enum class Shaders {
 	Sprite,
-	Batch
+	Batch,
+	Particle,
+};
+
+struct ObjectBuffer {
+	uint32_t VAO = 0;
+	uint32_t VBO = 0;
+	uint32_t EBO = 0;
 };
 
 class ResourcesInst {
@@ -103,15 +110,14 @@ class ResourcesInst {
 	NamedVector<SpriteInfo> spriteInfo;
 	NamedVector<std::vector<AnimationInfo>> animationInfo;
 
-	uint32_t SpriteVAO = 0;
-	uint32_t SpriteVBO = 0;
-	uint32_t SpriteEBO = 0;
-
-	uint32_t BatchVAO = 0;
-	uint32_t BatchVBO = 0;
-	uint32_t BatchEBO = 0;
+	ObjectBuffer SpriteBuffer;
+	ObjectBuffer BatchBuffer;
+	ObjectBuffer ParticleBuffer;
 
 public:
+	std::vector<Sprite> Sprites;
+	std::vector<AnimatedSprite> AnimatedSprites;
+
 	ResourcesInst(const ResourcesInst &) = delete;
 	ResourcesInst& operator=(const ResourcesInst &) = delete;
 
@@ -130,9 +136,9 @@ public:
 	const std::vector<AnimationInfo>& GetAnimationInfo(uint32_t Id) { return animationInfo[Id]; }
 	const std::vector<AnimationInfo>& GetAnimationInfo(const std::string& name) { return animationInfo[name]; }
 
-	uint32_t GetSpriteVAO() { return SpriteVAO; }
-	uint32_t GetBatchVAO() { return BatchVAO; }
-
+	uint32_t GetSpriteVAO() { return SpriteBuffer.VAO; }
+	uint32_t GetBatchVAO() { return BatchBuffer.VAO; }
+	uint32_t GetParticleVAO() { return ParticleBuffer.VAO; }
 private:
 	ResourcesInst() = default;
 	~ResourcesInst();
@@ -144,6 +150,9 @@ private:
 	void LoadAnimationInfo();
 	void LoadSpriteVAO();
 	void LoadBatchVAO();
+	void LoadParticleVAO();
+
+	void LoadMap();
 };
 
 ResourcesInst& Resources();

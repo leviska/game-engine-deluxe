@@ -44,7 +44,7 @@ glm::vec4 Sprite::GetRect() const {
 
 glm::vec4 Sprite::GetTextCoords() const {
 	const auto& info = Resources().GetSpriteInfo(DataId);
-	return glm::vec4(info.Position.x, info.Position.y + info.Size.y, info.Size.x, -info.Size.y);
+	return glm::vec4(info.Position.x, info.Position.y, info.Size.x, info.Size.y);
 }
 
 glm::vec3 Sprite::GetTransform() const {

@@ -1,8 +1,6 @@
 #include "window.h"
 #include "resources.h"
 
-#include "imgui.h"
-
 #include <cassert>
 #include <stdexcept>
 #include <chrono>
@@ -47,6 +45,8 @@ void Window::LoadSDL() {
 		throw std::runtime_error("Failed to initialize GLAD");
 		return;
 	}
+
+	srand(time_t(0));
 }
 
 void Window::LoadOpenGL() {
@@ -64,6 +64,8 @@ void Window::Load() {
 	Resources().GetShader(0).UpdateProjection(width, height);
 	Resources().GetShader(1).Select();
 	Resources().GetShader(1).UpdateProjection(width, height);
+	Resources().GetShader(2).Select();
+	Resources().GetShader(2).UpdateProjection(width, height);
 
 	gui.Load(window, glcontext);
 
@@ -71,6 +73,8 @@ void Window::Load() {
 	open = true;
 
 	render.Load(0);
+	render2.Load(0);
+	particle.Load();
 }
 
 void Window::Reset() {
@@ -99,6 +103,8 @@ void Window::ProcessEvents() {
 				Resources().GetShader(0).UpdateProjection(width, height);
 				Resources().GetShader(1).Select();
 				Resources().GetShader(1).UpdateProjection(width, height);
+				Resources().GetShader(2).Select();
+				Resources().GetShader(2).UpdateProjection(width, height);
 			}
 		}
 	}
@@ -118,21 +124,18 @@ void Window::Render() {
 
 void Window::Draw() {
 	auto fpsInfo = fps.Update();
-	ImGui::Begin("Count", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-	ImGui::SliderInt("Entities", &ENTITIES, 1, 1000);
-	ImGui::End();
-	sprites.resize(ENTITIES);
-	for (int i = 0; i < ENTITIES; i++) {
-		sprites[i].Load(0);
-		sprites[i].Update(fpsInfo.dt);
-		const int SCALE = 8;
-		sprites[i].Scale = SCALE;
-		sprites[i].Pos = { (i * 16 * SCALE) % width, ((i * 16 * SCALE) / width * 16 * SCALE) % height };
-		//sprites[i].Pos = { rand() % width, rand() % height };
-	}
 	render.Clear();
-	render.Update(sprites);
+	render2.Clear();
+	render.Update(Resources().Sprites);
+	for (auto& i : Resources().AnimatedSprites) {
+		i.Update(fpsInfo.dt);
+	}
+	render2.Update(Resources().AnimatedSprites);
 	render.Draw();
+
+	particle.Draw(fpsInfo.dt);
+
+	render2.Draw();
 	gui.DrawDebugInfo(fpsInfo.fps);
 }
 

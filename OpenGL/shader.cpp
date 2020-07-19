@@ -70,7 +70,7 @@ void Shader::SetMat4(const std::string& name, const glm::mat4& value) {
 }
 
 void Shader::UpdateProjection(float width, float height) {
-	glm::mat4 projection = glm::ortho(0.0f, width, 0.0f, height, -100.0f, 100.0f);
+	glm::mat4 projection = glm::ortho(0.0f, width, height, 0.0f);
 	SetMat4("Projection", projection);
 }
 

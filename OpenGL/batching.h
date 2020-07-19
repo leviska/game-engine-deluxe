@@ -33,7 +33,7 @@ template <typename SpriteType>
 void BatchedRender::Update(const std::vector<SpriteType>& sprites) {
 	BindArray();
 
-	size_t curSize = sprites.size();
+	size_t curSize = positions.size();
 	positions.resize(curSize + sprites.size());
 	textCoords.resize(curSize + sprites.size());
 	colors.resize(curSize + sprites.size());

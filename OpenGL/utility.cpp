@@ -1,11 +1,15 @@
 #include "utility.h"
 
+#include <SDL.h>
+
 FPSInfo FPS::Update() {
-	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
 	FPSInfo res{ 0, 0 };
-	if (!frames.empty()) {
-		res.dt = std::chrono::duration_cast<std::chrono::milliseconds>(end - frames.back()).count();
+	std::chrono::steady_clock::time_point end = std::chrono::steady_clock::now();
+	if (frames.empty()) {
+		frames.push(end);
+		return res;
 	}
+	res.dt = std::chrono::duration_cast<std::chrono::microseconds>(end - frames.back()).count();
 	frames.push(end);
 	while (!frames.empty()) {
 		auto dur = std::chrono::duration_cast<std::chrono::milliseconds>(end - frames.front()).count();
