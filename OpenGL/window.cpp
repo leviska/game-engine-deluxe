@@ -74,7 +74,9 @@ void Window::Load() {
 
 	render.Load(0);
 	render2.Load(0);
-	particle.Load();
+	particle.Load({ 885, 560 });
+	particle2.Load({ 380, 190 });
+	particle3.Load({ 1525, 190 });
 }
 
 void Window::Reset() {
@@ -133,7 +135,9 @@ void Window::Draw() {
 	render2.Update(Resources().AnimatedSprites);
 	render.Draw();
 
-	particle.Draw(fpsInfo.dt);
+	particle.Draw(fpsInfo.dt, true);
+	particle2.Draw(fpsInfo.dt, false);
+	particle3.Draw(fpsInfo.dt, false);
 
 	render2.Draw();
 	gui.DrawDebugInfo(fpsInfo.fps);

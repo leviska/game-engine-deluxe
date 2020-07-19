@@ -24,6 +24,8 @@ class Window
 	BatchedRender render;
 	BatchedRender render2;
 	ParticleRender particle;
+	ParticleRender particle2;
+	ParticleRender particle3;
 
 	FPS fps;
 	GUI gui;
