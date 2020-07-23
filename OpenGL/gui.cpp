@@ -36,9 +36,3 @@ void GUI::Render() {
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 }
-
-void GUI::DrawDebugInfo(float fps) {
-	ImGui::Begin("DebugInfo", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
-	ImGui::Text("FPS: %d", static_cast<int>(fps));
-	ImGui::End();
-}

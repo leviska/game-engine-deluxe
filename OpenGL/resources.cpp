@@ -105,7 +105,7 @@ void ResourcesInst::LoadAnimationInfo() {
 		for (const auto& el : anim["frames"]) {
 			AnimationInfo info;
 			info.SpriteId = spriteInfo.GetId(el["sprite"]);
-			info.Delay = el["delay"].get<uint32_t>();
+			info.Delay = el["delay"].get<uint32_t>() * 1000;
 			buffer.push_back(std::move(info));
 		}
 		animationInfo.Add(std::move(buffer), anim["name"].get<std::string>());

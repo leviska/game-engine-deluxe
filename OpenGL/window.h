@@ -19,8 +19,6 @@ class Window
 	uint32_t width = 800;
 	uint32_t height = 600;
 
-	int ENTITIES = 50;
-
 	BatchedRender render;
 	BatchedRender render2;
 	ParticleRender particle;
@@ -34,6 +32,8 @@ class Window
 	void LoadOpenGL();
 
 	void ProcessEvents();
+
+	void Update();
 
 	void Clear();
 	void Draw();

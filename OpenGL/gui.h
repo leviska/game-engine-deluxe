@@ -12,6 +12,4 @@ public:
 	
 	void Clear();
 	void Render();
-
-	void DrawDebugInfo(float fps);
 };

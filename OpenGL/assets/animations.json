@@ -4,27 +4,27 @@
 		"frames": [
 			{
 				"sprite": "Torch00",
-				"delay": 150000
+				"delay": 150
 			},
 			{
 				"sprite": "Torch01",
-				"delay": 150000
+				"delay": 150
 			},
 			{
 				"sprite": "Torch02",
-				"delay": 150000
+				"delay": 150
 			},
 			{
 				"sprite": "Torch01",
-				"delay": 150000
+				"delay": 150
 			},
 			{
 				"sprite": "Torch00",
-				"delay": 150000
+				"delay": 150
 			},
 			{
 				"sprite": "Torch03",
-				"delay": 150000
+				"delay": 150
 			}
 		]
 	}

@@ -74,9 +74,9 @@ void Window::Load() {
 
 	render.Load(0);
 	render2.Load(0);
-	particle.Load({ 885, 560 });
+	particle.Load({ 893, 560 });
 	particle2.Load({ 380, 190 });
-	particle3.Load({ 1525, 190 });
+	particle3.Load({ 1533, 190 });
 }
 
 void Window::Reset() {
@@ -112,8 +112,14 @@ void Window::ProcessEvents() {
 	}
 }
 
+void Window::Update() {
+	fps.Update();
+	fps.LimitFPS(60);
+	ProcessEvents();
+}
+
 void Window::Clear() {
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+	glClearColor(39.0f/255.0f, 39.0f/255.0f, 68.0f/255.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	gui.Clear();
 }
@@ -125,7 +131,7 @@ void Window::Render() {
 }
 
 void Window::Draw() {
-	auto fpsInfo = fps.Update();
+	const auto& fpsInfo = fps.LastFrame();
 	render.Clear();
 	render2.Clear();
 	render.Update(Resources().Sprites);
@@ -135,17 +141,19 @@ void Window::Draw() {
 	render2.Update(Resources().AnimatedSprites);
 	render.Draw();
 
-	particle.Draw(fpsInfo.dt, true);
+	particle.Draw(fpsInfo.dt, false);
 	particle2.Draw(fpsInfo.dt, false);
 	particle3.Draw(fpsInfo.dt, false);
 
 	render2.Draw();
-	gui.DrawDebugInfo(fpsInfo.fps);
+
+	fps.Draw();
 }
 
 void Window::Run() {
 	while (open) {
-		ProcessEvents();
+		Update();
+
 		Clear();
 		Draw();
 		Render();
