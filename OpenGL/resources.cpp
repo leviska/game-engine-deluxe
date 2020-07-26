@@ -37,20 +37,8 @@ ResourcesInst::~ResourcesInst() {
 }
 
 void ResourcesInst::_Load() {
-	Shader spriteShader;
-	spriteShader.Load("shaders/sprite_vertex.glsl", "shaders/sprite_fragment.glsl");
-	shaders.Add(std::move(spriteShader), "SpriteShader");
-	Shader batchShader;
-	batchShader.Load("shaders/batch_vertex.glsl", "shaders/batch_fragment.glsl");
-	shaders.Add(std::move(batchShader), "BatchShader");
-	Shader particleShader;
-	particleShader.Load("shaders/particle_vertex.glsl", "shaders/particle_fragment.glsl");
-	shaders.Add(std::move(particleShader), "ParticleShader");
-
-	Texture spritesheet;
-	spritesheet.Load("assets/spritesheet.png");
-	textures.Add(std::move(spritesheet), "Spritesheet");
-
+	LoadShaders();
+	LoadTextures();
 	LoadSpriteInfo();
 	LoadAnimationInfo();
 	LoadSpriteVAO();
@@ -65,13 +53,31 @@ void ResourcesInst::_Reset() {
 	textures.Clear();
 	spriteInfo.Clear();
 
-	glDeleteVertexArrays(1, &SpriteBuffer.VAO);
-	glDeleteBuffers(1, &SpriteBuffer.VBO);
-	glDeleteBuffers(1, &SpriteBuffer.EBO);
-	glDeleteVertexArrays(1, &BatchBuffer.VAO);
-	glDeleteBuffers(1, &BatchBuffer.VBO);
-	glDeleteBuffers(1, &BatchBuffer.EBO);
-	glDeleteVertexArrays(1, &ParticleBuffer.VAO);
+	glDeleteVertexArrays(1, &spriteBuffer.VAO);
+	glDeleteBuffers(1, &spriteBuffer.VBO);
+	glDeleteBuffers(1, &spriteBuffer.EBO);
+	glDeleteVertexArrays(1, &batchBuffer.VAO);
+	glDeleteBuffers(1, &batchBuffer.VBO);
+	glDeleteBuffers(1, &batchBuffer.EBO);
+	glDeleteVertexArrays(1, &particleBuffer.VAO);
+}
+
+void ResourcesInst::LoadShaders() {
+	Shader shader;
+	shader.Load("shaders/sprite_vertex.glsl", "shaders/sprite_fragment.glsl");
+	shaders.Add(std::move(shader), "SpriteShader");
+	shader.Load("shaders/batch_vertex.glsl", "shaders/batch_fragment.glsl");
+	shaders.Add(std::move(shader), "BatchShader");
+	shader.Load("shaders/shapes_vertex.glsl", "shaders/shapes_fragment.glsl");
+	shaders.Add(std::move(shader), "ShapesShader");
+	shader.Load("shaders/particle_vertex.glsl", "shaders/particle_fragment.glsl");
+	shaders.Add(std::move(shader), "ParticleShader");
+}
+
+void ResourcesInst::LoadTextures() {
+	Texture spritesheet;
+	spritesheet.Load("assets/spritesheet.png");
+	textures.Add(std::move(spritesheet), "Spritesheet");
 }
 
 void ResourcesInst::LoadSpriteInfo() {
@@ -79,17 +85,18 @@ void ResourcesInst::LoadSpriteInfo() {
 	if (!file.good()) {
 		throw std::invalid_argument("Cannot open spritesheet.json file");
 	}
-	nlohmann::json jsoninfo;
-	file >> jsoninfo;
-	for (const auto& el : jsoninfo) {
+	nlohmann::json parsed;
+	file >> parsed;
+	const auto& frames = parsed["frames"];
+	for (auto it = frames.begin(); it != frames.end(); ++it) {
 		SpriteInfo info;
 		info.TextureId = textures.GetId("Spritesheet");
-		const auto& textureInfo = el["texture"];
+		const auto& textureInfo = it.value()["frame"];
 		info.Position.x = textureInfo["x"].get<float>();
 		info.Position.y = textureInfo["y"].get<float>();
-		info.Size.x = textureInfo["width"].get<float>();
-		info.Size.y = textureInfo["height"].get<float>();
-		spriteInfo.Add(std::move(info), el["name"].get<std::string>());
+		info.Size.x = textureInfo["w"].get<float>();
+		info.Size.y = textureInfo["h"].get<float>();
+		spriteInfo.Add(std::move(info), it.key());
 	}
 }
 
@@ -114,25 +121,25 @@ void ResourcesInst::LoadAnimationInfo() {
 
 void ResourcesInst::LoadSpriteVAO() {
 	const float RectVertices[] = {
-		1.0f, 1.0f,  // top right
-		1.0f, 0.0f,  // bottom right
-		0.0f, 0.0f,  // bottom left
-		0.0f, 1.0f   // top left 
+		0.5f, 0.5f,  // top right
+		0.5f, -0.5f,  // bottom right
+		-0.5f, -0.5f,  // bottom left
+		-0.5f, 0.5f   // top left 
 	};
 	const uint32_t RectIndices[] = {
 		0, 1, 3,   // first triangle
 		1, 2, 3    // second triangle
 	};
 
-	glGenVertexArrays(1, &SpriteBuffer.VAO);
-	glBindVertexArray(SpriteBuffer.VAO);
-	glGenBuffers(1, &SpriteBuffer.VBO);
-	glGenBuffers(1, &SpriteBuffer.EBO);
+	glGenVertexArrays(1, &spriteBuffer.VAO);
+	glBindVertexArray(spriteBuffer.VAO);
+	glGenBuffers(1, &spriteBuffer.VBO);
+	glGenBuffers(1, &spriteBuffer.EBO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, SpriteBuffer.VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, spriteBuffer.VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(RectVertices), RectVertices, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, SpriteBuffer.EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, spriteBuffer.EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(RectIndices), RectIndices, GL_STATIC_DRAW);
 
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
@@ -143,25 +150,25 @@ void ResourcesInst::LoadSpriteVAO() {
 
 void ResourcesInst::LoadBatchVAO() {
 	const float RectVertices[] = {
-		1.0f, 1.0f,  // top right
-		1.0f, 0.0f,  // bottom right
-		0.0f, 0.0f,  // bottom left
-		0.0f, 1.0f   // top left 
+		0.5f, 0.5f,  // top right
+		0.5f, -0.5f,  // bottom right
+		-0.5f, -0.5f,  // bottom left
+		-0.5f, 0.5f   // top left 
 	};
 	const uint32_t RectIndices[] = {
 		0, 1, 3,   // first triangle
 		1, 2, 3    // second triangle
 	};
 
-	glGenVertexArrays(1, &BatchBuffer.VAO);
-	glBindVertexArray(BatchBuffer.VAO);
-	glGenBuffers(1, &BatchBuffer.VBO);
-	glGenBuffers(1, &BatchBuffer.EBO);
+	glGenVertexArrays(1, &batchBuffer.VAO);
+	glBindVertexArray(batchBuffer.VAO);
+	glGenBuffers(1, &batchBuffer.VBO);
+	glGenBuffers(1, &batchBuffer.EBO);
 
-	glBindBuffer(GL_ARRAY_BUFFER, BatchBuffer.VBO);
+	glBindBuffer(GL_ARRAY_BUFFER, batchBuffer.VBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(RectVertices), RectVertices, GL_STATIC_DRAW);
 
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, BatchBuffer.EBO);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, batchBuffer.EBO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(RectIndices), RectIndices, GL_STATIC_DRAW);
 
 	glEnableVertexAttribArray(0);
@@ -179,8 +186,8 @@ void ResourcesInst::LoadBatchVAO() {
 }
 
 void ResourcesInst::LoadParticleVAO() {
-	glGenVertexArrays(1, &ParticleBuffer.VAO);
-	glBindVertexArray(ParticleBuffer.VAO);
+	glGenVertexArrays(1, &particleBuffer.VAO);
+	glBindVertexArray(particleBuffer.VAO);
 
 	glEnableVertexAttribArray(0);
 	glVertexAttribDivisor(0, 1);
@@ -192,8 +199,8 @@ void ResourcesInst::LoadMap() {
 	const int H = 7;
 	const char MAP[H][W+1] = {
 		"##############",
-		"##T########T##",
-		"##############",
+		"#************#",
+		"#*#T######T#*#",
 		"#************#",
 		"#*****G******#",
 		"#************#",
@@ -206,16 +213,16 @@ void ResourcesInst::LoadMap() {
 				AnimatedSprite sprite;
 				sprite.Load(animationInfo.GetId("Torch"));
 				sprite.Scale = SCALE;
-				sprite.Pos = { (x * 16 * SCALE) + 52, (y * 16 * SCALE) + 52 };
+				sprite.Pos = { (x * 16 * SCALE) + 52 + 16 * 4, (y * 16 * SCALE) + 52 + 16 * 4 };
 				AnimatedSprites.push_back(std::move(sprite));
 			}
 			Sprite sprite;
 			sprite.Scale = SCALE;
-			sprite.Pos = { (x * 16 * SCALE) + 52, (y * 16 * SCALE) + 52 };
+			sprite.Pos = { (x * 16 * SCALE) + 52 + 16 * 4, (y * 16 * SCALE) + 52 + 16 * 4 };
 			if (MAP[y][x] == '#' || MAP[y][x] == 'T')
-				sprite.Load(spriteInfo.GetId("Wall"));
+				sprite.Load(spriteInfo.GetId("Wall00"));
 			else
-				sprite.Load(spriteInfo.GetId("Floor"));
+				sprite.Load(spriteInfo.GetId("Floor00"));
 			Sprites.push_back(std::move(sprite));
 		}
 	}

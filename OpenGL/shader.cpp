@@ -9,6 +9,8 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+uint32_t Shader::currentId = 0;
+
 Shader::Shader(Shader&& other) noexcept {
 	id = other.id;
 	other.id = 0;
@@ -30,42 +32,52 @@ void Shader::Reset() {
 }
 
 void Shader::Select() const {
+	currentId = id;
 	glUseProgram(id);
 }
 
 void Shader::SetBool(const std::string& name, bool value) {
+	assert(currentId == id);
 	glUniform1i(glGetUniformLocation(id, name.c_str()), (int32_t)value);
 }
 
 void Shader::SetInt32(const std::string& name, int32_t value) {
+	assert(currentId == id);
 	glUniform1i(glGetUniformLocation(id, name.c_str()), value);
 }
 
 void Shader::SetFloat(const std::string& name, float value) {
+	assert(currentId == id);
 	glUniform1f(glGetUniformLocation(id, name.c_str()), value);
 }
 
 void Shader::SetVec2(const std::string& name, const glm::vec2& value) {
+	assert(currentId == id);
 	glUniform2f(glGetUniformLocation(id, name.c_str()), value.x, value.y);
 }
 
 void Shader::SetVec3(const std::string& name, const glm::vec3& value) {
+	assert(currentId == id);
 	glUniform3f(glGetUniformLocation(id, name.c_str()), value.x, value.y, value.z);
 }
 
 void Shader::SetVec4(const std::string& name, const glm::vec4& value) {
+	assert(currentId == id);
 	glUniform4f(glGetUniformLocation(id, name.c_str()), value.x, value.y, value.z, value.w);
 }
 
 void Shader::SetMat2(const std::string& name, const glm::mat2& value) {
+	assert(currentId == id);
 	glUniformMatrix2fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
 
 void Shader::SetMat3(const std::string& name, const glm::mat3& value) {
+	assert(currentId == id);
 	glUniformMatrix3fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
 
 void Shader::SetMat4(const std::string& name, const glm::mat4& value) {
+	assert(currentId == id);
 	glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
 

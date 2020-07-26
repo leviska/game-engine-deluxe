@@ -25,12 +25,23 @@ public:
 	
 	void Clear();
 	template <typename SpriteType>
-	void Update(const std::vector<SpriteType>& sprites);
+	void Stage(const std::vector<SpriteType>& sprites);
+	template <typename SpriteType>
+	void Stage(const SpriteType& sprite);
 	void Draw();
 };
 
 template <typename SpriteType>
-void BatchedRender::Update(const std::vector<SpriteType>& sprites) {
+void BatchedRender::Stage(const SpriteType& sprite) {
+	BindArray();
+	positions.push_back(sprite.Pos);
+	textCoords.push_back(sprite.GetTextCoords());
+	colors.push_back(sprite.Color);
+	transforms.push_back(sprite.GetTransform());
+}
+
+template <typename SpriteType>
+void BatchedRender::Stage(const std::vector<SpriteType>& sprites) {
 	BindArray();
 
 	size_t curSize = positions.size();

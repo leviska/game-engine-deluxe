@@ -25,8 +25,8 @@ float GetNormRand(float min, float max, std::mt19937& rng) {
 
 void ParticleRender::Load(glm::vec2 pos) {
 	glGenBuffers(1, &parametersBuffer);
-	transform[0] = pos[0] - std::fmod(pos[0], 8);
-	transform[1] = pos[1] - std::fmod(pos[1], 8);
+	transform[0] = pos[0] - std::fmod(pos[0], 8.0f);
+	transform[1] = pos[1] - std::fmod(pos[1], 8.0f);
 
 	parameters.resize(10);
 	Update();
@@ -39,7 +39,7 @@ void ParticleRender::Reset() {
 void ParticleRender::Update() {
 	std::random_device rd;
 	std::mt19937 rng(rd());
-	for (int i = 0; i < parameters.size(); i++) {
+	for (size_t i = 0; i < parameters.size(); i++) {
 		parameters[i][0] = GetNormRand(-values[0], values[0], rng);
 		for (int j = 1; j < 4; j++) {
 			parameters[i][j] = GetRand(-values[j], values[j], rng);
@@ -52,6 +52,8 @@ void ParticleRender::Update() {
 	glBindBuffer(GL_ARRAY_BUFFER, parametersBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * parameters.size(), &parameters[0], GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
+
+	glBindVertexArray(0);
 }
 
 void ParticleRender::GUI() {
@@ -97,7 +99,7 @@ void ParticleRender::Draw(uint32_t dt, bool gui) {
 	
 	Resources().GetShader(Shaders::Particle).SetVec4("Transform", transform);
 
-	glPointSize(pointSize);
+	glPointSize(static_cast<float>(pointSize));
 	
 	glBindBuffer(GL_ARRAY_BUFFER, parametersBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * parameters.size(), &parameters[0], GL_STATIC_DRAW);

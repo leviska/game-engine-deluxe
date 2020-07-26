@@ -12,7 +12,7 @@ uniform vec3 Transform;
 
 void main()
 {
-	TextCoordsFrag = TextCoords.xy + TextCoords.zw * Vertex;
+	TextCoordsFrag = TextCoords.xy + TextCoords.zw * (Vertex + vec2(0.5, 0.5));
 	// rotate
 	// then scale
 	// then move

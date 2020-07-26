@@ -4,8 +4,10 @@
 #include <glm/glm.hpp>
 
 class Shader {
-	uint32_t id = 0;
+	// mostly for debug purpose
+	static uint32_t currentId;
 
+	uint32_t id = 0;
 public:
 	Shader() = default;
 	~Shader() { Reset(); }

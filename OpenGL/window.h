@@ -1,9 +1,10 @@
 #pragma once
 #include "shader.h"
-#include "utility.h"
+#include "fps.h"
 #include "gui.h"
 #include "batching.h"
 #include "particles.h"
+#include "shapes.h"
 
 #include "animated_sprite.h"
 
@@ -32,6 +33,7 @@ class Window
 	void LoadOpenGL();
 
 	void ProcessEvents();
+	void UpdateViewport();
 
 	void Update();
 

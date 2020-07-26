@@ -45,13 +45,11 @@ void Window::LoadSDL() {
 		throw std::runtime_error("Failed to initialize GLAD");
 		return;
 	}
-
-	srand(time_t(0));
 }
 
 void Window::LoadOpenGL() {
-	glViewport(0, 0, width, height);
 	glEnable(GL_BLEND);
+	glEnable(GL_LINE_SMOOTH);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
@@ -60,12 +58,8 @@ void Window::Load() {
 	LoadOpenGL();
 
 	Resources().Load();
-	Resources().GetShader(0).Select();
-	Resources().GetShader(0).UpdateProjection(width, height);
-	Resources().GetShader(1).Select();
-	Resources().GetShader(1).UpdateProjection(width, height);
-	Resources().GetShader(2).Select();
-	Resources().GetShader(2).UpdateProjection(width, height);
+
+	UpdateViewport();
 
 	gui.Load(window, glcontext);
 
@@ -100,15 +94,17 @@ void Window::ProcessEvents() {
 			if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
 				width = event.window.data1;
 				height = event.window.data2;
-				glViewport(0, 0, width, height);
-				Resources().GetShader(0).Select();
-				Resources().GetShader(0).UpdateProjection(width, height);
-				Resources().GetShader(1).Select();
-				Resources().GetShader(1).UpdateProjection(width, height);
-				Resources().GetShader(2).Select();
-				Resources().GetShader(2).UpdateProjection(width, height);
+				UpdateViewport();
 			}
 		}
+	}
+}
+
+void Window::UpdateViewport() {
+	glViewport(0, 0, width, height);
+	for (uint32_t i = 0; i < static_cast<uint32_t>(Shaders::Total); i++) {
+		Resources().GetShader(i).Select();
+		Resources().GetShader(i).UpdateProjection(static_cast<float>(width), static_cast<float>(height));
 	}
 }
 
@@ -122,6 +118,9 @@ void Window::Clear() {
 	glClearColor(39.0f/255.0f, 39.0f/255.0f, 68.0f/255.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	gui.Clear();
+
+	render.Clear();
+	render2.Clear();
 }
 
 void Window::Render() {
@@ -132,13 +131,11 @@ void Window::Render() {
 
 void Window::Draw() {
 	const auto& fpsInfo = fps.LastFrame();
-	render.Clear();
-	render2.Clear();
-	render.Update(Resources().Sprites);
+	render.Stage(Resources().Sprites);
 	for (auto& i : Resources().AnimatedSprites) {
 		i.Update(fpsInfo.dt);
 	}
-	render2.Update(Resources().AnimatedSprites);
+	render2.Stage(Resources().AnimatedSprites);
 	render.Draw();
 
 	particle.Draw(fpsInfo.dt, false);

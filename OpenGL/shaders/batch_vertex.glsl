@@ -13,7 +13,7 @@ uniform mat4 Projection;
 
 void main()
 {
-	TextCoordsFrag = TextCoords.xy + TextCoords.zw * Vertex;
+	TextCoordsFrag = TextCoords.xy + TextCoords.zw * (Vertex + vec2(0.5, 0.5));
 	ColorFrag = Color;
 	// rotate
 	// then scale

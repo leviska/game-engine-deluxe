@@ -10,5 +10,12 @@ public:
 	void Load(uint32_t dataId) override;
 	void Reset();
 
+	uint32_t Frame() { return currentFrame; }
+	uint32_t GetFrame() { return currentFrame; }
+	void SetFrame(uint32_t frame) { 
+		currentFrame = frame;
+		currentTime = 0;
+	}
+
 	void Update(uint32_t dt);
 };

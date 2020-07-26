@@ -15,15 +15,15 @@
 				"delay": 150
 			},
 			{
-				"sprite": "Torch01",
-				"delay": 150
-			},
-			{
-				"sprite": "Torch00",
-				"delay": 150
-			},
-			{
 				"sprite": "Torch03",
+				"delay": 150
+			},
+			{
+				"sprite": "Torch04",
+				"delay": 150
+			},
+			{
+				"sprite": "Torch05",
 				"delay": 150
 			}
 		]

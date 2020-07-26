@@ -1,85 +1,10 @@
 #pragma once
 #include "shader.h"
 #include "texture.h"
-
+#include "named_vector.h"
 #include "animated_sprite.h"
 
-#include <memory>
-#include <vector>
-#include <array>
-#include <string>
-#include <unordered_map>
-
 #include <glm/glm.hpp>
-
-template<typename T>
-class NamedVector {
-	std::vector<T> values;
-	std::unordered_map<std::string, size_t> names;
-
-public:
-	size_t Add(const T& value) {
-		size_t id = values.size();
-		values.push_back(value);
-		return id;
-	}
-
-	size_t Add(T&& value) {
-		size_t id = values.size();
-		values.push_back(std::move(value));
-		return id;
-	}
-
-	size_t Add(const T& value, const std::string& name) {
-		size_t id = values.size();
-		names[name] = id;
-		values.push_back(value);
-		return id;
-	}
-
-	size_t Add(T&& value, const std::string& name) {
-		size_t id = values.size();
-		names[name] = id;
-		values.push_back(std::move(value));
-		return id;
-	}
-
-	void AddName(size_t id, const std::string& name) {
-		names[name] = id;
-	}
-	
-
-	void Clear() {
-		values.clear();
-		names.clear();
-	}
-
-
-	size_t GetId(const std::string& name) const {
-		return names.at(name);
-	}
-
-	size_t Size() const {
-		return values.size();
-	}
-
-
-	T& operator[](size_t id) {
-		return values[id];
-	}
-
-	T& operator[](std::string name) {
-		return values[names.at(name)];
-	}
-
-	const T& operator[](size_t id) const {
-		return values[id];
-	}
-
-	const T& operator[](std::string name) const {
-		return values[names.at(name)];
-	}
-};
 
 struct SpriteInfo {
 	uint32_t TextureId;
@@ -95,7 +20,9 @@ struct AnimationInfo {
 enum class Shaders {
 	Sprite,
 	Batch,
+	Shapes,
 	Particle,
+	Total
 };
 
 struct ObjectBuffer {
@@ -110,9 +37,9 @@ class ResourcesInst {
 	NamedVector<SpriteInfo> spriteInfo;
 	NamedVector<std::vector<AnimationInfo>> animationInfo;
 
-	ObjectBuffer SpriteBuffer;
-	ObjectBuffer BatchBuffer;
-	ObjectBuffer ParticleBuffer;
+	ObjectBuffer spriteBuffer;
+	ObjectBuffer batchBuffer;
+	ObjectBuffer particleBuffer;
 
 public:
 	std::vector<Sprite> Sprites;
@@ -136,9 +63,9 @@ public:
 	const std::vector<AnimationInfo>& GetAnimationInfo(uint32_t Id) { return animationInfo[Id]; }
 	const std::vector<AnimationInfo>& GetAnimationInfo(const std::string& name) { return animationInfo[name]; }
 
-	uint32_t GetSpriteVAO() { return SpriteBuffer.VAO; }
-	uint32_t GetBatchVAO() { return BatchBuffer.VAO; }
-	uint32_t GetParticleVAO() { return ParticleBuffer.VAO; }
+	uint32_t GetSpriteVAO() { return spriteBuffer.VAO; }
+	uint32_t GetBatchVAO() { return batchBuffer.VAO; }
+	uint32_t GetParticleVAO() { return particleBuffer.VAO; }
 private:
 	ResourcesInst() = default;
 	~ResourcesInst();
@@ -146,6 +73,8 @@ private:
 	void _Load();
 	void _Reset();
 
+	void LoadShaders();
+	void LoadTextures();
 	void LoadSpriteInfo();
 	void LoadAnimationInfo();
 	void LoadSpriteVAO();

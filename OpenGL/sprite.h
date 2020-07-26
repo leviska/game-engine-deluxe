@@ -8,7 +8,7 @@
 class Sprite {
 public:
 	uint32_t DataId = 0;
-	glm::vec2 Pos;
+	glm::vec2 Pos = glm::vec2(0, 0);
 	glm::vec4 Color = glm::vec4(1, 1, 1, 1);
 	float Scale = 1;
 	float Rotation = 0;
