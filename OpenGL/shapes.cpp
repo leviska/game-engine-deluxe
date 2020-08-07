@@ -6,6 +6,9 @@
 
 void DrawShape(const glm::vec2* data, uint32_t size, uint32_t mode, const glm::vec4& color, float thickness) {
 	Resources().GetShader(Shaders::Shapes).Select();
+	Resources().GetShader(Shaders::Shapes).SetVec4("Color", color);
+
+	glBindVertexArray(Resources().GetShapeVAO());
 
 	uint32_t VBO;
 	glGenBuffers(1, &VBO);
@@ -15,17 +18,21 @@ void DrawShape(const glm::vec2* data, uint32_t size, uint32_t mode, const glm::v
 	glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(glm::vec2), (void*)0);
 	glEnableVertexAttribArray(0);
 
-	Resources().GetShader(Shaders::Shapes).SetVec4("Color", color);
-
 	glLineWidth(thickness);
 
 	glDrawArrays(mode, 0, size);
 
 	glDeleteBuffers(1, &VBO);
+
+	glBindVertexArray(0);
 }
 
 void SegmentShape::Draw() {
 	DrawShape(&Pos[0], 2, GL_LINES, Color, Thickness);
+}
+
+void LineStripShape::Draw() {
+	DrawShape(&Points[0], Points.size(), GL_LINE_STRIP, Color, Thickness);
 }
 
 void RectangleShape::Draw() {
@@ -55,12 +62,15 @@ void RectangleShape::Draw() {
 const double PI = 3.141592653589793238462643383279;
 
 void CircleShape::Draw() {
+	LineStripShape poly;
+	poly.Color = Color;
+	poly.Thickness = Thickness;
 	size_t count = Radius;
-	std::vector<glm::vec2> vertexes(count);
+	poly.Points.resize(count);
 	double cnst = 2 * PI / (count - 1);
 	for (size_t i = 0; i < count; i++) {
 		double v = cnst * i;
-		vertexes[i] = glm::vec2{ std::cos(v), std::sin(v) } * Radius + Center;
+		poly.Points[i] = glm::vec2{ std::cos(v), std::sin(v) } * Radius + Center;
 	}
-	DrawShape(&vertexes[0], count, GL_LINE_STRIP, Color, Thickness);
+	poly.Draw();
 }

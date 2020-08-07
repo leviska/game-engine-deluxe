@@ -2,6 +2,10 @@
 
 #include "resources.h"
 
+void AnimatedSprite::Load(std::string dataName) {
+	Load(Resources().GetAnimationInfoId(dataName));
+}
+
 void AnimatedSprite::Load(uint32_t dataId) {
 	AnimDataId = dataId;
 	Visible = true;

@@ -29,6 +29,7 @@ void Shader::Load(const std::string& vertexFile, const std::string& fragmentFile
 
 void Shader::Reset() {
 	glDeleteProgram(id);
+	id = 0;
 }
 
 void Shader::Select() const {
@@ -105,8 +106,8 @@ void Shader::Link(uint32_t vertex, uint32_t fragment) {
 		throw std::runtime_error("Failed to link shaders\n" + errorLog);
 	}
 
-	glDeleteShader(vertex);
-	glDeleteShader(fragment);
+	glDetachShader(id, vertex);
+	glDetachShader(id, fragment);
 }
 
 uint32_t Shader::LoadShader(const std::string& fileName, Shader::Type type) {

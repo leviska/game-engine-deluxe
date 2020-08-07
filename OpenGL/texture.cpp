@@ -10,19 +10,22 @@ Texture::Texture(Texture&& other) noexcept {
 	id = other.id;
 	width = other.width;
 	height = other.height;
+	type = other.type;
 	other.id = -1;
 	other.width = 0;
 	other.height = 0;
+	other.type = GL_TEXTURE_2D;
 }
 
-void Texture::Load(const std::string& name) {
+void Texture::Load(const std::string& name, bool rectangle) {
+	type = (rectangle ? GL_TEXTURE_RECTANGLE : GL_TEXTURE_2D);
 	glGenTextures(1, &id);
-	glBindTexture(GL_TEXTURE_RECTANGLE, id);
+	glBindTexture(type, id);
 
-	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-	glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(type, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(type, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+	glTexParameteri(type, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(type, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	
 	SDL_Surface* surface = IMG_Load(name.c_str());
 
@@ -38,7 +41,7 @@ void Texture::Load(const std::string& name) {
 		Mode = GL_RGBA;
 	}
 
-	glTexImage2D(GL_TEXTURE_RECTANGLE, 0, Mode, width, height, 0, Mode, GL_UNSIGNED_BYTE, surface->pixels);
+	glTexImage2D(type, 0, Mode, width, height, 0, Mode, GL_UNSIGNED_BYTE, surface->pixels);
 
 	SDL_FreeSurface(surface);
 }
@@ -48,7 +51,7 @@ void Texture::Reset() {
 }
 
 void Texture::Select() const {
-	glBindTexture(GL_TEXTURE_RECTANGLE, id);
+	glBindTexture(type, id);
 }
 
 
@@ -62,4 +65,8 @@ uint32_t Texture::GetWidth() const {
 
 uint32_t Texture::GetHeight() const {
 	return height;
+}
+
+glm::uvec2 Texture::GetSize() const {
+	return { width, height };
 }

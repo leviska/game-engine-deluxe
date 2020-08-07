@@ -8,6 +8,7 @@ public:
 	uint32_t AnimDataId = 0;
 
 	void Load(uint32_t dataId) override;
+	void Load(std::string dataName) override;
 	void Reset();
 
 	uint32_t Frame() { return currentFrame; }

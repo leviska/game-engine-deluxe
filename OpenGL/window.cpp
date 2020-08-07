@@ -3,8 +3,6 @@
 
 #include <cassert>
 #include <stdexcept>
-#include <chrono>
-#include <iostream>
 
 #include <glad/glad.h>
 #include <SDL_image.h>
@@ -13,8 +11,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-Window::~Window()
-{
+Window::~Window() {
 	Reset();
 }
 
@@ -65,12 +62,6 @@ void Window::Load() {
 
 	SDL_MaximizeWindow(window);
 	open = true;
-
-	render.Load(0);
-	render2.Load(0);
-	particle.Load({ 893, 560 });
-	particle2.Load({ 380, 190 });
-	particle3.Load({ 1533, 190 });
 }
 
 void Window::Reset() {
@@ -87,6 +78,7 @@ void Window::Reset() {
 void Window::ProcessEvents() {
 	SDL_Event event;
 	while (SDL_PollEvent(&event) != 0) {
+		gui.ProcessEvents(event);
 		if (event.type == SDL_QUIT) {
 			open = false;
 		}
@@ -109,50 +101,17 @@ void Window::UpdateViewport() {
 }
 
 void Window::Update() {
-	fps.Update();
-	fps.LimitFPS(60);
 	ProcessEvents();
 }
 
 void Window::Clear() {
-	glClearColor(39.0f/255.0f, 39.0f/255.0f, 68.0f/255.0f, 1.0f);
+	glClearColor(39.0f / 255.0f, 39.0f / 255.0f, 68.0f / 255.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	gui.Clear();
-
-	render.Clear();
-	render2.Clear();
 }
 
 void Window::Render() {
 	gui.Render();
 	glFlush();
 	SDL_GL_SwapWindow(window);
-}
-
-void Window::Draw() {
-	const auto& fpsInfo = fps.LastFrame();
-	render.Stage(Resources().Sprites);
-	for (auto& i : Resources().AnimatedSprites) {
-		i.Update(fpsInfo.dt);
-	}
-	render2.Stage(Resources().AnimatedSprites);
-	render.Draw();
-
-	particle.Draw(fpsInfo.dt, false);
-	particle2.Draw(fpsInfo.dt, false);
-	particle3.Draw(fpsInfo.dt, false);
-
-	render2.Draw();
-
-	fps.Draw();
-}
-
-void Window::Run() {
-	while (open) {
-		Update();
-
-		Clear();
-		Draw();
-		Render();
-	}
 }

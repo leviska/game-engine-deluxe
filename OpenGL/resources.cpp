@@ -4,17 +4,6 @@
 #include <stdexcept>
 #include <glad/glad.h>
 
-// disable intellisense errors for json library
-// this is only an IDE setting, compilation is not affected
-#ifdef __INTELLISENSE__
-#pragma diag_suppress 349
-#pragma diag_suppress 79
-#pragma diag_suppress 65
-#pragma diag_suppress 260
-#endif
-
-#include <nlohmann/json.hpp>
-
 ResourcesInst& Resources() {
 	return ResourcesInst::GetInstance();
 }
@@ -39,27 +28,41 @@ ResourcesInst::~ResourcesInst() {
 void ResourcesInst::_Load() {
 	LoadShaders();
 	LoadTextures();
-	LoadSpriteInfo();
+	
+	LoadSpriteInfo(spriteInfo, "spritesheet.json");
+	LoadSpriteInfo(spriteInfoLE, "spritesheet_le.json");
 	LoadAnimationInfo();
+	
 	LoadSpriteVAO();
 	LoadBatchVAO();
 	LoadParticleVAO();
+	LoadShapeVAO();
 
-	LoadMap();
+	LoadLevels();
+}
+
+void DeleteObjectBuffer(ObjectBuffer& buffer) {
+	glDeleteVertexArrays(1, &buffer.VAO);
+	glDeleteBuffers(1, &buffer.VBO);
+	glDeleteBuffers(1, &buffer.EBO);
+
+	buffer.VAO = 0;
+	buffer.VBO = 0;
+	buffer.EBO = 0;
 }
 
 void ResourcesInst::_Reset() {
 	shaders.Clear();
 	textures.Clear();
 	spriteInfo.Clear();
+	animationInfo.Clear();
+	
+	levels.clear();
 
-	glDeleteVertexArrays(1, &spriteBuffer.VAO);
-	glDeleteBuffers(1, &spriteBuffer.VBO);
-	glDeleteBuffers(1, &spriteBuffer.EBO);
-	glDeleteVertexArrays(1, &batchBuffer.VAO);
-	glDeleteBuffers(1, &batchBuffer.VBO);
-	glDeleteBuffers(1, &batchBuffer.EBO);
-	glDeleteVertexArrays(1, &particleBuffer.VAO);
+	DeleteObjectBuffer(spriteBuffer);
+	DeleteObjectBuffer(batchBuffer);
+	DeleteObjectBuffer(particleBuffer);
+	DeleteObjectBuffer(shapeBuffer);
 }
 
 void ResourcesInst::LoadShaders() {
@@ -78,25 +81,28 @@ void ResourcesInst::LoadTextures() {
 	Texture spritesheet;
 	spritesheet.Load("assets/spritesheet.png");
 	textures.Add(std::move(spritesheet), "Spritesheet");
+	spritesheet.Load("assets/spritesheet_le.png", false);
+	textures.Add(std::move(spritesheet), "Spritesheet_LE");
 }
 
-void ResourcesInst::LoadSpriteInfo() {
-	std::ifstream file("assets/spritesheet.json");
+void ResourcesInst::LoadSpriteInfo(NamedVector<SpriteInfo>& res, const std::string& fileName) {
+	std::ifstream file("assets/" + fileName);
 	if (!file.good()) {
-		throw std::invalid_argument("Cannot open spritesheet.json file");
+		throw std::invalid_argument("Cannot open " + fileName + " file");
 	}
 	nlohmann::json parsed;
 	file >> parsed;
 	const auto& frames = parsed["frames"];
 	for (auto it = frames.begin(); it != frames.end(); ++it) {
 		SpriteInfo info;
+		info.Name = it.key();
 		info.TextureId = textures.GetId("Spritesheet");
 		const auto& textureInfo = it.value()["frame"];
 		info.Position.x = textureInfo["x"].get<float>();
 		info.Position.y = textureInfo["y"].get<float>();
 		info.Size.x = textureInfo["w"].get<float>();
 		info.Size.y = textureInfo["h"].get<float>();
-		spriteInfo.Add(std::move(info), it.key());
+		res.Add(std::move(info), it.key());
 	}
 }
 
@@ -194,36 +200,29 @@ void ResourcesInst::LoadParticleVAO() {
 	glBindVertexArray(0);
 }
 
-void ResourcesInst::LoadMap() {
-	const int W = 14;
-	const int H = 7;
-	const char MAP[H][W+1] = {
-		"##############",
-		"#************#",
-		"#*#T######T#*#",
-		"#************#",
-		"#*****G******#",
-		"#************#",
-		"##############"
-	};
-	const int SCALE = 8;
-	for (int y = 0; y < H; y++) {
-		for (int x = 0; x < W; x++) {
-			if (MAP[y][x] == 'T' || MAP[y][x] == 'G') {
-				AnimatedSprite sprite;
-				sprite.Load(animationInfo.GetId("Torch"));
-				sprite.Scale = SCALE;
-				sprite.Pos = { (x * 16 * SCALE) + 52 + 16 * 4, (y * 16 * SCALE) + 52 + 16 * 4 };
-				AnimatedSprites.push_back(std::move(sprite));
-			}
-			Sprite sprite;
-			sprite.Scale = SCALE;
-			sprite.Pos = { (x * 16 * SCALE) + 52 + 16 * 4, (y * 16 * SCALE) + 52 + 16 * 4 };
-			if (MAP[y][x] == '#' || MAP[y][x] == 'T')
-				sprite.Load(spriteInfo.GetId("Wall00"));
-			else
-				sprite.Load(spriteInfo.GetId("Floor00"));
-			Sprites.push_back(std::move(sprite));
+void ResourcesInst::LoadShapeVAO() {
+	glGenVertexArrays(1, &shapeBuffer.VAO);
+	glBindVertexArray(shapeBuffer.VAO);
+
+	glBindVertexArray(0);
+}
+
+void ResourcesInst::LoadLevels() {
+	std::ifstream levelsFile("assets/levels.json");
+	if (!levelsFile.good()) {
+		throw std::invalid_argument("Cannot open levels.json file");
+	}
+	nlohmann::json levelFiles;
+	levelsFile >> levelFiles;
+	for (const auto & levelName : levelFiles) {
+		std::string fileName = levelName["Name"].get<std::string>();
+
+		std::ifstream level(fileName);
+		if (!level.good()) {
+			throw std::invalid_argument("Cannot open " + fileName + " file");
 		}
+		nlohmann::json levelJson;
+		level >> levelJson;
+		levels.push_back(std::move(levelJson));
 	}
 }

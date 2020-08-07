@@ -133,14 +133,20 @@
   <ItemGroup>
     <ClCompile Include="animated_sprite.cpp" />
     <ClCompile Include="batching.cpp" />
+    <ClCompile Include="level_editor.cpp" />
+    <ClCompile Include="renderable.cpp" />
+    <ClCompile Include="game.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="gui.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="map.cpp" />
     <ClCompile Include="particles.cpp" />
     <ClCompile Include="resources.cpp" />
+    <ClCompile Include="scene.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shapes.cpp" />
     <ClCompile Include="sprite.cpp" />
+    <ClCompile Include="state_machine.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="fps.cpp" />
     <ClCompile Include="window.cpp" />
@@ -148,13 +154,19 @@
   <ItemGroup>
     <ClInclude Include="animated_sprite.h" />
     <ClInclude Include="batching.h" />
+    <ClInclude Include="level_editor.h" />
+    <ClInclude Include="renderable.h" />
+    <ClInclude Include="game.h" />
     <ClInclude Include="gui.h" />
+    <ClInclude Include="map.h" />
     <ClInclude Include="named_vector.h" />
     <ClInclude Include="particles.h" />
     <ClInclude Include="resources.h" />
+    <ClInclude Include="scene.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="shapes.h" />
     <ClInclude Include="sprite.h" />
+    <ClInclude Include="state_machine.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="fps.h" />
     <ClInclude Include="window.h" />

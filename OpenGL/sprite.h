@@ -15,6 +15,7 @@ public:
 	bool Visible = false;
 	
 	virtual void Load(uint32_t dataId);
+	virtual void Load(std::string dataName);
 	virtual void Reset();
 
 	glm::vec4 GetRect() const;

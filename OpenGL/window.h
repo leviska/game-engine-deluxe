@@ -1,10 +1,6 @@
 #pragma once
 #include "shader.h"
-#include "fps.h"
 #include "gui.h"
-#include "batching.h"
-#include "particles.h"
-#include "shapes.h"
 
 #include "animated_sprite.h"
 
@@ -20,26 +16,12 @@ class Window
 	uint32_t width = 800;
 	uint32_t height = 600;
 
-	BatchedRender render;
-	BatchedRender render2;
-	ParticleRender particle;
-	ParticleRender particle2;
-	ParticleRender particle3;
-
-	FPS fps;
-	GUI gui;
+	GUI gui{};
 
 	void LoadSDL();
 	void LoadOpenGL();
 
 	void ProcessEvents();
-	void UpdateViewport();
-
-	void Update();
-
-	void Clear();
-	void Draw();
-	void Render();
 public:
 	Window() = default;
     ~Window();
@@ -47,5 +29,11 @@ public:
 	void Load();
 	void Reset();
 
-    void Run();
+	void Update();
+	void UpdateViewport();
+
+	void Clear();
+	void Render();
+
+	bool Open() { return open; }
 };

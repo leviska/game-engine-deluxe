@@ -1,6 +1,7 @@
 #pragma once
 
 #include <array>
+#include <vector>
 #include <glm/glm.hpp>
 
 class ShapeBase {
@@ -13,6 +14,13 @@ class SegmentShape : public ShapeBase {
 public:
 	std::array<glm::vec2, 2> Pos;
 	
+	void Draw();
+};
+
+class LineStripShape : public ShapeBase {
+public:
+	std::vector<glm::vec2> Points;
+
 	void Draw();
 };
 

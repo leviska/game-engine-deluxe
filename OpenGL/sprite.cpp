@@ -4,6 +4,10 @@
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 
+void Sprite::Load(std::string dataName) {
+	Load(Resources().GetSpriteInfoId(dataName));
+}
+
 void Sprite::Load(uint32_t dataId) {
 	DataId = dataId;
 	Visible = true;

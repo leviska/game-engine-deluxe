@@ -1,11 +1,9 @@
-#include "window.h"
+#include "game.h"
 #include <iostream>
 #include <fstream>
 
 void Run() {
-	Window window;
-	window.Load();
-	window.Run();
+	Game().Run();
 }
 
 int main(int argc, char* args[]) {
