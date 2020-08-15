@@ -7,6 +7,7 @@
 
 class BatchedRender {
 	uint32_t textureId = 0;
+	uint32_t shaderId = 0;
 
 	uint32_t positionsBuffer = 0;
 	uint32_t textCoordsBuffer = 0;
@@ -20,7 +21,7 @@ class BatchedRender {
 
 	void BindArray();
 public:
-	void Load(uint32_t TextureId);
+	void Load(uint32_t TextureId, uint32_t ShaderId = static_cast<uint32_t>(Shaders::Batch));
 	void Reset();
 	
 	void Clear();

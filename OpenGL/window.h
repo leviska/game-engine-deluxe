@@ -13,8 +13,7 @@ class Window
 	SDL_Window* window = nullptr;
 	SDL_GLContext glcontext = nullptr;
 
-	uint32_t width = 800;
-	uint32_t height = 600;
+	glm::uvec2 size = { 800, 600 };
 
 	GUI gui{};
 
@@ -36,4 +35,6 @@ public:
 	void Render();
 
 	bool Open() { return open; }
+
+	glm::uvec2 GetSize() { return size; }
 };

@@ -11,7 +11,7 @@ class FPS {
 	using TimePoint = std::chrono::steady_clock::time_point;
 	using Milliseconds = std::chrono::milliseconds;
 	using Microseconds = std::chrono::microseconds;
-
+	
 	std::queue<TimePoint> frames;
 	TimePoint lastTime;
 

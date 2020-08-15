@@ -3,11 +3,12 @@
 #include "window.h"
 #include "fps.h"
 #include "level_editor.h"
+#include "sandbox_scene.h"
 
 class GameInst {
 	Window window;
 	FPS fps;
-	LevelEditorScene scene;
+	SandboxScene scene;
 
 	bool running = true;
 
@@ -22,6 +23,10 @@ public:
 
 	FPSInfo FPS() { return fps.LastFrame(); }
 	Scene& GetCurrentScene();
+	Window& GetWindow() { return window; };
+	uint32_t GetScale();
+
+	void UpdateViewport(glm::vec2 size);
 private:
 	GameInst() = default;
 	~GameInst() = default;

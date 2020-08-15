@@ -1,5 +1,6 @@
 #include "window.h"
 #include "resources.h"
+#include "game.h"
 
 #include <cassert>
 #include <stdexcept>
@@ -28,7 +29,7 @@ void Window::LoadSDL() {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
-	window = SDL_CreateWindow("OpenGL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow("OpenGL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, size.x, size.y, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
 	if (!window) {
 		throw std::runtime_error("Window could not be created! SDL_Error: " + std::string(SDL_GetError()));
 	}
@@ -84,8 +85,8 @@ void Window::ProcessEvents() {
 		}
 		if (event.type == SDL_WINDOWEVENT) {
 			if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
-				width = event.window.data1;
-				height = event.window.data2;
+				size.x = event.window.data1;
+				size.y = event.window.data2;
 				UpdateViewport();
 			}
 		}
@@ -93,11 +94,7 @@ void Window::ProcessEvents() {
 }
 
 void Window::UpdateViewport() {
-	glViewport(0, 0, width, height);
-	for (uint32_t i = 0; i < static_cast<uint32_t>(Shaders::Total); i++) {
-		Resources().GetShader(i).Select();
-		Resources().GetShader(i).UpdateProjection(static_cast<float>(width), static_cast<float>(height));
-	}
+	Game().UpdateViewport({ size.x, size.y });
 }
 
 void Window::Update() {
@@ -105,7 +102,8 @@ void Window::Update() {
 }
 
 void Window::Clear() {
-	glClearColor(39.0f / 255.0f, 39.0f / 255.0f, 68.0f / 255.0f, 1.0f);
+	//39.0f / 255.0f, 39.0f / 255.0f, 68.0f / 255.0f, 1.0f
+	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	gui.Clear();
 }

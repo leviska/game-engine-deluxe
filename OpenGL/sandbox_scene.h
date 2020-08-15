@@ -6,12 +6,18 @@
 #include "particles.h"
 #include "state_machine.h"
 #include "map.h"
+#include "framebuffer.h"
 
 #include "entt/entt.hpp"
 
 class SandboxScene : public Scene {
 public:
+	FrameBuffer frameBuffer;
+	FrameBuffer obstructBuffer;
+	FrameBuffer tmpBuffer;
+
 	std::unordered_map<uint32_t, BatchedRender> renders;
+	BatchedRender obstructRender;
 
 	entt::registry db;
 	WallMap map;

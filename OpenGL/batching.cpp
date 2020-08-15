@@ -4,8 +4,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
-void BatchedRender::Load(uint32_t TextureId) {
+void BatchedRender::Load(uint32_t TextureId, uint32_t ShaderId) {
 	textureId = TextureId;
+	shaderId = ShaderId;
 
 	glGenBuffers(1, &positionsBuffer);
 	glGenBuffers(1, &textCoordsBuffer);
@@ -37,7 +38,7 @@ void BatchedRender::Draw() {
 	if (positions.empty())
 		return;
 
-	Resources().GetShader(Shaders::Batch).Select();
+	Resources().GetShader(shaderId).Select();
 	Resources().GetTexture(textureId).Select();
 	BindArray();
 

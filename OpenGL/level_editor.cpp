@@ -1,6 +1,7 @@
 #include "level_editor.h"
 
 #include "renderable.h"
+#include "game.h"
 
 #include <fstream>
 #include <iostream>
@@ -16,6 +17,7 @@ void LevelEditorScene::Load(const std::string& name) {
 	
 	renders[0].Load(0);
 	map.Load(db);
+	frameBuffer.Load(Resources().CanvasSize);
 
 	try {
 		LoadMap(map, name);
@@ -28,6 +30,7 @@ void LevelEditorScene::Load(const std::string& name) {
 void LevelEditorScene::Reset() {
 	ResetRenders(renders);
 
+	frameBuffer.Reset();
 	db.clear();
 	map.Reset();
 	levelName.clear();
@@ -47,14 +50,15 @@ void LevelEditorScene::Update() {
 		return;
 	glm::ivec2 mousePos;
 	uint32_t buttons = SDL_GetMouseState(&(mousePos.x), &(mousePos.y));
-	glm::ivec2 relPos = mousePos / static_cast<int32_t>(Resources().TileSize);
-	bb.Center = relPos * static_cast<int32_t>(Resources().TileSize) + glm::ivec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
-	bb.Size = glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
+	uint32_t scaledTile = Resources().TileSize * Game().GetScale();
+	glm::ivec2 relPos = mousePos / static_cast<int32_t>(scaledTile);
+
+	bb.Center = relPos * static_cast<int32_t>(scaledTile) + glm::ivec2{ scaledTile / 2, scaledTile / 2 };
+	bb.Size = glm::vec2{ scaledTile / 2, scaledTile / 2 };
 	bb.Color = glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f };
 	if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) {
 		Sprite sprite;
-		sprite.Scale = Resources().Scale;
-		sprite.Pos = glm::vec2{ relPos.x * Resources().TileSize, relPos.y * Resources().TileSize } +glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
+		sprite.Pos = glm::vec2{ relPos.x * Resources().TileSize, relPos.y * Resources().TileSize } + glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
 		sprite.Load(data.CurrentTile);
 		entt::entity id = map.Get(relPos);
 		db.emplace_or_replace<MultiRenderable>(id, std::vector<Sprite>{ sprite });
@@ -131,7 +135,11 @@ void LevelEditorScene::Clear() {
 }
 
 void LevelEditorScene::Draw() {
-	DrawGui();
+	frameBuffer.Select();
+	frameBuffer.Clear(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
 	RenderSystem(db, renders);
+	frameBuffer.SelectWindow();
+	frameBuffer.Draw(Resources().CanvasSize * Game().GetScale() / 2u, Game().GetScale(), Resources().GetShader("LightShader"));
+	DrawGui();
 	bb.Draw();
 }

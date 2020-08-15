@@ -18,16 +18,21 @@ Scene& GameInst::GetCurrentScene() {
 	return scene;
 }
 
+uint32_t GameInst::GetScale() {
+	glm::uvec2 scale = window.GetSize() / Resources().CanvasSize;
+	return std::min(scale.x, scale.y);
+}
+
 void GameInst::Load() {
 	window.Load();
-	scene.Load("untitled");
+	scene.Load();
 }
 
 void GameInst::Run() {
 	Load();
 	while (running) {
 		Update();
-
+		
 		Clear();
 		Draw();
 		Render();
@@ -69,4 +74,12 @@ void GameInst::Draw() {
 
 void GameInst::Render() {
 	window.Render();
+}
+
+void GameInst::UpdateViewport(glm::vec2 size) {
+	glViewport(0, 0, size.x, size.y);
+	for (uint32_t i = 0; i < static_cast<uint32_t>(Shaders::Total); i++) {
+		Resources().GetShader(i).Select();
+		Resources().GetShader(i).UpdateProjection(size.x, size.y);
+	}
 }

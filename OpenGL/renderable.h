@@ -29,3 +29,4 @@ void ResetRenders(std::unordered_map<uint32_t, BatchedRender>& renders);
 void ClearRenders(std::unordered_map<uint32_t, BatchedRender>& renders);
 
 void RenderSystem(entt::registry& db, std::unordered_map<uint32_t, BatchedRender>& renders);
+void RenderObstructSystem(entt::registry& db, BatchedRender& render);

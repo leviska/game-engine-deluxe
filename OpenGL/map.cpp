@@ -91,7 +91,6 @@ void LoadMap(WallMap& map, const nlohmann::json& levelInfo) {
 		std::vector<Sprite> sprites;
 		if (elem.find("Sprites") != elem.end()) {
 			Sprite sprite;
-			sprite.Scale = Resources().Scale;
 			sprite.Pos = glm::vec2{ pos.x * Resources().TileSize, pos.y * Resources().TileSize } +glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
 			for (const auto& spriteId : elem["Sprites"]) {
 				sprite.Load(spriteId.get<std::string>());

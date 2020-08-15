@@ -69,10 +69,10 @@ void Sprite::FastDraw() const {
 	if (!Visible)
 		return;
 
-	Resources().GetShader(0).SetVec2("Position", Pos);
-	Resources().GetShader(0).SetVec4("TextCoords", GetTextCoords());
-	Resources().GetShader(0).SetVec4("Color", Color);
-	Resources().GetShader(0).SetVec3("Transform", GetTransform());
+	Resources().GetShader(Shaders::Sprite).SetVec2("Position", Pos);
+	Resources().GetShader(Shaders::Sprite).SetVec4("TextCoords", GetTextCoords());
+	Resources().GetShader(Shaders::Sprite).SetVec4("Color", Color);
+	Resources().GetShader(Shaders::Sprite).SetVec3("Transform", GetTransform());
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 }

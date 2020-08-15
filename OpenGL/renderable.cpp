@@ -1,6 +1,7 @@
 #include "renderable.h"
 
 #include "batching.h"
+#include "map.h"
 
 void ResetRenders(std::unordered_map<uint32_t, BatchedRender>& renders) {
 	for (auto& el : renders) {
@@ -55,4 +56,17 @@ void RenderSystem(entt::registry& db, std::unordered_map<uint32_t, BatchedRender
 	for (auto& el : renders) {
 		el.second.Draw();
 	}
+}
+
+void RenderObstructSystem(entt::registry& db, BatchedRender& render) {
+	auto walls = db.view<Wall, MultiRenderable>();
+	for (auto id : walls) {
+		Sprite sprite;
+		sprite.Load(walls.get<MultiRenderable>(id).Images.front().DataId);
+		sprite.Color = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+		sprite.Pos = walls.get<Wall>(id).Pos * static_cast<int>(Resources().TileSize);
+		sprite.Pos += glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
+		render.Stage(sprite);
+	}
+	render.Draw();
 }

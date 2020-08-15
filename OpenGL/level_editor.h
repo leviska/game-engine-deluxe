@@ -4,11 +4,13 @@
 #include "shapes.h"
 #include "map.h"
 #include "batching.h"
+#include "framebuffer.h"
 
 #include "entt/entt.hpp"
 
 class LevelEditorScene : public Scene {
 	std::unordered_map<uint32_t, BatchedRender> renders;
+	FrameBuffer frameBuffer;
 
 	entt::registry db;
 	WallMap map;
@@ -25,7 +27,7 @@ class LevelEditorScene : public Scene {
 
 	void DrawGui();
 public:
-	void Load(const std::string& name);
+	void Load(const std::string& name = "sandboxLevel");
 	void Reset() override;
 
 	void Update() override;

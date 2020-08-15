@@ -16,6 +16,12 @@ Shader::Shader(Shader&& other) noexcept {
 	other.id = 0;
 }
 
+Shader& Shader::operator=(Shader&& other) {
+	id = other.id;
+	other.id = 0;
+	return *this;
+}
+
 void Shader::Load(const std::string& vertexFile, const std::string& fragmentFile) {
 	id = glCreateProgram();
 	uint32_t vertex = LoadShader(vertexFile, Type::Vertex);

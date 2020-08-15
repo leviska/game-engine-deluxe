@@ -14,6 +14,7 @@ public:
 	Shader(Shader&& other) noexcept;
 	Shader(const Shader&) = delete;
 	Shader& operator=(const Shader&) = delete;
+	Shader& operator=(Shader&& other);
 
 	enum class Type {
 		None,
@@ -35,6 +36,25 @@ public:
 	void SetMat2(const std::string& name, const glm::mat2& value);
 	void SetMat3(const std::string& name, const glm::mat3& value);
 	void SetMat4(const std::string& name, const glm::mat4& value);
+
+	template <typename T>
+	void SetBool(const std::string& name, T value) = delete;
+	template <typename T>
+	void SetInt32(const std::string& name, T value) = delete;
+	template <typename T>
+	void SetFloat(const std::string& name, T value) = delete;
+	template <typename T>
+	void SetVec2(const std::string& name, const T& value) = delete;
+	template <typename T>
+	void SetVec3(const std::string& name, const T& value) = delete;
+	template <typename T>
+	void SetVec4(const std::string& name, const T& value) = delete;
+	template <typename T>
+	void SetMat2(const std::string& name, const T& value) = delete;
+	template <typename T>
+	void SetMat3(const std::string& name, const T& value) = delete;
+	template <typename T>
+	void SetMat4(const std::string& name, const T& value) = delete;
 
 	void UpdateProjection(float width, float height);
 
