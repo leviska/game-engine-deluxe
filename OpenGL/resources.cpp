@@ -55,7 +55,9 @@ void ResourcesInst::_Reset() {
 	shaders.Clear();
 	textures.Clear();
 	spriteInfo.Clear();
+	spriteInfoLE.Clear();
 	animationInfo.Clear();
+
 	
 	levels.clear();
 

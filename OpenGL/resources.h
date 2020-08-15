@@ -49,6 +49,7 @@ class ResourcesInst {
 	ObjectBuffer shapeBuffer;
 
 public:
+	const glm::uvec2 CanvasSize = { 256, 144 };
 	const uint32_t Scale = 8;
 	const uint32_t TileSize = 16 * Scale;
 

@@ -3,6 +3,7 @@
 #include "renderable.h"
 #include "resources.h"
 
+#include <fstream>
 
 void WallMap::Load(entt::registry& _db) {
 	db = &_db;
@@ -13,44 +14,74 @@ void WallMap::Reset() {
 }
 
 bool WallMap::Has(glm::ivec2 pos) const {
-	return map.find(pos.x) != map.end() && map.at(pos.x).find(pos.y) != map.at(pos.x).end();
+	return map.find(pos) != map.end();
 }
 
-entt::entity WallMap::Get(glm::ivec2 pos) const {
+entt::entity WallMap::At(glm::ivec2 pos) const {
 	if (Has(pos)) {
-		return map.at(pos.x).at(pos.y);
+		return map.at(pos);
 	}
 	return entt::null;
 }
 
-void WallMap::Update(entt::entity id, glm::ivec2 pos) {
-	if (id == entt::null) {
-		map[pos.x].erase(pos.y);
-		if (map[pos.x].empty()) {
-			map.erase(pos.x);
-		}
+entt::entity WallMap::Get(glm::ivec2 pos) {
+	if (Has(pos)) {
+		return map.at(pos);
 	}
 	else {
-		map[pos.x][pos.y] = id;
+		return Create(pos);
 	}
 }
 
-void WallMap::SetWall(glm::ivec2 pos, const std::vector<Sprite>& sprites) {
-	if (Has(pos)) {
-		if (sprites.empty()) {
-			// TODO:
-			Update(entt::null, pos);
-		}
-		else {
-			db->get<MaskRenderable>(map[pos.x][pos.y]).Images = sprites;
-		}
+void WallMap::Update(glm::ivec2 pos, entt::entity id) {
+	if (id == entt::null) {
+		map.erase(pos);
 	}
 	else {
-		entt::entity id = db->create();
-		db->emplace<Wall>(id, pos);
-		db->emplace<MaskRenderable>(id, sprites);
-		Update(id, pos);
+		map[pos] = id;
 	}
+}
+
+entt::entity WallMap::Create(glm::ivec2 pos) {
+	assert(!Has(pos));
+
+	entt::entity id = db->create();
+	db->emplace<Wall>(id, pos);
+	Update(pos, id);
+	return id;
+}
+
+void WallMap::Erase(glm::ivec2 pos) {
+	assert(Has(pos));
+
+	entt::entity id = At(pos);
+	db->destroy(id);
+	Update(pos, entt::null);
+}
+
+entt::entity WallMap::Set(glm::ivec2 pos, bool erase) {
+	if (!erase) {
+		return Create(pos);
+	}
+	else {
+		Erase(pos);
+		return entt::null;
+	}
+}
+
+void LoadMap(WallMap& map, const char* fileName) {
+	LoadMap(map, std::string{ fileName });
+}
+
+void LoadMap(WallMap& map, const std::string& name) {
+	std::string fileName = std::string("assets/") + name + std::string(".json");
+	std::ifstream file(fileName);
+	if (!file.good()) {
+		throw std::runtime_error("Cannot open file " + fileName);
+	}
+	nlohmann::json level;
+	file >> level;
+	LoadMap(map, level);
 }
 
 void LoadMap(WallMap& map, const nlohmann::json& levelInfo) {
@@ -67,18 +98,34 @@ void LoadMap(WallMap& map, const nlohmann::json& levelInfo) {
 				sprites.push_back(sprite);
 			}
 		}
-		map.SetWall(pos, sprites);
+		entt::entity id = map.Create(pos);
+		map.DB().emplace<MultiRenderable>(id, sprites);
 	}
+}
+
+void SaveMap(WallMap& map, const char* fileName) {
+	SaveMap(map, std::string{ fileName });
+}
+
+void SaveMap(WallMap& map, const std::string& name) {
+	std::string fileName = std::string("assets/") + name + std::string(".json");
+	std::ofstream file(fileName);
+	if (!file.good()) {
+		throw std::runtime_error("Cannot open file " + fileName);
+	}
+	nlohmann::json level;
+	SaveMap(map, level);
+	file << level;
 }
 
 void SaveMap(WallMap& map, nlohmann::json& result) {
 	result = nlohmann::json::object();
 	result["Walls"] = nlohmann::json::array();
 	nlohmann::json& walls = result["Walls"];
-	auto view = map.DB().view<Wall, MaskRenderable>();
+	auto view = map.DB().view<Wall, MultiRenderable>();
 	for (auto id : view) {
 		glm::ivec2 pos = view.get<Wall>(id).Pos;
-		const std::vector<Sprite> sprites = view.get<MaskRenderable>(id).Images;
+		const std::vector<Sprite> sprites = view.get<MultiRenderable>(id).Images;
 		nlohmann::json obj;
 		obj["Pos"] = { { "x", pos.x }, { "y", pos.y } };
 		obj["Sprites"] = nlohmann::json::array();

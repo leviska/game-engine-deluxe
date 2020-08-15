@@ -142,6 +142,7 @@
     <ClCompile Include="map.cpp" />
     <ClCompile Include="particles.cpp" />
     <ClCompile Include="resources.cpp" />
+    <ClCompile Include="sandbox_scene.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shapes.cpp" />
@@ -155,6 +156,7 @@
     <ClInclude Include="animated_sprite.h" />
     <ClInclude Include="batching.h" />
     <ClInclude Include="level_editor.h" />
+    <ClInclude Include="level_scene.h" />
     <ClInclude Include="renderable.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gui.h" />
@@ -162,6 +164,7 @@
     <ClInclude Include="named_vector.h" />
     <ClInclude Include="particles.h" />
     <ClInclude Include="resources.h" />
+    <ClInclude Include="sandbox_scene.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="shapes.h" />
@@ -169,6 +172,7 @@
     <ClInclude Include="state_machine.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="fps.h" />
+    <ClInclude Include="utility.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

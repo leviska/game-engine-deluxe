@@ -22,6 +22,7 @@ public:
 	glm::vec4 GetTextCoords() const;
 	glm::vec3 GetTransform() const;
 	glm::vec2 GetSize() const;
+	uint32_t GetTextureId() const;
 
 	void PrepareForDraw() const;
 	void FastDraw() const;

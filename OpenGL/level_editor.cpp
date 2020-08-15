@@ -11,27 +11,27 @@
 #include <SDL.h>
 
 
-void LevelEditorScene::Load(std::string name) {
+void LevelEditorScene::Load(const std::string& name) {
 	levelName = name;
-	tileRender.Load(0);
+	
+	renders[0].Load(0);
 	map.Load(db);
 
-	std::string fileName = std::string("assets/") + levelName + std::string(".json");
-	std::ifstream file(fileName);
-	if (file.good()) {
-		nlohmann::json level;
-		file >> level;
-		LoadMap(map, level);
+	try {
+		LoadMap(map, name);
+	}
+	catch (std::runtime_error exp) {
+		// can't fine file, ignore
 	}
 }
 
 void LevelEditorScene::Reset() {
-	tileRender.Reset();
+	ResetRenders(renders);
+
 	db.clear();
 	map.Reset();
 	levelName.clear();
 }
-
 
 bool IsWallName(const std::string& str) {
 	const std::string& prefix = "Wall";
@@ -40,6 +40,30 @@ bool IsWallName(const std::string& str) {
 			return false;
 	}
 	return true;
+}
+
+void LevelEditorScene::Update() {
+	if (ImGui::GetIO().WantCaptureMouse)
+		return;
+	glm::ivec2 mousePos;
+	uint32_t buttons = SDL_GetMouseState(&(mousePos.x), &(mousePos.y));
+	glm::ivec2 relPos = mousePos / static_cast<int32_t>(Resources().TileSize);
+	bb.Center = relPos * static_cast<int32_t>(Resources().TileSize) + glm::ivec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
+	bb.Size = glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
+	bb.Color = glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f };
+	if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+		Sprite sprite;
+		sprite.Scale = Resources().Scale;
+		sprite.Pos = glm::vec2{ relPos.x * Resources().TileSize, relPos.y * Resources().TileSize } +glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
+		sprite.Load(data.CurrentTile);
+		entt::entity id = map.Get(relPos);
+		db.emplace_or_replace<MultiRenderable>(id, std::vector<Sprite>{ sprite });
+	}
+	if (buttons & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
+		if (map.Has(relPos)) {
+			map.Erase(relPos);
+		}
+	}
 }
 
 bool DrawTileButton(const SpriteInfo& info) {
@@ -57,31 +81,6 @@ bool DrawTileButton(const SpriteInfo& info) {
 	return ImGui::ImageButton(textId, size, uv0, uv1, 1, bg_col);
 }
 
-void LevelEditorScene::Update() {
-	if (ImGui::GetIO().WantCaptureMouse)
-		return;
-	glm::ivec2 mousePos;
-	uint32_t buttons = SDL_GetMouseState(&(mousePos.x), &(mousePos.y));
-	glm::ivec2 relPos = mousePos / static_cast<int32_t>(Resources().TileSize);
-	bb.Center = relPos * static_cast<int32_t>(Resources().TileSize) + glm::ivec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
-	bb.Size = glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
-	bb.Color = glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f };
-	if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-		Sprite sprite;
-		sprite.Scale = Resources().Scale;
-		sprite.Pos = glm::vec2{ relPos.x * Resources().TileSize, relPos.y * Resources().TileSize } +glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
-		sprite.Load(data.CurrentTile);
-		map.SetWall(relPos, { sprite });
-	}
-	if (buttons & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
-		if (map.Has(relPos)) {
-			entt::entity id = map.Get(relPos);
-			db.destroy(id);
-			map.Update(entt::null, relPos);
-		}
-	}
-}
-
 void LevelEditorScene::DrawGui() {
 	ImGui::Begin("Level Editor", nullptr);
 	ImGui::InputText("Level Name", &levelName);
@@ -92,17 +91,13 @@ void LevelEditorScene::DrawGui() {
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Save")) {
-		nlohmann::json result;
-		SaveMap(map, result);
-		std::string fileName = "assets/" + levelName + ".json";
-		std::ofstream file(fileName);
-		if (!file.good()) {
-			std::cerr << "Cannot open " + levelName + " for writing" << std::endl;
-		}
-		else {
-			file << result;
-		}
+		SaveMap(map, levelName);
 	}
+	
+	ImGuiStyle& style = ImGui::GetStyle();
+	ImVec2 oldSpacing = style.ItemSpacing;
+	style.ItemSpacing = { 0, 0 };
+	
 	const NamedVector<SpriteInfo>& info = Resources().GetSpriteInfoLE();
 	uint32_t currentLineDrawed = 0;
 	bool firstDraw = true;
@@ -123,18 +118,20 @@ void LevelEditorScene::DrawGui() {
 			ImGui::PopID();
 		}
 	}
+
+	style.ItemSpacing = oldSpacing;
+	
 	ImGui::Text("Current Tile");
 	DrawTileButton(info[data.CurrentTile]);
 	ImGui::End();
 }
 
 void LevelEditorScene::Clear() {
-	tileRender.Clear();
+	ClearRenders(renders);
 }
 
 void LevelEditorScene::Draw() {
 	DrawGui();
-	RenderSystem(db, tileRender);
-	tileRender.Draw();
+	RenderSystem(db, renders);
 	bb.Draw();
 }

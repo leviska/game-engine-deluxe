@@ -61,6 +61,10 @@ glm::vec2 Sprite::GetSize() const {
 	return info.Size;
 }
 
+uint32_t Sprite::GetTextureId() const {
+	return Resources().GetSpriteInfo(DataId).TextureId;
+}
+
 void Sprite::FastDraw() const {
 	if (!Visible)
 		return;
