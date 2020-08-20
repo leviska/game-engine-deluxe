@@ -1,10 +1,8 @@
 #include "Texture.h"
 
-#include <stdexcept>
-
-#include <SDL.h>
-#include <SDL_image.h>
 #include <glad/glad.h>
+
+uint32_t Texture::currentId = 0;
 
 Texture::Texture(Texture&& other) noexcept {
 	id = other.id;
@@ -15,7 +13,7 @@ Texture::Texture(Texture&& other) noexcept {
 	other.type = GL_TEXTURE_2D;
 }
 
-Texture& Texture::operator=(Texture&& other) {
+Texture& Texture::operator=(Texture&& other) noexcept {
 	id = other.id;
 	size = other.size;
 	type = other.type;
@@ -25,7 +23,7 @@ Texture& Texture::operator=(Texture&& other) {
 	return *this;
 }
 
-void Texture::CreateAndLoad(void* data, int mode) {
+void Texture::CreateAndLoad(const void* data) {
 	glGenTextures(1, &id);
 	glBindTexture(type, id);
 
@@ -34,35 +32,25 @@ void Texture::CreateAndLoad(void* data, int mode) {
 	glTexParameteri(type, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(type, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	
-	glTexImage2D(type, 0, mode, size.x, size.y, 0, mode, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(type, 0, GL_RGBA, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
 }
 
 void Texture::Load(glm::uvec2 Size, bool rectangle) {
 	type = (rectangle ? GL_TEXTURE_RECTANGLE : GL_TEXTURE_2D);
 	size = Size;
-	CreateAndLoad(nullptr, GL_RGBA);
+	CreateAndLoad(nullptr);
+}
+
+void Texture::Load(const Image& image, bool rectangle) {
+	type = (rectangle ? GL_TEXTURE_RECTANGLE : GL_TEXTURE_2D);
+	size = image.GetSize();
+	CreateAndLoad(image.GetRawData());
 }
 
 void Texture::Load(const std::string& name, bool rectangle) {
-	type = (rectangle ? GL_TEXTURE_RECTANGLE : GL_TEXTURE_2D);
-
-	SDL_Surface* surface = IMG_Load(name.c_str());
-
-	if (!surface) {
-		throw std::runtime_error("Cannot load " + name + " image file");
-	}
-
-	size.x = surface->w;
-	size.y = surface->h;
-
-	int mode = GL_RGB;
-	if (surface->format->BytesPerPixel == 4) {
-		mode = GL_RGBA;
-	}
-
-	CreateAndLoad(surface->pixels, mode);
-
-	SDL_FreeSurface(surface);
+	Image tmp;
+	tmp.Load(name);
+	Load(tmp, rectangle);
 }
 
 void Texture::Reset() {
@@ -72,6 +60,14 @@ void Texture::Reset() {
 }
 
 void Texture::Select(uint32_t num) const {
+	currentId = num == 0 ? id : currentId;
 	glActiveTexture(GL_TEXTURE0 + num);
 	glBindTexture(type, id);
+}
+
+void Texture::Update(const Image& image) {
+	assert(currentId == id);
+	assert(image.GetSize() == size);
+	glTexImage2D(type, 0, GL_RGBA, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.GetRawData());
+	//glTexSubImage2D(type, 0, 0, 0, size.x, size.y, GL_RGBA, type, image.GetRawData());
 }

@@ -55,6 +55,10 @@ void SandboxScene::Draw() {
 	obstructBuffer.Select();
 	RenderObstructSystem(db, obstructRender);
 	tmpBuffer.Select();
+	obstructBuffer.GetTexture().Select(0);
+	Image tmp;
+	tmp.Load(Resources().CanvasSize);
+	obstructBuffer.GetTexture().Update(tmp);
 	obstructBuffer.GetTexture().Select(1);
 	static float time = 0;
 	time += 0.001;

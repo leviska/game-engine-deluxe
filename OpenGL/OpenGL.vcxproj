@@ -134,6 +134,7 @@
     <ClCompile Include="animated_sprite.cpp" />
     <ClCompile Include="batching.cpp" />
     <ClCompile Include="framebuffer.cpp" />
+    <ClCompile Include="image.cpp" />
     <ClCompile Include="level_editor.cpp" />
     <ClCompile Include="renderable.cpp" />
     <ClCompile Include="game.cpp" />
@@ -157,6 +158,7 @@
     <ClInclude Include="animated_sprite.h" />
     <ClInclude Include="batching.h" />
     <ClInclude Include="framebuffer.h" />
+    <ClInclude Include="image.h" />
     <ClInclude Include="level_editor.h" />
     <ClInclude Include="level_scene.h" />
     <ClInclude Include="renderable.h" />
