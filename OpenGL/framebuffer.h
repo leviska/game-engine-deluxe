@@ -13,10 +13,12 @@ class FrameBuffer {
 public:
 	FrameBuffer() = default;
 	~FrameBuffer() { Reset(); }
+
 	FrameBuffer(FrameBuffer&& other) noexcept;
+	FrameBuffer& operator=(FrameBuffer&& other) noexcept;
+	
 	FrameBuffer(const FrameBuffer&) = delete;
 	FrameBuffer& operator=(const FrameBuffer&) = delete;
-	FrameBuffer& operator=(FrameBuffer&& other);
 
 	void Load(glm::uvec2 size, bool rectangle = true);
 	void Reset();

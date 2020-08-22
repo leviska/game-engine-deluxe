@@ -31,8 +31,8 @@ void LevelEditorScene::Reset() {
 	ResetRenders(renders);
 
 	frameBuffer.Reset();
-	db.clear();
 	map.Reset();
+	db.clear();
 	levelName.clear();
 }
 
@@ -132,14 +132,17 @@ void LevelEditorScene::DrawGui() {
 
 void LevelEditorScene::Clear() {
 	ClearRenders(renders);
+	frameBuffer.Select();
+	frameBuffer.Clear(RGBA({ 39, 39, 68, 255 }));
 }
 
 void LevelEditorScene::Draw() {
 	frameBuffer.Select();
-	frameBuffer.Clear(glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
 	RenderSystem(db, renders);
 	frameBuffer.SelectWindow();
-	frameBuffer.Draw(Resources().CanvasSize * Game().GetScale() / 2u, Game().GetScale(), Resources().GetShader("LightShader"));
-	DrawGui();
+
+	frameBuffer.Draw(Resources().CanvasSize * Game().GetScale() / 2u, Game().GetScale(), Resources().GetShader("BufferShader"));
 	bb.Draw();
+	
+	DrawGui();
 }

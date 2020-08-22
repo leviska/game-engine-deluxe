@@ -2,7 +2,7 @@
 in vec2 TextCoordsFrag;
 out vec4 Result;
 
-layout(binding=0) uniform sampler2DRect Texture;
+uniform sampler2DRect Texture;
 
 void main()
 {

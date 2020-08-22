@@ -26,6 +26,7 @@ uint32_t GameInst::GetScale() {
 void GameInst::Load() {
 	window.Load();
 	scene.Load();
+	//leScene.Load();
 }
 
 void GameInst::Run() {
@@ -44,7 +45,23 @@ void GameInst::Update() {
 	fps.LimitFPS(60);
 
 	window.Update();
-	scene.Update();
+
+	if (window.F2Pressed) {
+		if (!leOpen) {
+			scene.Reset();
+			leScene.Load();
+		}
+		else {
+			leScene.Reset();
+			scene.Load();
+		}
+		leOpen = !leOpen;
+	}
+
+	if (!leOpen)
+		scene.Update();
+	else
+		leScene.Update();
 
 	if (resetResources) {
 		Resources().Reset();
@@ -59,11 +76,17 @@ void GameInst::Update() {
 
 void GameInst::Clear() {
 	window.Clear();
-	scene.Clear();
+	if (!leOpen)
+		scene.Clear();
+	else
+		leScene.Clear();
 }
 
 void GameInst::Draw() {
-	scene.Draw();
+	if (!leOpen)
+		scene.Draw();
+	else
+		leScene.Draw();
 
 	ImGui::Begin("Resources info", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 	resetResources = ImGui::Button("Reload");
@@ -78,8 +101,8 @@ void GameInst::Render() {
 
 void GameInst::UpdateViewport(glm::vec2 size) {
 	glViewport(0, 0, size.x, size.y);
-	for (uint32_t i = 0; i < static_cast<uint32_t>(Shaders::Total); i++) {
-		Resources().GetShader(i).Select();
-		Resources().GetShader(i).UpdateProjection(size.x, size.y);
+	for (auto id : ShadersArray) {
+		Resources().GetShader(id).Select();
+		Resources().GetShader(id).UpdateProjection(size.x, (id == Shaders::Buffer || id == Shaders::Shapes ? -size.y : size.y));
 	}
 }

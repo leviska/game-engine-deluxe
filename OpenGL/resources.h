@@ -28,7 +28,16 @@ enum class Shaders {
 	Light,
 	Obstruct,
 	Buffer,
-	Total
+};
+
+const std::array ShadersArray{
+	Shaders::Sprite,
+	Shaders::Batch,
+	Shaders::Shapes,
+	Shaders::Particle,
+	Shaders::Light,
+	Shaders::Obstruct,
+	Shaders::Buffer,
 };
 
 struct ObjectBuffer {
@@ -52,7 +61,7 @@ class ResourcesInst {
 	ObjectBuffer shapeBuffer;
 
 public:
-	const glm::uvec2 CanvasSize = { 256, 144 };
+	const glm::uvec2 CanvasSize = { 384, 216 };
 	const uint32_t Scale = 8;
 	const uint32_t TileSize = 16;
 

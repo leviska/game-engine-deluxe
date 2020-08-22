@@ -13,7 +13,7 @@ FrameBuffer::FrameBuffer(FrameBuffer&& other) noexcept {
 	texture = std::move(other.texture);
 }
 
-FrameBuffer& FrameBuffer::operator=(FrameBuffer&& other) {
+FrameBuffer& FrameBuffer::operator=(FrameBuffer&& other) noexcept {
 	id = other.id;
 	other.id = 0;
 	texture = std::move(other.texture);

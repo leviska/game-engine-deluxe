@@ -10,6 +10,6 @@ uniform vec3 Transform;
 
 void main()
 {
-	TextCoordsFrag = abs(Transform.xy) * (Vertex + vec2(0.5, 0.5));
+	TextCoordsFrag = Transform.xy * (Vertex + vec2(0.5, 0.5));
     gl_Position = Projection * vec4((Vertex + vec2(0.5, 0.5)) * Transform.xy * Transform.z + Position, 0, 1.0);
 }

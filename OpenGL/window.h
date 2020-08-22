@@ -9,6 +9,7 @@
 class Window
 {
 	bool open = false;
+	bool fullscreen = false;
 
 	SDL_Window* window = nullptr;
 	SDL_GLContext glcontext = nullptr;
@@ -22,6 +23,8 @@ class Window
 
 	void ProcessEvents();
 public:
+	bool F2Pressed = false;
+
 	Window() = default;
     ~Window();
 

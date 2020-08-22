@@ -5,18 +5,25 @@
 
 #include <glm/glm.hpp>
 
-glm::vec4 RGBA(glm::u8vec4 rgba);
+using ColorChannel = unsigned char;
+using Color = glm::u8vec4;
+
+glm::vec4 RGBA(Color rgba);
+
+Color ColorAlpha(ColorChannel alpha);
 
 class Image {
-	std::vector<glm::u8vec4> image;
+	std::vector<Color> image;
 	glm::uvec2 size = { 0, 0 };
 public:
-	void Load(glm::uvec2 Size);
-	void Load(std::string file);
+	void Load(glm::uvec2 Size, Color DefaultValue = { 0, 0, 0, 255 });
+	void Load(const std::string& file);
+	void Save(const std::string& file);
 	void Reset();
 
-	glm::u8vec4& operator[](glm::uvec2 pos);
-	const glm::u8vec4& operator[](glm::uvec2 pos) const;
+
+	Color& operator[](glm::uvec2 pos);
+	const Color& operator[](glm::uvec2 pos) const;
 
 	glm::uvec2 GetSize() const { return size; }
 

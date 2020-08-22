@@ -13,8 +13,10 @@
 class SandboxScene : public Scene {
 public:
 	FrameBuffer frameBuffer;
-	FrameBuffer obstructBuffer;
 	FrameBuffer tmpBuffer;
+
+	Texture lightTexture;
+	Image lightImage;
 
 	std::unordered_map<uint32_t, BatchedRender> renders;
 	BatchedRender obstructRender;
@@ -25,6 +27,8 @@ public:
 	void Load();
 	void Reset() override;
 
+	void Lights(const Image& obstructs);
+	
 	void Update() override;
 	void Clear() override;
 	void Draw() override;

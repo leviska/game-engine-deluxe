@@ -11,13 +11,14 @@ class Shader {
 public:
 	Shader() = default;
 	~Shader() { Reset(); }
+	
 	Shader(Shader&& other) noexcept;
+	Shader& operator=(Shader&& other) noexcept;
+
 	Shader(const Shader&) = delete;
 	Shader& operator=(const Shader&) = delete;
-	Shader& operator=(Shader&& other);
 
 	enum class Type {
-		None,
 		Vertex,
 		Fragment
 	};

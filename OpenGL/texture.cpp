@@ -53,6 +53,14 @@ void Texture::Load(const std::string& name, bool rectangle) {
 	Load(tmp, rectangle);
 }
 
+Image Texture::Save() {
+	Select();
+	Image res;
+	res.Load(size);
+	glGetTexImage(type, 0, GL_RGBA, GL_UNSIGNED_INT_8_8_8_8_REV, res.GetRawData());
+	return res;
+}
+
 void Texture::Reset() {
 	size = { 0, 0 };
 	type = GL_TEXTURE_2D;

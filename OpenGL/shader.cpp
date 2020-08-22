@@ -16,7 +16,7 @@ Shader::Shader(Shader&& other) noexcept {
 	other.id = 0;
 }
 
-Shader& Shader::operator=(Shader&& other) {
+Shader& Shader::operator=(Shader&& other) noexcept {
 	id = other.id;
 	other.id = 0;
 	return *this;
@@ -89,7 +89,7 @@ void Shader::SetMat4(const std::string& name, const glm::mat4& value) {
 }
 
 void Shader::UpdateProjection(float width, float height) {
-	glm::mat4 projection = glm::ortho(0.0f, width, height, 0.0f);
+	glm::mat4 projection = glm::ortho(0.0f, width, std::abs(std::min(0.0f, height)), std::abs(std::max(0.0f, height)));
 	SetMat4("Projection", projection);
 }
 
@@ -141,7 +141,6 @@ std::string Shader::ReadShader(const std::string& fileName) {
 }
 
 uint32_t Shader::CompileShader(const std::string& code, Shader::Type type) {
-	assert(type != Type::None);
 	uint32_t shader;
 	
 	int success;

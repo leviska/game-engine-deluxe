@@ -9,6 +9,8 @@ class GameInst {
 	Window window;
 	FPS fps;
 	SandboxScene scene;
+	LevelEditorScene leScene;
+	bool leOpen = false;
 
 	bool running = true;
 

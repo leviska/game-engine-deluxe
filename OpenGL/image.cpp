@@ -5,16 +5,19 @@
 #include <SDL.h>
 #include <SDL_image.h>
 
-glm::vec4 RGBA(glm::u8vec4 rgba) {
+glm::vec4 RGBA(Color rgba) {
 	return glm::vec4(rgba) / 255.0f;
 }
 
-void Image::Load(glm::uvec2 Size) {
+Color ColorAlpha(ColorChannel alpha) {
+	return Color{ 255, 255, 255, alpha };
+}
+void Image::Load(glm::uvec2 Size, Color DefaultValue) {
 	size = Size;
-	image.resize(size.x * size.y);
+	image.resize(size.x * size.y, DefaultValue);
 }
 
-void Image::Load(std::string file) {
+void Image::Load(const std::string& file) {
 	SDL_Surface* surface = IMG_Load(file.c_str());
 
 	if (!surface) {
@@ -30,16 +33,26 @@ void Image::Load(std::string file) {
 	SDL_FreeSurface(surface);
 }
 
+void Image::Save(const std::string& file) {
+	SDL_Surface* surface = SDL_CreateRGBSurface(0, size.x, size.y, 32, 0xff000000, 0xff0000, 0xff00, 0xff);
+	for (size_t i = 0; i < size.x * size.y; i++) {
+		uint32_t pixel = SDL_MapRGBA(surface->format, image[i].r, image[i].g, image[i].b, image[i].a);
+		*(static_cast<uint32_t*>(surface->pixels) + i) = pixel;
+	}
+	IMG_SavePNG(surface, file.c_str());
+	SDL_FreeSurface(surface);
+}
+
 void Image::Reset() {
 	size = { 0, 0 };
 	image.clear();
 }
 
 
-glm::u8vec4& Image::operator[](glm::uvec2 pos) {
+Color& Image::operator[](glm::uvec2 pos) {
 	return image[pos.y * size.x + pos.x];
 }
 
-const glm::u8vec4& Image::operator[](glm::uvec2 pos) const {
+const Color& Image::operator[](glm::uvec2 pos) const {
 	return image[pos.y * size.x + pos.x];
 }

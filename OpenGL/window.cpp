@@ -78,17 +78,32 @@ void Window::Reset() {
 
 void Window::ProcessEvents() {
 	SDL_Event event;
+	F2Pressed = false;
 	while (SDL_PollEvent(&event) != 0) {
 		gui.ProcessEvents(event);
-		if (event.type == SDL_QUIT) {
+		switch (event.type) {
+		case SDL_QUIT: {
 			open = false;
+			break;
 		}
-		if (event.type == SDL_WINDOWEVENT) {
-			if (event.window.event == SDL_WINDOWEVENT_RESIZED) {
+		case SDL_WINDOWEVENT: {
+			if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
 				size.x = event.window.data1;
 				size.y = event.window.data2;
 				UpdateViewport();
 			}
+			break;
+		}
+		case SDL_KEYDOWN: {
+			if (event.key.keysym.sym == SDLK_F11) {
+				fullscreen = !fullscreen;
+				SDL_SetWindowFullscreen(window, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
+			}
+			else if (event.key.keysym.sym == SDLK_F2) {
+				F2Pressed = true;
+			}
+			break;
+		}
 		}
 	}
 }

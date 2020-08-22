@@ -13,7 +13,7 @@ class Texture {
 	static uint32_t currentId;
 
 	uint32_t id = 0;
-	glm::uvec2 size;
+	glm::uvec2 size = { 0, 0 };
 
 	int type = GL_TEXTURE_2D;
 
@@ -21,14 +21,17 @@ class Texture {
 public:
 	Texture() = default;
 	~Texture() { Reset(); }
+
 	Texture(Texture&& other) noexcept;
+	Texture& operator=(Texture&& other) noexcept;
+	
 	Texture(const Texture&) = delete;
 	Texture& operator=(const Texture&) = delete;
-	Texture& operator=(Texture&& other) noexcept;
 
 	void Load(glm::uvec2 size, bool rectangle = true);
 	void Load(const Image& image, bool rectangle = true);
 	void Load(const std::string& name, bool rectangle = true);
+	Image Save();
 	void Reset();
 	void Select(uint32_t num = 0) const;
 
