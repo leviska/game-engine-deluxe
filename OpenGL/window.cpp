@@ -29,7 +29,8 @@ void Window::LoadSDL() {
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
-	window = SDL_CreateWindow("OpenGL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, size.x, size.y, SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
+	window = SDL_CreateWindow("OpenGL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, size.x, size.y, 
+		SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
 	if (!window) {
 		throw std::runtime_error("Window could not be created! SDL_Error: " + std::string(SDL_GetError()));
 	}
@@ -88,8 +89,7 @@ void Window::ProcessEvents() {
 		}
 		case SDL_WINDOWEVENT: {
 			if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-				size.x = event.window.data1;
-				size.y = event.window.data2;
+				SDL_GL_GetDrawableSize(window, (int*)&size.x, (int*)&size.y);
 				UpdateViewport();
 			}
 			break;
@@ -117,7 +117,7 @@ void Window::Update() {
 }
 
 void Window::Clear() {
-	//39.0f / 255.0f, 39.0f / 255.0f, 68.0f / 255.0f, 1.0f
+	//glClearColor(39.0f / 255.0f, 39.0f / 255.0f, 68.0f / 255.0f, 1.0f);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	gui.Clear();
