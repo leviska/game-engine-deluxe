@@ -23,7 +23,7 @@ Texture& Texture::operator=(Texture&& other) noexcept {
 	return *this;
 }
 
-void Texture::CreateAndLoad(const void* data) {
+void Texture::CreateAndLoad(const void* data, bool storage = false) {
 	glGenTextures(1, &id);
 	glBindTexture(type, id);
 
@@ -32,10 +32,13 @@ void Texture::CreateAndLoad(const void* data) {
 	glTexParameteri(type, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 	glTexParameteri(type, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 	
-	glTexImage2D(type, 0, GL_RGBA, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	if (!storage)
+		glTexImage2D(type, 0, GL_RGBA8UI, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
+	else
+		glTexStorage2D(type, 1, GL_RGBA8UI, size.x, size.y);
 }
 
-void Texture::Load(glm::uvec2 Size, bool rectangle) {
+void Texture::Load(glm::uvec2 Size, bool rectangle, bool storage = false) {
 	type = (rectangle ? GL_TEXTURE_RECTANGLE : GL_TEXTURE_2D);
 	size = Size;
 	CreateAndLoad(nullptr);
@@ -76,6 +79,6 @@ void Texture::Select(uint32_t num) const {
 void Texture::Update(const Image& image) {
 	assert(currentId == id);
 	assert(image.GetSize() == size);
-	glTexImage2D(type, 0, GL_RGBA, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.GetRawData());
+	glTexImage2D(type, 0, GL_RGBA8UI, size.x, size.y, 0, GL_RGBA, GL_UNSIGNED_BYTE, image.GetRawData());
 	//glTexSubImage2D(type, 0, 0, 0, size.x, size.y, GL_RGBA, type, image.GetRawData());
 }

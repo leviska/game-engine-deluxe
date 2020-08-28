@@ -1,5 +1,7 @@
 #pragma once
 
+#include "image.h"
+
 #include <array>
 #include <vector>
 #include <glm/glm.hpp>
@@ -7,7 +9,7 @@
 class ShapeBase {
 public:
 	float Thickness = 1;
-	glm::vec4 Color{ 0.0f, 0.0f, 0.0f, 1.0f };
+	ColorType Color{ 0, 0, 0, 255 };
 };
 
 class SegmentShape : public ShapeBase {

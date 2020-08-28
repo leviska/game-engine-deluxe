@@ -22,8 +22,7 @@ void SandboxScene::Load() {
 	lightTexture.Load(lightImage);
 
 	entt::entity id = db.create();
-	Sprite sprite;
-	sprite.Load("SkeletonRightStand00");
+	Sprite sprite("SkeletonRightStand00");
 	sprite.Pos = glm::uvec2(4, 4) * Resources().TileSize;
 	sprite.Pos += glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
 	db.emplace<Renderable>(id, sprite);
@@ -130,12 +129,12 @@ void SandboxScene::Clear() {
 	obstructRender.Clear();
 
 	frameBuffer.Select();
-	//frameBuffer.Clear(RGBA({ 39, 39, 68, 0 }));
-	frameBuffer.Clear(RGBA({ 56, 58, 97, 0 }));
-	//frameBuffer.Clear(RGBA({ 255, 255, 255, 0 }));
+	//frameBuffer.Clear({ 39, 39, 68, 0 });
+	frameBuffer.Clear({ 56, 58, 97, 0 });
+	//frameBuffer.Clear({ 255, 255, 255, 0 });
 	tmpBuffer.Select();
-	//tmpBuffer.Clear(RGBA({ 20, 20, 34, 255 }));
-	tmpBuffer.Clear(RGBA({ 0, 0, 0, 255 }));
+	//tmpBuffer.Clear({ 20, 20, 34, 255 });
+	tmpBuffer.Clear({ 0, 0, 0, 255 });
 	FrameBuffer::SelectWindow();
 }
 
@@ -145,7 +144,7 @@ void SandboxScene::Draw() {
 
 	Image tmp = frameBuffer.GetTexture().Save();
 	Lights(tmp);
-	
+
 	tmpBuffer.Select();
 	lightTexture.Select(0);
 	lightTexture.Update(lightImage);

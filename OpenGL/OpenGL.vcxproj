@@ -98,7 +98,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <WarningLevel>EnableAllWarnings</WarningLevel>
+      <WarningLevel>Level1</WarningLevel>
       <Optimization>MaxSpeed</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -159,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animated_sprite.h" />
+    <ClInclude Include="assertion.h" />
     <ClInclude Include="batching.h" />
     <ClInclude Include="framebuffer.h" />
     <ClInclude Include="image.h" />
@@ -171,6 +172,7 @@
     <ClInclude Include="named_vector.h" />
     <ClInclude Include="particles.h" />
     <ClInclude Include="resources.h" />
+    <ClInclude Include="resources_types.h" />
     <ClInclude Include="sandbox_scene.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="shader.h" />

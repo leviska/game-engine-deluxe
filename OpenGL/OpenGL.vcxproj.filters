@@ -152,5 +152,11 @@
     <ClInclude Include="image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="resources_types.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="assertion.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

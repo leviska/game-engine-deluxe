@@ -37,7 +37,7 @@ void BatchedRender::Stage(const SpriteType& sprite) {
 	BindArray();
 	positions.push_back(sprite.Pos);
 	textCoords.push_back(sprite.GetTextCoords());
-	colors.push_back(sprite.Color);
+	colors.push_back(RGBA(sprite.Color));
 	transforms.push_back(sprite.GetTransform());
 }
 
@@ -58,7 +58,7 @@ void BatchedRender::Stage(const std::vector<SpriteType>& sprites) {
 		textCoords[curSize + i] = sprites[i].GetTextCoords();
 	}
 	for (size_t i = 0; i < sprites.size(); i++) {
-		colors[curSize + i] = sprites[i].Color;
+		colors[curSize + i] = RGBA(sprites[i].Color);
 	}
 	for (size_t i = 0; i < sprites.size(); i++) {
 		transforms[curSize + i] = sprites[i].GetTransform();

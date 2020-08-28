@@ -1,5 +1,7 @@
 #include "resources.h"
 
+#include "assertion.h"
+
 #include <fstream>
 #include <stdexcept>
 #include <glad/glad.h>
@@ -96,7 +98,7 @@ void ResourcesInst::LoadTextures() {
 void ResourcesInst::LoadSpriteInfo(NamedVector<SpriteInfo>& res, const std::string& fileName) {
 	std::ifstream file("assets/" + fileName);
 	if (!file.good()) {
-		throw std::invalid_argument("Cannot open " + fileName + " file");
+		THROWERROR("Cannot open " + fileName + " file");
 	}
 	nlohmann::json parsed;
 	file >> parsed;
@@ -117,7 +119,7 @@ void ResourcesInst::LoadSpriteInfo(NamedVector<SpriteInfo>& res, const std::stri
 void ResourcesInst::LoadAnimationInfo() {
 	std::ifstream file("assets/animations.json");
 	if (!file.good()) {
-		throw std::invalid_argument("Cannot open animations.json file");
+		THROWERROR("Cannot open animations.json file");
 	}
 	nlohmann::json jsoninfo;
 	file >> jsoninfo;
@@ -218,7 +220,7 @@ void ResourcesInst::LoadShapeVAO() {
 void ResourcesInst::LoadLevels() {
 	std::ifstream levelsFile("assets/levels.json");
 	if (!levelsFile.good()) {
-		throw std::invalid_argument("Cannot open levels.json file");
+		THROWERROR("Cannot open levels.json file");
 	}
 	nlohmann::json levelFiles;
 	levelsFile >> levelFiles;
@@ -227,7 +229,7 @@ void ResourcesInst::LoadLevels() {
 
 		std::ifstream level(fileName);
 		if (!level.good()) {
-			throw std::invalid_argument("Cannot open " + fileName + " file");
+			THROWERROR("Cannot open " + fileName + " file");
 		}
 		nlohmann::json levelJson;
 		level >> levelJson;

@@ -4,9 +4,9 @@
 #include <glad/glad.h>
 #include <vector>
 
-void DrawShape(const glm::vec2* data, uint32_t size, uint32_t mode, const glm::vec4& color, float thickness) {
+void DrawShape(const glm::vec2* data, uint32_t size, uint32_t mode, const ColorType& color, float thickness) {
 	Resources().GetShader(Shaders::Shapes).Select();
-	Resources().GetShader(Shaders::Shapes).SetVec4("Color", color);
+	Resources().GetShader(Shaders::Shapes).SetVec4("Color", RGBA(color));
 
 	glBindVertexArray(Resources().GetShapeVAO());
 

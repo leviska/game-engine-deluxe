@@ -17,6 +17,7 @@ int main(int argc, char* args[]) {
 	}
 	catch (const std::exception & e) {
 		std::cerr << e.what() << std::endl;
+		SDL_ShowSimpleMessageBox(SDL_MESSAGEBOX_ERROR, "A fatal error has occurred", e.what(), NULL);
 	}
 	std::cerr.rdbuf(cerrbuf);
 #endif

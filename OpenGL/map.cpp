@@ -2,6 +2,7 @@
 
 #include "renderable.h"
 #include "resources.h"
+#include "assertion.h"
 
 #include <fstream>
 
@@ -77,7 +78,7 @@ void LoadMap(WallMap& map, const std::string& name) {
 	std::string fileName = std::string("assets/") + name + std::string(".json");
 	std::ifstream file(fileName);
 	if (!file.good()) {
-		throw std::runtime_error("Cannot open file " + fileName);
+		THROWERROR("Cannot open file " + fileName);
 	}
 	nlohmann::json level;
 	file >> level;
@@ -90,11 +91,10 @@ void LoadMap(WallMap& map, const nlohmann::json& levelInfo) {
 		glm::ivec2 pos{ elem["Pos"]["x"].get<int32_t>(), elem["Pos"]["y"].get<int32_t>() };
 		std::vector<Sprite> sprites;
 		if (elem.find("Sprites") != elem.end()) {
-			Sprite sprite;
-			sprite.Pos = glm::vec2{ pos.x * Resources().TileSize, pos.y * Resources().TileSize } +glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
 			for (const auto& spriteId : elem["Sprites"]) {
-				sprite.Load(spriteId.get<std::string>());
-				sprites.push_back(sprite);
+				Sprite sprite(spriteId.get<std::string>());
+				sprite.Pos = glm::vec2{ pos.x * Resources().TileSize, pos.y * Resources().TileSize } +glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
+				sprites.push_back(std::move(sprite));
 			}
 		}
 		entt::entity id = map.Create(pos);
@@ -110,7 +110,7 @@ void SaveMap(WallMap& map, const std::string& name) {
 	std::string fileName = std::string("assets/") + name + std::string(".json");
 	std::ofstream file(fileName);
 	if (!file.good()) {
-		throw std::runtime_error("Cannot open file " + fileName);
+		THROWERROR("Cannot open file " + fileName);
 	}
 	nlohmann::json level;
 	SaveMap(map, level);
@@ -129,7 +129,7 @@ void SaveMap(WallMap& map, nlohmann::json& result) {
 		obj["Pos"] = { { "x", pos.x }, { "y", pos.y } };
 		obj["Sprites"] = nlohmann::json::array();
 		for (const auto& i : sprites) {
-			obj["Sprites"].push_back(Resources().GetSpriteInfo(i.DataId).Name);
+			obj["Sprites"].push_back(Resources().GetSpriteInfo(i.Id).Name);
 		}
 		walls.push_back(obj);
 	}

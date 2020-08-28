@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <cstdint>
+#include <vector>
 #include <glm/glm.hpp>
 
 class Shader {
@@ -20,10 +21,12 @@ public:
 
 	enum class Type {
 		Vertex,
-		Fragment
+		Fragment,
+		Compute
 	};
 
 	void Load(const std::string& vertexFile, const std::string& fragmentFile);
+	void Load(const std::string& computeFile, const std::string& vertexFile, const std::string& fragmentFile);
 	void Reset();
 
 	void Select() const;
@@ -61,7 +64,7 @@ public:
 
 	uint32_t GetId() const;
 
-	void Link(uint32_t vertex, uint32_t fragment);
+	void Link(const std::vector<uint32_t>& ids);
 	static uint32_t LoadShader(const std::string& fileName, Shader::Type type);
 	static void DeleteShader(uint32_t shader);
 

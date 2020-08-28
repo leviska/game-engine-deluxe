@@ -17,7 +17,7 @@ class Texture {
 
 	int type = GL_TEXTURE_2D;
 
-	void CreateAndLoad(const void* data);
+	void CreateAndLoad(const void* data, bool storage = false);
 public:
 	Texture() = default;
 	~Texture() { Reset(); }
@@ -28,7 +28,7 @@ public:
 	Texture(const Texture&) = delete;
 	Texture& operator=(const Texture&) = delete;
 
-	void Load(glm::uvec2 size, bool rectangle = true);
+	void Load(glm::uvec2 size, bool rectangle = true, bool storage = false);
 	void Load(const Image& image, bool rectangle = true);
 	void Load(const std::string& name, bool rectangle = true);
 	Image Save();

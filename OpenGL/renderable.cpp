@@ -22,7 +22,7 @@ void RenderSprite(const SpriteType& sprite, std::unordered_map<uint32_t, Batched
 		it->second.Stage(sprite);
 	}
 	else {
-		sprite.Draw();
+		DrawSprite(sprite);
 	}
 }
 
@@ -48,25 +48,27 @@ void RenderMultiRenderable(entt::registry& db, std::unordered_map<uint32_t, Batc
 
 void RenderSystem(entt::registry& db, std::unordered_map<uint32_t, BatchedRender>& renders) {
 	RenderRenderable<Renderable>(db, renders);
-	RenderRenderable<AnimatedRenderable>(db, renders);
+	//RenderRenderable<AnimatedRenderable>(db, renders);
 	
 	RenderMultiRenderable<MultiRenderable>(db, renders);
-	RenderMultiRenderable<MultiAnimatedRenderable>(db, renders);
+	//RenderMultiRenderable<MultiAnimatedRenderable>(db, renders);
 
 	for (auto& el : renders) {
 		el.second.Draw();
 	}
 }
 
+/*
 void RenderObstructSystem(entt::registry& db, BatchedRender& render) {
 	auto walls = db.view<Wall, MultiRenderable>();
 	for (auto id : walls) {
 		Sprite sprite;
 		sprite.Load(walls.get<MultiRenderable>(id).Images.front().DataId);
-		sprite.Color = glm::vec4(0.0f, 0.0f, 1.0f, 1.0f);
+		sprite.Color = ColorType{ 0, 0, 255, 255 };
 		sprite.Pos = walls.get<Wall>(id).Pos * static_cast<int>(Resources().TileSize);
 		sprite.Pos += glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
 		render.Stage(sprite);
 	}
 	render.Draw();
 }
+*/

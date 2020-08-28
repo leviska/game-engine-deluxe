@@ -1,9 +1,13 @@
 #include "shader.h"
 
+#include "assertion.h"
+
 #include <stdexcept>
 #include <sstream>
 #include <fstream>
 #include <cassert>
+#include <algorithm>
+#include <map>
 
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
@@ -27,8 +31,21 @@ void Shader::Load(const std::string& vertexFile, const std::string& fragmentFile
 	uint32_t vertex = LoadShader(vertexFile, Type::Vertex);
 	uint32_t fragment = LoadShader(fragmentFile, Type::Fragment);
 
-	Link(vertex, fragment);
+	Link({ vertex, fragment });
 	
+	DeleteShader(vertex);
+	DeleteShader(fragment);
+}
+
+void Shader::Load(const std::string& computeFile, const std::string& vertexFile, const std::string& fragmentFile) {
+	id = glCreateProgram();
+	uint32_t compute = LoadShader(computeFile, Type::Compute);
+	uint32_t vertex = LoadShader(vertexFile, Type::Vertex);
+	uint32_t fragment = LoadShader(fragmentFile, Type::Fragment);
+
+	Link({ compute, vertex, fragment });
+
+	DeleteShader(compute);
 	DeleteShader(vertex);
 	DeleteShader(fragment);
 }
@@ -97,9 +114,10 @@ uint32_t Shader::GetId() const {
 	return id;
 }
 
-void Shader::Link(uint32_t vertex, uint32_t fragment) {
-	glAttachShader(id, vertex);
-	glAttachShader(id, fragment);
+void Shader::Link(const std::vector<uint32_t>& ids) {
+	for (auto shaderId : ids) {
+		glAttachShader(id, shaderId);
+	}
 
 	int success;
 	std::string errorLog;
@@ -109,11 +127,12 @@ void Shader::Link(uint32_t vertex, uint32_t fragment) {
 	glGetProgramiv(id, GL_LINK_STATUS, &success);
 	if (!success) {
 		glGetProgramInfoLog(id, errorLog.capacity(), nullptr, &errorLog[0]);
-		throw std::runtime_error("Failed to link shaders\n" + errorLog);
+		THROWERROR("Failed to link shaders\n" + errorLog);
 	}
 
-	glDetachShader(id, vertex);
-	glDetachShader(id, fragment);
+	for (auto shaderId : ids) {
+		glDetachShader(id, shaderId);
+	}
 }
 
 uint32_t Shader::LoadShader(const std::string& fileName, Shader::Type type) {
@@ -131,7 +150,7 @@ std::string Shader::ReadShader(const std::string& fileName) {
 
 	std::ifstream file(fileName);
 	if (!file.good()) {
-		throw std::runtime_error("Can't open " + fileName + " shader file");
+		THROWERROR("Can't open " + fileName + " shader file");
 	}
 
 	buffer << file.rdbuf();
@@ -139,6 +158,12 @@ std::string Shader::ReadShader(const std::string& fileName) {
 
 	return buffer.str();
 }
+
+const std::map<Shader::Type, uint32_t> ShaderType = {
+	//{ Shader::Type::Compute, GL_COMPUTE_SHADER },
+	{ Shader::Type::Vertex, GL_VERTEX_SHADER },
+	{ Shader::Type::Fragment, GL_FRAGMENT_SHADER },
+};
 
 uint32_t Shader::CompileShader(const std::string& code, Shader::Type type) {
 	uint32_t shader;
@@ -149,14 +174,14 @@ uint32_t Shader::CompileShader(const std::string& code, Shader::Type type) {
 
 	const char* cstrCode = code.c_str();
 	
-	shader = glCreateShader((type == Type::Vertex ? GL_VERTEX_SHADER : GL_FRAGMENT_SHADER));
+	shader = glCreateShader(ShaderType.at(type));
 	glShaderSource(shader, 1, &cstrCode, nullptr);
 	glCompileShader(shader);
 	
 	glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
 	if (!success) {
 		glGetShaderInfoLog(shader, errorLog.capacity(), nullptr, &errorLog[0]);
-		throw std::runtime_error("Failed to compile shader\n" + errorLog);
+		THROWERROR("Failed to compile shader\n" + errorLog);
 	};
 
 	return shader;

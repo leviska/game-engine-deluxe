@@ -2,6 +2,8 @@
 
 #include "resources.h"
 #include "game.h"
+#include "image.h"
+#include "assertion.h"
 
 #include <stdexcept>
 
@@ -28,7 +30,7 @@ void FrameBuffer::Load(glm::uvec2 size, bool rectangle) {
 	
 	glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, texture.GetType(), texture.GetId(), 0);
 	if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-		throw std::runtime_error("Framebuffer isn't complete");
+		THROWERROR("Framebuffer isn't complete");
 	}
 	SelectWindow();
 }
@@ -37,8 +39,9 @@ void FrameBuffer::Reset() {
 	glDeleteFramebuffers(1, &id);
 }
 
-void FrameBuffer::Clear(glm::vec4 color) {
-	glClearColor(color.x, color.y, color.z, color.w);
+void FrameBuffer::Clear(ColorType color) {
+	glm::vec4 colorf = RGBA(color);
+	glClearColor(colorf.x, colorf.y, colorf.z, colorf.w);
 	glClear(GL_COLOR_BUFFER_BIT);
 }
 

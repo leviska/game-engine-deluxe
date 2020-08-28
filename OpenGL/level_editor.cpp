@@ -23,7 +23,7 @@ void LevelEditorScene::Load(const std::string& name) {
 		LoadMap(map, name);
 	}
 	catch (std::runtime_error exp) {
-		// can't fine file, ignore
+		// can't find file, ignore
 	}
 }
 
@@ -55,11 +55,10 @@ void LevelEditorScene::Update() {
 
 	bb.Center = relPos * static_cast<int32_t>(scaledTile) + glm::ivec2{ scaledTile / 2, scaledTile / 2 };
 	bb.Size = glm::vec2{ scaledTile / 2, scaledTile / 2 };
-	bb.Color = glm::vec4{ 1.0f, 1.0f, 1.0f, 1.0f };
+	bb.Color = ColorType{ 255, 255, 255, 255 };
 	if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) {
-		Sprite sprite;
+		Sprite sprite(data.CurrentTile);
 		sprite.Pos = glm::vec2{ relPos.x * Resources().TileSize, relPos.y * Resources().TileSize } + glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
-		sprite.Load(data.CurrentTile);
 		entt::entity id = map.Get(relPos);
 		db.emplace_or_replace<MultiRenderable>(id, std::vector<Sprite>{ sprite });
 	}
@@ -133,7 +132,7 @@ void LevelEditorScene::DrawGui() {
 void LevelEditorScene::Clear() {
 	ClearRenders(renders);
 	frameBuffer.Select();
-	frameBuffer.Clear(RGBA({ 39, 39, 68, 255 }));
+	frameBuffer.Clear({ 39, 39, 68, 255 });
 }
 
 void LevelEditorScene::Draw() {

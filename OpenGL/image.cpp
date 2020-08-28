@@ -1,18 +1,20 @@
 #include "image.h"
 
+#include "assertion.h"
+
 #include <stdexcept>
 
 #include <SDL.h>
 #include <SDL_image.h>
 
-glm::vec4 RGBA(Color rgba) {
+glm::vec4 RGBA(ColorType rgba) {
 	return glm::vec4(rgba) / 255.0f;
 }
 
-Color ColorAlpha(ColorChannel alpha) {
-	return Color{ 255, 255, 255, alpha };
+ColorType ColorAlpha(ColorChannel alpha) {
+	return ColorType{ 255, 255, 255, alpha };
 }
-void Image::Load(glm::uvec2 Size, Color DefaultValue) {
+void Image::Load(glm::uvec2 Size, ColorType DefaultValue) {
 	size = Size;
 	image.resize(size.x * size.y, DefaultValue);
 }
@@ -21,7 +23,7 @@ void Image::Load(const std::string& file) {
 	SDL_Surface* surface = IMG_Load(file.c_str());
 
 	if (!surface) {
-		throw std::runtime_error("Cannot load " + file + " image file");
+		THROWERROR("Cannot load " + file + " image file");
 	}
 
 	Load(glm::uvec2{ surface->w, surface->h });
@@ -49,10 +51,10 @@ void Image::Reset() {
 }
 
 
-Color& Image::operator[](glm::uvec2 pos) {
+ColorType& Image::operator[](glm::uvec2 pos) {
 	return image[pos.y * size.x + pos.x];
 }
 
-const Color& Image::operator[](glm::uvec2 pos) const {
+const ColorType& Image::operator[](glm::uvec2 pos) const {
 	return image[pos.y * size.x + pos.x];
 }

@@ -1,6 +1,7 @@
 #include "window.h"
 #include "resources.h"
 #include "game.h"
+#include "assertion.h"
 
 #include <cassert>
 #include <stdexcept>
@@ -18,12 +19,12 @@ Window::~Window() {
 
 void Window::LoadSDL() {
 	if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-		throw std::runtime_error("SDL could not initialize! SDL_Error: " + std::string(SDL_GetError()));
+		THROWERROR("SDL could not initialize! SDL_Error: " + std::string(SDL_GetError()));
 	}
 
 	int imgFlags = IMG_INIT_PNG;
 	if ((IMG_Init(imgFlags) & imgFlags) != imgFlags) {
-		throw std::runtime_error("SDL_image could not initialize! SDL_Error: " + std::string(IMG_GetError()));
+		THROWERROR("SDL_image could not initialize! SDL_Error: " + std::string(IMG_GetError()));
 	}
 
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
@@ -32,17 +33,20 @@ void Window::LoadSDL() {
 	window = SDL_CreateWindow("OpenGL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, size.x, size.y, 
 		SDL_WINDOW_SHOWN | SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE | SDL_WINDOW_ALLOW_HIGHDPI);
 	if (!window) {
-		throw std::runtime_error("Window could not be created! SDL_Error: " + std::string(SDL_GetError()));
+		THROWERROR("Window could not be created! SDL_Error: " + std::string(SDL_GetError()));
 	}
 
 	glcontext = SDL_GL_CreateContext(window);
 	if (!glcontext) {
-		throw std::runtime_error("Unable to create GL context: " + std::string(SDL_GetError()));
+		THROWERROR("Unable to create GL context: " + std::string(SDL_GetError()));
 	}
 
 	if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
-		throw std::runtime_error("Failed to initialize GLAD");
-		return;
+		THROWERROR("Failed to initialize GLAD");
+	}
+
+	if (!GLAD_GL_ARB_texture_storage || !GLAD_GL_ARB_shader_image_load_store || !GLAD_GL_ARB_shading_language_420pack) {
+		THROWERROR("Too old GPU. OpenGL 4.2 is not supported");
 	}
 }
 

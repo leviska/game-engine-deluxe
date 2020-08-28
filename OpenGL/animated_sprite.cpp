@@ -2,26 +2,13 @@
 
 #include "resources.h"
 
-void AnimatedSprite::Load(std::string dataName) {
-	Load(Resources().GetAnimationInfoId(dataName));
+Animation::Animation(const std::string& dataName) {
+	AnimId = Resources().GetAnimationInfoId(dataName);
 }
 
-void AnimatedSprite::Load(uint32_t dataId) {
-	AnimDataId = dataId;
-	Visible = true;
-}
-
-void AnimatedSprite::Reset() {
-	Sprite::Reset();
-	AnimDataId = 0;
-	currentFrame = 0;
-	currentTime = 0;
-}
-
-
-void AnimatedSprite::Update(uint32_t dt) {
+void Animation::Update(uint32_t dt) {
 	currentTime += dt;
-	const auto& info = Resources().GetAnimationInfo(AnimDataId);
+	const auto& info = Resources().GetAnimationInfo(AnimId);
 	while (currentTime >= info[currentFrame].Delay) {
 		currentTime -= info[currentFrame].Delay;
 		currentFrame++;
@@ -29,5 +16,16 @@ void AnimatedSprite::Update(uint32_t dt) {
 			currentFrame = 0;
 		}
 	}
-	DataId = info[currentFrame].SpriteId;
+}
+
+uint32_t Animation::GetSpriteId() {
+	const auto& info = Resources().GetAnimationInfo(AnimId);
+	return info[currentFrame].SpriteId;
+}
+
+void UpdateAnimations(entt::registry& db, uint32_t dt) {
+	auto rendView = db.view<Animation>();
+	for (auto id : rendView) {
+		rendView.get<Animation>(id).Update(dt);
+	}
 }
