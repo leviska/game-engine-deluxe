@@ -42,7 +42,7 @@ void GameInst::Run() {
 
 void GameInst::Update() {
 	fps.Update();
-	fps.LimitFPS(60);
+	fps.LimitFPS(0);
 
 	window.Update();
 

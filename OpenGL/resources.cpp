@@ -73,18 +73,27 @@ void ResourcesInst::LoadShaders() {
 	Shader shader;
 	shader.Load("shaders/sprite_vertex.glsl", "shaders/sprite_fragment.glsl");
 	shaders.Add(std::move(shader), "SpriteShader");
+	
 	shader.Load("shaders/batch_vertex.glsl", "shaders/batch_fragment.glsl");
 	shaders.Add(std::move(shader), "BatchShader");
+	
 	shader.Load("shaders/shapes_vertex.glsl", "shaders/shapes_fragment.glsl");
 	shaders.Add(std::move(shader), "ShapesShader");
+	
 	shader.Load("shaders/particle_vertex.glsl", "shaders/particle_fragment.glsl");
 	shaders.Add(std::move(shader), "ParticleShader");
+	
 	shader.Load("shaders/light_vertex.glsl", "shaders/light_fragment.glsl");
 	shaders.Add(std::move(shader), "LightShader");
+	
 	shader.Load("shaders/batch_vertex.glsl", "shaders/obstruct_fragment.glsl");
 	shaders.Add(std::move(shader), "ObstructShader");
+	
 	shader.Load("shaders/buffer_vertex.glsl", "shaders/buffer_fragment.glsl");
 	shaders.Add(std::move(shader), "BufferShader");
+
+	shader.Load("shaders/light_compute.glsl");
+	shaders.Add(std::move(shader), "GenerateLight");
 }
 
 void ResourcesInst::LoadTextures() {

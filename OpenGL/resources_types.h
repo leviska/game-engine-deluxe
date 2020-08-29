@@ -26,6 +26,7 @@ enum class Shaders {
 	Light,
 	Obstruct,
 	Buffer,
+	Generate,
 };
 
 const std::array ShadersArray{
@@ -36,6 +37,7 @@ const std::array ShadersArray{
 	Shaders::Light,
 	Shaders::Obstruct,
 	Shaders::Buffer,
+	Shaders::Generate,
 };
 
 struct ObjectBuffer {

@@ -17,7 +17,7 @@ class Texture {
 
 	int type = GL_TEXTURE_2D;
 
-	void CreateAndLoad(const void* data, bool storage = false);
+	void CreateAndLoad(const void* data, bool storage);
 public:
 	Texture() = default;
 	~Texture() { Reset(); }

@@ -25,6 +25,7 @@ public:
 	std::unordered_map<uint32_t, BatchedRender> renders;
 	BatchedRender obstructRender;
 
+	int frame = 0;
 
 	entt::registry db;
 	WallMap map;
@@ -32,7 +33,7 @@ public:
 	void Load();
 	void Reset() override;
 
-	void Lights(const Image& obstructs);
+	void Lights();
 	
 	void Update() override;
 	void Clear() override;

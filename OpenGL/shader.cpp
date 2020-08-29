@@ -37,17 +37,13 @@ void Shader::Load(const std::string& vertexFile, const std::string& fragmentFile
 	DeleteShader(fragment);
 }
 
-void Shader::Load(const std::string& computeFile, const std::string& vertexFile, const std::string& fragmentFile) {
+void Shader::Load(const std::string& computeFile) {
 	id = glCreateProgram();
 	uint32_t compute = LoadShader(computeFile, Type::Compute);
-	uint32_t vertex = LoadShader(vertexFile, Type::Vertex);
-	uint32_t fragment = LoadShader(fragmentFile, Type::Fragment);
 
-	Link({ compute, vertex, fragment });
+	Link({ compute });
 
 	DeleteShader(compute);
-	DeleteShader(vertex);
-	DeleteShader(fragment);
 }
 
 void Shader::Reset() {
@@ -105,6 +101,11 @@ void Shader::SetMat4(const std::string& name, const glm::mat4& value) {
 	glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
 
+void Shader::SetIVec2Vec(const std::string& name, const std::vector<glm::ivec2>& vec) {
+	assert(currentId == id);
+	glUniform2iv(glGetUniformLocation(id, name.c_str()), vec.size(), glm::value_ptr(vec[0]));
+}
+
 void Shader::UpdateProjection(float width, float height) {
 	glm::mat4 projection = glm::ortho(0.0f, width, std::abs(std::min(0.0f, height)), std::abs(std::max(0.0f, height)));
 	SetMat4("Projection", projection);
@@ -160,7 +161,7 @@ std::string Shader::ReadShader(const std::string& fileName) {
 }
 
 const std::map<Shader::Type, uint32_t> ShaderType = {
-	//{ Shader::Type::Compute, GL_COMPUTE_SHADER },
+	{ Shader::Type::Compute, GL_COMPUTE_SHADER },
 	{ Shader::Type::Vertex, GL_VERTEX_SHADER },
 	{ Shader::Type::Fragment, GL_FRAGMENT_SHADER },
 };

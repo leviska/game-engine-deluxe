@@ -26,7 +26,7 @@ public:
 	};
 
 	void Load(const std::string& vertexFile, const std::string& fragmentFile);
-	void Load(const std::string& computeFile, const std::string& vertexFile, const std::string& fragmentFile);
+	void Load(const std::string& computeFile);
 	void Reset();
 
 	void Select() const;
@@ -40,6 +40,7 @@ public:
 	void SetMat2(const std::string& name, const glm::mat2& value);
 	void SetMat3(const std::string& name, const glm::mat3& value);
 	void SetMat4(const std::string& name, const glm::mat4& value);
+	void SetIVec2Vec(const std::string& name, const std::vector<glm::ivec2>& vec);
 
 	template <typename T>
 	void SetBool(const std::string& name, T value) = delete;
@@ -59,6 +60,9 @@ public:
 	void SetMat3(const std::string& name, const T& value) = delete;
 	template <typename T>
 	void SetMat4(const std::string& name, const T& value) = delete;
+	template <typename T>
+	void SetIVec2Vec(const std::string& name, const T& vec) = delete;
+
 
 	void UpdateProjection(float width, float height);
 

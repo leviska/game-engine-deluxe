@@ -45,8 +45,12 @@ void Window::LoadSDL() {
 		THROWERROR("Failed to initialize GLAD");
 	}
 
-	if (!GLAD_GL_ARB_texture_storage || !GLAD_GL_ARB_shader_image_load_store || !GLAD_GL_ARB_shading_language_420pack) {
-		THROWERROR("Too old GPU. OpenGL 4.2 is not supported");
+	if (!GLAD_GL_ARB_texture_storage
+	 || !GLAD_GL_ARB_shader_image_load_store
+	 || !GLAD_GL_ARB_shading_language_420pack
+	 || !GLAD_GL_ARB_compute_shader)
+	{
+		THROWERROR("Too old GPU. OpenGL 4.3 is not supported");
 	}
 }
 

@@ -3,7 +3,7 @@
 #include "imgui.h"
 
 #include <iostream>
-#include <SDL.h>
+#include <thread>
 
 void FPS::Draw() const {
 	ImGui::Begin("Debug info", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
@@ -13,8 +13,8 @@ void FPS::Draw() const {
 	if (!avgDts.empty()) {
 		dt = avgDts.front().dt;
 	}
-	ImGui::Text("Max dt: %.1f", static_cast<float>(dt) / 1000.0f);
-	ImGui::Text("Avg dt: %.1f", avgLast);
+	ImGui::Text("Max dt: %.2f", static_cast<float>(dt) / 1000.0f);
+	ImGui::Text("Avg dt: %.2f", avgLast);
 	ImGui::End();
 }
 
@@ -24,7 +24,7 @@ void FPS::UpdateDt(uint32_t dt, const TimePoint& current) {
 	}
 	avgSum += dt;
 	avgDts.push_back({ current, dt });
-	while (std::chrono::duration_cast<Milliseconds>(current - avgDts.front().index).count() >= 1000) {
+	while (std::chrono::duration_cast<Microseconds>(current - avgDts.front().index).count() >= 1000000) {
 		avgDts.pop_front();
 	}
 	if (!avgFrame) {
@@ -38,8 +38,8 @@ void FPS::UpdateDt(uint32_t dt, const TimePoint& current) {
 void FPS::UpdateFrames(const TimePoint& current) {
 	frames.push(current);
 	while (!frames.empty()) {
-		auto dur = std::chrono::duration_cast<Milliseconds>(current - frames.front()).count();
-		if (dur > 1000) {
+		auto dur = std::chrono::duration_cast<Microseconds>(current - frames.front()).count();
+		if (dur > 1000000) {
 			frames.pop();
 		}
 		else {
@@ -70,9 +70,11 @@ FPSInfo FPS::Update() {
 void FPS::LimitFPS(uint32_t fps) {
 	TimePoint end = std::chrono::steady_clock::now();
 	uint32_t dt = static_cast<uint32_t>(std::chrono::duration_cast<Microseconds>(end - lastTime).count());
-	uint32_t time = (1000000u / fps);
-	if (time > dt) {
-		SDL_Delay((time - dt) / 1000);
+	if (fps > 0) {
+		uint32_t time = (1000000u / fps);
+		if (time > dt) {
+			std::this_thread::sleep_for(Microseconds(time - dt));
+		}
 	}
 	UpdateDt(dt, end);
 	lastTime = std::chrono::steady_clock::now();
