@@ -25,8 +25,12 @@ uint32_t GameInst::GetScale() {
 
 void GameInst::Load() {
 	window.Load();
-	scene.Load();
-	//leScene.Load();
+	if (leOpen) {
+		leScene.Load();
+	}
+	else {
+		scene.Load();
+	}
 }
 
 void GameInst::Run() {
@@ -88,9 +92,9 @@ void GameInst::Draw() {
 	else
 		leScene.Draw();
 
-	ImGui::Begin("Resources info", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+	/*ImGui::Begin("Resources info", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 	resetResources = ImGui::Button("Reload");
-	ImGui::End();
+	ImGui::End();*/
 
 	fps.Draw();
 }

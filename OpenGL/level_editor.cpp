@@ -49,20 +49,35 @@ void LevelEditorScene::Update() {
 	if (ImGui::GetIO().WantCaptureMouse)
 		return;
 	glm::ivec2 mousePos;
-	uint32_t buttons = SDL_GetMouseState(&(mousePos.x), &(mousePos.y));
+	SDL_GetMouseState(&(mousePos.x), &(mousePos.y));
 	uint32_t scaledTile = Resources().TileSize * Game().GetScale();
 	glm::ivec2 relPos = mousePos / static_cast<int32_t>(scaledTile);
 
 	bb.Center = relPos * static_cast<int32_t>(scaledTile) + glm::ivec2{ scaledTile / 2, scaledTile / 2 };
 	bb.Size = glm::vec2{ scaledTile / 2, scaledTile / 2 };
 	bb.Color = ColorType{ 255, 255, 255, 255 };
-	if (buttons & SDL_BUTTON(SDL_BUTTON_LEFT)) {
+	if (Game().GetWindow().PressedMouse1) {
 		Sprite sprite(data.CurrentTile);
 		sprite.Pos = glm::vec2{ relPos.x * Resources().TileSize, relPos.y * Resources().TileSize } + glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
 		entt::entity id = map.Get(relPos);
-		db.emplace_or_replace<MultiRenderable>(id, std::vector<Sprite>{ sprite });
+		if (db.has<MultiRenderable>(id)) {
+			bool alreadyHas = false;
+			auto& images = db.get<MultiRenderable>(id).Images;
+			for (const auto& spr : images) {
+				if (spr.Id == Resources().GetSpriteInfoId(data.CurrentTile)) {
+					alreadyHas = true;
+					break;
+				}
+			}
+			if (!alreadyHas) {
+				images.push_back(sprite);
+			}
+		}
+		else {
+			db.emplace<MultiRenderable>(id, std::vector<Sprite>{ sprite });
+		}
 	}
-	if (buttons & SDL_BUTTON(SDL_BUTTON_RIGHT)) {
+	if (Game().GetWindow().PressedMouse2) {
 		if (map.Has(relPos)) {
 			map.Erase(relPos);
 		}

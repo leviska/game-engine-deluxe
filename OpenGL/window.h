@@ -24,6 +24,8 @@ class Window
 	void ProcessEvents();
 public:
 	bool F2Pressed = false;
+	bool PressedMouse1 = false;
+	bool PressedMouse2 = false;
 
 	Window() = default;
     ~Window();

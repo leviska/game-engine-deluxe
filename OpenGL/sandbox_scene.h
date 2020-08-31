@@ -19,9 +19,6 @@ public:
 	Image lightImage;
 	std::vector<glm::ivec2> lights;
 
-	bool pressedL = false;
-	bool pressedR = false;
-
 	std::unordered_map<uint32_t, BatchedRender> renders;
 	BatchedRender obstructRender;
 

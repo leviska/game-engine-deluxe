@@ -3,15 +3,30 @@
 #include "game.h"
 #include "assertion.h"
 
+#include "imgui.h"
+
 #include <cassert>
 #include <stdexcept>
+#include <iostream>
 
 #include <glad/glad.h>
 #include <SDL_image.h>
 #include <windows.h>
-
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+
+
+void GLAPIENTRY GlErrorHandler(
+	GLenum source,
+	GLenum type,
+	GLuint id,
+	GLenum severity,
+	GLsizei length,
+	const GLchar* message,
+	const void* userParam)
+{
+	std::cout << "OpenGL error: " << message << std::endl;
+}
 
 Window::~Window() {
 	Reset();
@@ -27,7 +42,7 @@ void Window::LoadSDL() {
 		THROWERROR("SDL_image could not initialize! SDL_Error: " + std::string(IMG_GetError()));
 	}
 
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
 
 	window = SDL_CreateWindow("OpenGL", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, size.x, size.y, 
@@ -36,6 +51,10 @@ void Window::LoadSDL() {
 		THROWERROR("Window could not be created! SDL_Error: " + std::string(SDL_GetError()));
 	}
 
+#ifdef _DEBUG
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_DEBUG_FLAG);
+#endif
+	
 	glcontext = SDL_GL_CreateContext(window);
 	if (!glcontext) {
 		THROWERROR("Unable to create GL context: " + std::string(SDL_GetError()));
@@ -44,20 +63,17 @@ void Window::LoadSDL() {
 	if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
 		THROWERROR("Failed to initialize GLAD");
 	}
-
-	if (!GLAD_GL_ARB_texture_storage
-	 || !GLAD_GL_ARB_shader_image_load_store
-	 || !GLAD_GL_ARB_shading_language_420pack
-	 || !GLAD_GL_ARB_compute_shader)
-	{
-		THROWERROR("Too old GPU. OpenGL 4.3 is not supported");
-	}
 }
 
 void Window::LoadOpenGL() {
 	glEnable(GL_BLEND);
 	glEnable(GL_LINE_SMOOTH);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+#ifdef _DEBUG
+	glEnable(GL_DEBUG_OUTPUT);
+	glDebugMessageCallback(GlErrorHandler, 0);
+#endif
 }
 
 void Window::Load() {
@@ -88,6 +104,8 @@ void Window::Reset() {
 void Window::ProcessEvents() {
 	SDL_Event event;
 	F2Pressed = false;
+	PressedMouse1 = false;
+	PressedMouse2 = false;
 	while (SDL_PollEvent(&event) != 0) {
 		gui.ProcessEvents(event);
 		switch (event.type) {
@@ -112,6 +130,17 @@ void Window::ProcessEvents() {
 			}
 			break;
 		}
+		case SDL_MOUSEBUTTONDOWN: {
+			if (!ImGui::GetIO().WantCaptureMouse) {
+				if (event.button.button == SDL_BUTTON_LEFT) {
+					PressedMouse1 = true;
+				}
+				else if (event.button.button == SDL_BUTTON_RIGHT) {
+					PressedMouse2 = true;
+				}
+			}
+			break;
+		}
 		}
 	}
 }
@@ -133,6 +162,5 @@ void Window::Clear() {
 
 void Window::Render() {
 	gui.Render();
-	glFlush();
 	SDL_GL_SwapWindow(window);
 }

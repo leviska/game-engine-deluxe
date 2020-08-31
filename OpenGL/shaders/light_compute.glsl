@@ -14,50 +14,40 @@ const ivec2 shift[8] = {
 
 layout (local_size_x = 8, local_size_y = 8) in;
 
+float compare(float old, float new, float stp) {
+	if (old < 0 || new > 0) {
+		if (mod(abs(new), 1000) - stp > mod(abs(old), 1000)) {
+			return sign(old) * (abs(new) - stp);
+		}
+	}
+	return old;
+}
+
 void main() {
 	ivec2 storePos = ivec2(gl_GlobalInvocationID.xy);
 	if (LightsSize > 0) {
 		bool obst = imageLoad(Texture, ivec2(storePos)).a == 255;
-		bool isLight = false;
+		int lightIndex = -1;
 		for (int i = 0; i < LightsSize; i++) {
 			if (ivec2(storePos) == Lights[i]) {
-				isLight = true;
+				lightIndex = i;
 				break;
 			}
 		}
-		float v = (isLight ? 150 : 0) + (obst ? 1000 : 0);
+		float v = (lightIndex >= 0 ? 151 + (lightIndex + 1) * 1000 : 1) * (obst ? -1 : 1);
 		imageStore(Lighting, ivec2(storePos), vec4(v));
 	}
 	else {
 		memoryBarrierImage();
 		float oldV = imageLoad(Lighting, ivec2(storePos)).x;
-		bool obst = oldV >= 1000;
 		float v = oldV;
-		if (obst) {
-			v -= 1000;
-		}
 		for (int j = 0; j < 4; j++) {
 			float im = imageLoad(Lighting, ivec2(storePos + shift[j])).x;
-			bool imobst = im >= 1000;
-			if (imobst) {
-				im -= 1000;
-			}
-			if (obst || !imobst) {
-				v = max(im - 1, v);
-			}
+			v = compare(v, im, 1);
 		}
 		for (int j = 4; j < 8; j++) {
 			float im = imageLoad(Lighting, ivec2(storePos + shift[j])).x;
-			bool imobst = im >= 1000;
-			if (imobst) {
-				im -= 1000;
-			}
-			if (obst || !imobst) {
-				v = max(im - sqrt(2), v);
-			}
-		}
-		if (obst) {
-			v += 1000;
+			v = compare(v, im, sqrt(2));
 		}
 		if (oldV != v) {
 			imageStore(Lighting, ivec2(storePos), vec4(v, 0, 0, 1));

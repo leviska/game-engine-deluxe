@@ -13,21 +13,16 @@ void SandboxScene::Load() {
 	renders[0].Load(0);
 	map.Load(db);
 	LoadMap(map, "sandboxLevel");
+	
+	lights.emplace_back(259, 152);
+	lights.emplace_back(81, 144);
+	lights.emplace_back(158, 32);
 
 	obstructRender.Load(0, static_cast<uint32_t>(Shaders::Obstruct));
 	frameBuffer.Load(Resources().CanvasSize);
 	tmpBuffer.Load(Resources().CanvasSize);
 
-	//lightImage.Load(Resources().CanvasSize, { 255, 255, 255, 0 });
 	lightTexture.Load(Resources().CanvasSize, true, false);
-
-	entt::entity id = db.create();
-	Sprite sprite("SkeletonRightStand00");
-	sprite.Pos = glm::uvec2(4, 4) * Resources().TileSize;
-	sprite.Pos += glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
-	db.emplace<Renderable>(id, sprite);
-
-	//Lights();
 }
 
 void SandboxScene::Reset() {
@@ -39,12 +34,13 @@ void SandboxScene::Reset() {
 
 	lightTexture.Reset();
 	lightImage.Reset();
+	lights.clear();
 	ResetRenders(renders);
 }
 
 void SandboxScene::Lights() {
 	glm::ivec2 lightPos;
-	uint32_t buttons = SDL_GetMouseState(&(lightPos.x), &(lightPos.y));
+	SDL_GetMouseState(&(lightPos.x), &(lightPos.y));
 	lightPos -= Game().GetWindow().GetSize() / 2u;
 	uint32_t scaledTile = Game().GetScale();
 	lightPos /= static_cast<int32_t>(scaledTile);
@@ -52,7 +48,7 @@ void SandboxScene::Lights() {
 	lightPos = glm::clamp(lightPos, { 0, 0 }, glm::ivec2{ Resources().CanvasSize } -glm::ivec2(1, 1));
 
 	//lightPos = glm::ivec2(9 * 16, 3 * 16);
-	lights.push_back(lightPos);
+	//lights.push_back(lightPos);
 
 
 	Shader& genShader = Resources().GetShader("GenerateLight");
@@ -71,39 +67,29 @@ void SandboxScene::Lights() {
 		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	}
 
-
-
-	if (!ImGui::GetIO().WantCaptureMouse && (buttons & SDL_BUTTON(SDL_BUTTON_LEFT))) {
-		if (pressedL) {
-			lights.pop_back();
-		}
-		pressedL = true;
-	}
-	else {
-		pressedL = false;
+	Resources().GetShader("LightShader").Select();
+	glBindImageTexture(1, lightTexture.GetId(), 0, GL_FALSE, 0, GL_READ_ONLY, GL_R32F);
+	Resources().GetShader("LightShader").SetInt32("LightsSize", static_cast<int>(lights.size()));
+	Resources().GetShader("LightShader").SetIVec2Vec("Lights", lights);
+	
+	/*if (!Game().GetWindow().PressedMouse1) {
 		lights.pop_back();
 	}
-	if (!ImGui::GetIO().WantCaptureMouse && (buttons & SDL_BUTTON(SDL_BUTTON_RIGHT))) {
-		if (!pressedR) {
-			lights.pop_back();
-		}
-		pressedR = true;
-	}
-	else {
-		pressedR = false;
-	}
+	if (!lights.empty() && Game().GetWindow().PressedMouse2) {
+		lights.pop_back();
+	}*/
 }
 
 void SandboxScene::Update() {
 }
 
 void SandboxScene::Clear() {
-	ClearRenders(renders);
+	//ClearRenders(renders);
 	obstructRender.Clear();
 
 	frameBuffer.Select();
 	//frameBuffer.Clear({ 39, 39, 68, 0 });
-	frameBuffer.Clear({ 56, 58, 97, 0 });
+	frameBuffer.Clear({ 31, 14, 28, 0 });
 	//frameBuffer.Clear({ 255, 255, 255, 0 });
 	tmpBuffer.Select();
 	//tmpBuffer.Clear({ 20, 20, 34, 255 });
@@ -121,15 +107,8 @@ void SandboxScene::Draw() {
 	
 	Lights();
 
-	Resources().GetShader("LightShader").Select();
-	glBindImageTexture(1, lightTexture.GetId(), 0, GL_FALSE, 0, GL_READ_ONLY, GL_R32F);
-
 	frameBuffer.Draw({ 0, 0 }, 1, Resources().GetShader("LightShader"));
-	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	
-	if (frame++ == 30) {
-		lightTexture.Save().Save("log/tmppp.png");
-	}
 	// --------- screen --------- 
 	FrameBuffer::SelectWindow();
 	tmpBuffer.Draw(Game().GetWindow().GetSize() / 2u, Game().GetScale(), Resources().GetShader("BufferShader"));
