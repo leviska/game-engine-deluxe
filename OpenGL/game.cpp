@@ -92,9 +92,9 @@ void GameInst::Draw() {
 	else
 		leScene.Draw();
 
-	/*ImGui::Begin("Resources info", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
+	ImGui::Begin("Resources info", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 	resetResources = ImGui::Button("Reload");
-	ImGui::End();*/
+	ImGui::End();
 
 	fps.Draw();
 }

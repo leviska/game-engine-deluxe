@@ -5,6 +5,7 @@ out vec4 Result;
 layout (binding = 0) uniform sampler2DRect Texture;
 layout (binding = 1, r32f ) uniform restrict readonly image2D Lighting;
 
+uniform float Time = 0;
 uniform int LightsSize = 0;
 uniform ivec2 Lights[16];
 
@@ -27,6 +28,14 @@ bool check(vec2 pos) {
 	return pos.x >= 0 && pos.y >= 0 && pos.x < 384 && pos.y < 216;
 }
 
+float random(vec2 st) {
+    return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+}
+
+float checker(vec2 p, float v) {
+	return floor(mod(p.x, v)) == floor(mod(p.y, v)) ? 1 : 0;
+}
+
 void main()
 {
 	float obst = texture(Texture, TextCoordsFrag).a;
@@ -40,6 +49,8 @@ void main()
 			alpha -= 5 - (len - alpha);
 		}
 	}
+	//alpha += 3 * sin(random(TextCoordsFrag) * 6.28);
+	alpha += 4 * checker(TextCoordsFrag, 2);
 	alpha /= 150;
 	alpha = clamp(alpha, 0, 1);
 	//alpha = smoothstep(0, 1, alpha);

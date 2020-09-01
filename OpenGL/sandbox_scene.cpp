@@ -14,9 +14,9 @@ void SandboxScene::Load() {
 	map.Load(db);
 	LoadMap(map, "sandboxLevel");
 	
-	lights.emplace_back(259, 152);
-	lights.emplace_back(81, 144);
-	lights.emplace_back(158, 32);
+	//lights.emplace_back(259, 152);
+	//lights.emplace_back(81, 144);
+	//lights.emplace_back(158, 32);
 
 	obstructRender.Load(0, static_cast<uint32_t>(Shaders::Obstruct));
 	frameBuffer.Load(Resources().CanvasSize);
@@ -48,7 +48,7 @@ void SandboxScene::Lights() {
 	lightPos = glm::clamp(lightPos, { 0, 0 }, glm::ivec2{ Resources().CanvasSize } -glm::ivec2(1, 1));
 
 	//lightPos = glm::ivec2(9 * 16, 3 * 16);
-	//lights.push_back(lightPos);
+	lights.push_back(lightPos);
 
 
 	Shader& genShader = Resources().GetShader("GenerateLight");
@@ -62,25 +62,28 @@ void SandboxScene::Lights() {
 	glDispatchCompute(384 / 8, 216 / 8, 1);
 	genShader.SetInt32("LightsSize", 0);
 	glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
-	for (int i = 0; i < 150; i++) {
+	for (int i = 0; i < 110; i++) {
 		glDispatchCompute(384 / 8, 216 / 8, 1);
 		glMemoryBarrier(GL_SHADER_IMAGE_ACCESS_BARRIER_BIT);
 	}
 
 	Resources().GetShader("LightShader").Select();
 	glBindImageTexture(1, lightTexture.GetId(), 0, GL_FALSE, 0, GL_READ_ONLY, GL_R32F);
+	Resources().GetShader("LightShader").SetFloat("Time", time);
 	Resources().GetShader("LightShader").SetInt32("LightsSize", static_cast<int>(lights.size()));
 	Resources().GetShader("LightShader").SetIVec2Vec("Lights", lights);
 	
-	/*if (!Game().GetWindow().PressedMouse1) {
+	if (!Game().GetWindow().PressedMouse1) {
 		lights.pop_back();
 	}
 	if (!lights.empty() && Game().GetWindow().PressedMouse2) {
 		lights.pop_back();
-	}*/
+	}
 }
 
 void SandboxScene::Update() {
+	frame++;
+	time += Game().FPS().dt / 1000000.f;
 }
 
 void SandboxScene::Clear() {

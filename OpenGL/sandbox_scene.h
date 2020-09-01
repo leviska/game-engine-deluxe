@@ -22,6 +22,7 @@ public:
 	std::unordered_map<uint32_t, BatchedRender> renders;
 	BatchedRender obstructRender;
 
+	float time = 0;
 	int frame = 0;
 
 	entt::registry db;

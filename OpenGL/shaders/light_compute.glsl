@@ -1,6 +1,4 @@
 #version 430 core
-layout (location = 0) in vec2 Vertex;
-
 layout (binding = 0, rgba8ui) uniform restrict readonly uimage2D Texture;
 layout (binding = 1, r32f) uniform restrict image2D Lighting;
 
