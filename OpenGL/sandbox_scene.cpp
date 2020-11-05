@@ -33,7 +33,6 @@ void SandboxScene::Reset() {
 	obstructRender.Reset();
 
 	lightTexture.Reset();
-	lightImage.Reset();
 	lights.clear();
 	ResetRenders(renders);
 }

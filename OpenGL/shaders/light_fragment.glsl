@@ -32,8 +32,9 @@ float random(vec2 st) {
     return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
 }
 
-float checker(vec2 p, float v) {
-	return floor(mod(p.x, v)) == floor(mod(p.y, v)) ? 1 : 0;
+float checker(vec2 p, float val) {
+	bool v = mod(abs(p.x + p.y), val) + mod(abs(p.x - p.y), val) == 0;
+	return v ? 1 : 0;
 }
 
 void main()
@@ -43,15 +44,21 @@ void main()
 	float alpha = mod(abs(value) - 1, 1000);
 	int nearest = int(round((abs(value) - 1) / 1000)) - 1;
 	float len = length(Lights[nearest] - TextCoordsFrag);
-	if (len < 150) {
-		len = 150 - len;
+	float lseed = Time + nearest * 0.1;
+	float seed = lseed + TextCoordsFrag.x * 0.3 + TextCoordsFrag.y * 0.5 + 0.1 * alpha;
+	float randseed = random(TextCoordsFrag + seed);
+	if (len < 110) {
+		len = 110 - len;
 		if (len - alpha < 5) {
 			alpha -= 5 - (len - alpha);
 		}
 	}
-	//alpha += 3 * sin(random(TextCoordsFrag) * 6.28);
-	alpha += 4 * checker(TextCoordsFrag, 2);
-	alpha /= 150;
+	float ch2 = checker(floor(TextCoordsFrag), 2);
+	float ch4 = checker(floor(TextCoordsFrag), 4);
+	alpha += ch2 * 4;
+	alpha += ch4 * 4;
+	alpha += (1 - ch2) * (1 - ch4) * 2 * sin(random(TextCoordsFrag + round(seed)));
+	alpha /= 110;
 	alpha = clamp(alpha, 0, 1);
 	//alpha = smoothstep(0, 1, alpha);
 	const float t = 80;

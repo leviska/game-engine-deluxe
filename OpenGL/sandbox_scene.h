@@ -16,7 +16,6 @@ public:
 	FrameBuffer tmpBuffer;
 
 	Texture lightTexture;
-	Image lightImage;
 	std::vector<glm::ivec2> lights;
 
 	std::unordered_map<uint32_t, BatchedRender> renders;

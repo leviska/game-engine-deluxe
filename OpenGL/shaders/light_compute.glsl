@@ -32,7 +32,7 @@ void main() {
 				break;
 			}
 		}
-		float v = (lightIndex >= 0 ? 151 + (lightIndex + 1) * 1000 : 1) * (obst ? -1 : 1);
+		float v = (lightIndex >= 0 ? 110 + (lightIndex + 1) * 1000 : 1) * (obst ? -1 : 1);
 		imageStore(Lighting, ivec2(storePos), vec4(v));
 	}
 	else {
