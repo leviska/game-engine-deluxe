@@ -46,15 +46,12 @@ void RenderMultiRenderable(entt::registry& db, std::unordered_map<uint32_t, Batc
 	}
 }
 
-bool value = false;
-
 void RenderSystem(entt::registry& db, std::unordered_map<uint32_t, BatchedRender>& renders) {
-	if (!value) RenderRenderable<Renderable>(db, renders);
+	RenderRenderable<Renderable>(db, renders);
 	//RenderRenderable<AnimatedRenderable>(db, renders);
 	
-	if (!value) RenderMultiRenderable<MultiRenderable>(db, renders);
+	RenderMultiRenderable<MultiRenderable>(db, renders);
 	//RenderMultiRenderable<MultiAnimatedRenderable>(db, renders);
-	value = true;
 
 	for (auto& el : renders) {
 		el.second.Draw();

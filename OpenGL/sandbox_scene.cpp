@@ -86,7 +86,7 @@ void SandboxScene::Update() {
 }
 
 void SandboxScene::Clear() {
-	//ClearRenders(renders);
+	ClearRenders(renders);
 	obstructRender.Clear();
 
 	frameBuffer.Select();
