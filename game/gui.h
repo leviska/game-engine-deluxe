@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL.h>
+#include <sdl2/SDL.h>
 
 class GUI {
 	SDL_Window* window;

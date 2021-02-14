@@ -4,8 +4,8 @@
 
 #include <stdexcept>
 
-#include <SDL.h>
-#include <SDL_image.h>
+#include <sdl2/SDL.h>
+#include <sdl2/SDL_image.h>
 
 glm::vec4 RGBA(ColorType rgba) {
 	return glm::vec4(rgba) / 255.0f;

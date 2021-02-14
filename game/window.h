@@ -4,7 +4,7 @@
 
 #include "animated_sprite.h"
 
-#include <SDL.h>
+#include <sdl2/SDL.h>
 
 class Window
 {

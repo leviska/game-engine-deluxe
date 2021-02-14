@@ -9,7 +9,7 @@
 #include <imgui.h>
 #include <imgui_stdlib.h>
 #include <nlohmann/json.hpp>
-#include <SDL.h>
+#include <sdl2/SDL.h>
 
 
 void LevelEditorScene::Load(const std::string& name) {

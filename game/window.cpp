@@ -10,7 +10,7 @@
 #include <iostream>
 
 #include <glad/glad.h>
-#include <SDL_image.h>
+#include <sdl2/SDL_image.h>
 #include <windows.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
