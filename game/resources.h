@@ -44,13 +44,13 @@ public:
 	
 	const SpriteInfo& GetSpriteInfo(uint32_t Id) { return spriteInfo[Id]; }
 	const SpriteInfo& GetSpriteInfo(const std::string& name) { return spriteInfo[name]; }
-	uint32_t GetSpriteInfoId(const std::string& name) { return spriteInfo.GetId(name); }
+	size_t GetSpriteInfoId(const std::string& name) { return spriteInfo.GetId(name); }
 	
 	const NamedVector<SpriteInfo>& GetSpriteInfoLE() { return spriteInfoLE; }
 
 	const std::vector<AnimationInfo>& GetAnimationInfo(uint32_t Id) { return animationInfo[Id]; }
 	const std::vector<AnimationInfo>& GetAnimationInfo(const std::string& name) { return animationInfo[name]; }
-	uint32_t GetAnimationInfoId(const std::string& name) { return animationInfo.GetId(name); }
+	size_t GetAnimationInfoId(const std::string& name) { return animationInfo.GetId(name); }
 
 	const nlohmann::json& GetLevelInfo(uint32_t Id) { return levels[Id]; }
 

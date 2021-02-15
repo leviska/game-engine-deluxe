@@ -85,7 +85,7 @@ void LevelEditorScene::Update() {
 }
 
 bool DrawTileButton(const SpriteInfo& info) {
-	ImTextureID textId = (void*)Resources().GetTexture(1).GetId();
+	ImTextureID textId = reinterpret_cast<void*>(Resources().GetTexture(1).GetId());
 	glm::vec2 textSize(Resources().GetTexture(1).GetSize());
 	glm::vec2 sizeV = info.Size * 4.0f;
 	glm::vec2 uv0V = info.Position;
@@ -121,7 +121,7 @@ void LevelEditorScene::DrawGui() {
 	bool firstDraw = true;
 	for (size_t i = 0; i < info.Size(); i++) {
 		if (IsWallName(info[i].Name)) {
-			ImGui::PushID(i);
+			ImGui::PushID(static_cast<int>(i));
 			if (currentLineDrawed >= 3) {
 				currentLineDrawed = 0;
 			}
