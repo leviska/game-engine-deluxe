@@ -3,7 +3,9 @@
 Started as OpenGL project and now a sandbox for creating games  
 Currently not intented to be a full engine, library or starting project, but used to experiment with game development
 
-Main project is `OpenGL` for history reasons (to be changed)
+## Building
+Main project is `game`  
+Opening solution in Visual Studio 2019 and building must do everything
 
 ## Created with this
 
