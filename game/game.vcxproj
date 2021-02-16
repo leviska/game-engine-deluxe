@@ -178,6 +178,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="particles.cpp" />
+    <ClCompile Include="rendering.cpp" />
     <ClCompile Include="resources.cpp" />
     <ClCompile Include="sandbox_scene.cpp" />
     <ClCompile Include="scene.cpp" />
@@ -203,6 +204,7 @@
     <ClInclude Include="map.h" />
     <ClInclude Include="named_vector.h" />
     <ClInclude Include="particles.h" />
+    <ClInclude Include="rendering.h" />
     <ClInclude Include="resources.h" />
     <ClInclude Include="resources_types.h" />
     <ClInclude Include="sandbox_scene.h" />
@@ -214,6 +216,7 @@
     <ClInclude Include="texture.h" />
     <ClInclude Include="fps.h" />
     <ClInclude Include="utility.h" />
+    <ClInclude Include="vector_allocator.h" />
     <ClInclude Include="window.h" />
   </ItemGroup>
   <ItemGroup>

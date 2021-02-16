@@ -102,6 +102,9 @@
     <ClCompile Include="glad.c">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="rendering.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="animated_sprite.h">
@@ -161,9 +164,6 @@
     <ClInclude Include="map.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="named_vector.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="resources.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
@@ -178,6 +178,15 @@
     </ClInclude>
     <ClInclude Include="state_machine.h">
       <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="rendering.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="named_vector.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="vector_allocator.h">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
