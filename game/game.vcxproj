@@ -219,6 +219,22 @@
   <ItemGroup>
     <Natvis Include="glm.natvis" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="shaders\batch_fragment.glsl" />
+    <None Include="shaders\batch_vertex.glsl" />
+    <None Include="shaders\buffer_fragment.glsl" />
+    <None Include="shaders\buffer_vertex.glsl" />
+    <None Include="shaders\light_compute.glsl" />
+    <None Include="shaders\light_fragment.glsl" />
+    <None Include="shaders\light_vertex.glsl" />
+    <None Include="shaders\obstruct_fragment.glsl" />
+    <None Include="shaders\particle_fragment.glsl" />
+    <None Include="shaders\particle_vertex.glsl" />
+    <None Include="shaders\shapes_fragment.glsl" />
+    <None Include="shaders\shapes_vertex.glsl" />
+    <None Include="shaders\sprite_fragment.glsl" />
+    <None Include="shaders\sprite_vertex.glsl" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

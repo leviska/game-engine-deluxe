@@ -9,24 +9,14 @@
 
 struct Sprite {
 	glm::vec2 Pos{ 0, 0 };
-	uint32_t Id{ 0 };
-
-	ColorType Color{ 255, 255, 255, 255 };
-	float Scale{ 1 };
-	float Rotation{ 0 };
-
-	bool Visible;
-	
-	glm::vec4 GetRect() const;
-	glm::vec4 GetTextCoords() const;
-	glm::vec3 GetTransform() const;
-	glm::vec2 GetSize() const;
-	uint32_t GetTextureId() const;
-
-	Sprite() = default;
-	Sprite(const std::string& name);
+	glm::vec2 TextPos{ 0, 0 };
+	glm::vec2 TextSize{ 0, 0 };
+	glm::vec2 Scale{ 0, 0 };
+	glm::vec4 Color{ 1, 1, 1, 1 };
+	float rotation = 0;
 };
 
+/*
 void DrawSprite(const Sprite& sprite);
 
 void DrawSprite(
@@ -45,3 +35,4 @@ void DrawSprite(
 	float scale = 1,
 	float rotation = 0,
 	Shaders shaderId = Shaders::Sprite);
+*/

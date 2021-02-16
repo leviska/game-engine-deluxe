@@ -3,7 +3,7 @@
 
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
-
+/*
 Sprite::Sprite(const std::string& dataName) {
 	Id = Resources().GetSpriteInfoId(dataName);
 }
@@ -72,3 +72,4 @@ void DrawSprite(
 
 	glBindVertexArray(0);
 }
+*/
