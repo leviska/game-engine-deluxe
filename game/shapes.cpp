@@ -4,7 +4,7 @@
 #include <glad/glad.h>
 #include <vector>
 
-void DrawShape(const glm::vec2* data, size_t size, uint32_t mode, const ColorType& color, float thickness) {
+void DrawShape(const glm::vec2* data, size_t size, uint32_t mode, const ColorRGBA& color, float thickness) {
 	Resources().GetShader(Shaders::Shapes).Select();
 	Resources().GetShader(Shaders::Shapes).SetVec4("Color", RGBA(color));
 

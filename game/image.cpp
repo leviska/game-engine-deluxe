@@ -7,14 +7,14 @@
 #include <sdl2/SDL.h>
 #include <sdl2/SDL_image.h>
 
-glm::vec4 RGBA(ColorType rgba) {
+ColorNorm RGBA(ColorRGBA rgba) {
 	return glm::vec4(rgba) / 255.0f;
 }
 
-ColorType ColorAlpha(ColorChannel alpha) {
-	return ColorType{ 255, 255, 255, alpha };
+ColorRGBA ColorAlpha(ColorChannel alpha) {
+	return ColorRGBA{ 255, 255, 255, alpha };
 }
-void Image::Load(glm::uvec2 Size, ColorType DefaultValue) {
+void Image::Load(glm::uvec2 Size, ColorRGBA DefaultValue) {
 	size = Size;
 	image.resize(size.x * size.y, DefaultValue);
 }
@@ -51,10 +51,10 @@ void Image::Reset() {
 }
 
 
-ColorType& Image::operator[](glm::uvec2 pos) {
+ColorRGBA& Image::operator[](glm::uvec2 pos) {
 	return image[pos.y * size.x + pos.x];
 }
 
-const ColorType& Image::operator[](glm::uvec2 pos) const {
+const ColorRGBA& Image::operator[](glm::uvec2 pos) const {
 	return image[pos.y * size.x + pos.x];
 }

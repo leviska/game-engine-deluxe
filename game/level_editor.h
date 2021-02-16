@@ -9,7 +9,7 @@
 #include "entt/entt.hpp"
 
 class LevelEditorScene : public Scene {
-	std::unordered_map<uint32_t, BatchedRender> renders;
+	Rendering render;
 	FrameBuffer frameBuffer;
 
 	entt::registry db;

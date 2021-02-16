@@ -3,62 +3,23 @@
 
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
+
+
+void HideSprite(Sprite& sprite) {
+	sprite.Color = Colors::Invisible;
+}
+
+void ShowSprite(Sprite& sprite) {
+	sprite.Color = Colors::White;
+}
+
+void SwitchVisibility(Sprite& sprite) {
+	sprite.Color = Colors::White - sprite.Color;
+}
+
+
 /*
-Sprite::Sprite(const std::string& dataName) {
-	Id = Resources().GetSpriteInfoId(dataName);
-}
-
-glm::vec4 Sprite::GetRect() const {
-	const auto& info = Resources().GetSpriteInfo(Id);
-	return glm::vec4(Pos, info.Size);
-}
-
-glm::vec4 Sprite::GetTextCoords() const {
-	const auto& info = Resources().GetSpriteInfo(Id);
-	return glm::vec4(info.Position, info.Size);
-}
-
-glm::vec3 Sprite::GetTransform() const {
-	const auto& info = Resources().GetSpriteInfo(Id);
-	return glm::vec3(info.Size * Scale, Rotation);
-}
-
-glm::vec2 Sprite::GetSize() const {
-	const auto& info = Resources().GetSpriteInfo(Id);
-	return info.Size;
-}
-
-uint32_t Sprite::GetTextureId() const {
-	return Resources().GetSpriteInfo(Id).TextureId;
-}
-
 void DrawSprite(const Sprite& sprite) {
-	if (!sprite.Visible)
-		return;
-	DrawSprite(sprite.Pos, sprite.Id, sprite.Color, sprite.Scale, sprite.Rotation);
-}
-
-void DrawSprite(
-	glm::vec2 pos,
-	uint32_t dataId,
-	ColorType color,
-	float scale,
-	float rotation)
-{
-	const auto& info = Resources().GetSpriteInfo(dataId);
-	DrawSprite(pos, Resources().GetTexture(info.TextureId), info.Size, info.Position, color, scale, rotation);
-}
-
-void DrawSprite(
-	glm::vec2 pos,
-	const Texture& texture,
-	glm::vec2 size,
-	glm::vec2 textPos,
-	ColorType color,
-	float scale,
-	float rotation,
-	Shaders shaderId)
-{
 	Resources().GetShader(shaderId).Select();
 	texture.Select();
 	glBindVertexArray(Resources().GetSpriteVAO());

@@ -7,5 +7,5 @@ uniform sampler2DRect Texture;
 
 void main()
 {
-    Result = ColorFrag * texture(Texture, TextCoordsFrag);
+    Result = ColorFrag; //* texture(Texture, TextCoordsFrag);
 }

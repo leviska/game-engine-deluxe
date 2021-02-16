@@ -39,7 +39,7 @@ void FrameBuffer::Reset() {
 	glDeleteFramebuffers(1, &id);
 }
 
-void FrameBuffer::Clear(ColorType color) {
+void FrameBuffer::Clear(ColorRGBA color) {
 	glm::vec4 colorf = RGBA(color);
 	glClearColor(colorf.x, colorf.y, colorf.z, colorf.w);
 	glClear(GL_COLOR_BUFFER_BIT);

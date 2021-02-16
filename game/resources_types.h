@@ -1,5 +1,7 @@
 #pragma once
 
+#include "sprite.h"
+
 #include <cinttypes>
 #include <string>
 #include <array>
@@ -9,8 +11,7 @@
 struct SpriteInfo {
 	std::string Name;
 	uint32_t TextureId;
-	glm::vec2 Position; // texture pos
-	glm::vec2 Size; // texture size
+	Sprite Value;
 };
 
 struct AnimationInfo {

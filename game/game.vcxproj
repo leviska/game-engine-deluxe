@@ -185,6 +185,7 @@
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shapes.cpp" />
     <ClCompile Include="sprite.cpp" />
+    <ClCompile Include="sprite_ptr.cpp" />
     <ClCompile Include="state_machine.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="fps.cpp" />
@@ -194,6 +195,8 @@
     <ClInclude Include="animated_sprite.h" />
     <ClInclude Include="assertion.h" />
     <ClInclude Include="batching.h" />
+    <ClInclude Include="color.h" />
+    <ClInclude Include="context.h" />
     <ClInclude Include="framebuffer.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="level_editor.h" />
@@ -212,6 +215,7 @@
     <ClInclude Include="shader.h" />
     <ClInclude Include="shapes.h" />
     <ClInclude Include="sprite.h" />
+    <ClInclude Include="sprite_ptr.h" />
     <ClInclude Include="state_machine.h" />
     <ClInclude Include="texture.h" />
     <ClInclude Include="fps.h" />

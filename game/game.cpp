@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include "imgui.h"
+#include "resources.h"
 
 #include <iostream>
 #include <chrono>
@@ -46,7 +47,7 @@ void GameInst::Run() {
 
 void GameInst::Update() {
 	fps.Update();
-	fps.LimitFPS(0);
+	fps.LimitFPS(60);
 
 	window.Update();
 

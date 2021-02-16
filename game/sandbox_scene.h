@@ -8,18 +8,16 @@
 #include "map.h"
 #include "framebuffer.h"
 
-#include "entt/entt.hpp"
+#include <entt/entt.hpp>
 
 class SandboxScene : public Scene {
 public:
 	FrameBuffer frameBuffer;
 	FrameBuffer tmpBuffer;
 
+	Rendering render;
 	Texture lightTexture;
 	std::vector<glm::ivec2> lights;
-
-	std::unordered_map<uint32_t, BatchedRender> renders;
-	BatchedRender obstructRender;
 
 	float time = 0;
 	int frame = 0;

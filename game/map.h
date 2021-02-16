@@ -1,7 +1,7 @@
 #pragma once
 
+#include "context.h"
 #include "sprite.h"
-
 #include "utility.h"
 
 #include <unordered_map>
@@ -17,16 +17,11 @@ struct Wall {
 
 class WallMap {
 	using Map = std::unordered_map<glm::ivec2, entt::entity>;
-
-	Map map;
-	entt::registry* db = nullptr;
-
-	void Update(glm::ivec2 pos, entt::entity id);
 public:
-	void Load(entt::registry& _db);
+	void Load(const Context& Context);
 	void Reset();
 
-	entt::registry& DB() { return *db; }
+	const Context& GetContext() { return context; }
 
 	bool Has(glm::ivec2 pos) const;
 	entt::entity At(glm::ivec2 pos) const;
@@ -34,6 +29,11 @@ public:
 	entt::entity Create(glm::ivec2 pos);
 	void Erase(glm::ivec2 pos);
 	entt::entity Set(glm::ivec2 pos, bool erase);
+private:
+	Map map;
+	Context context;
+
+	void Update(glm::ivec2 pos, entt::entity id);
 };
 
 void LoadMap(WallMap& map, const char* fileName);

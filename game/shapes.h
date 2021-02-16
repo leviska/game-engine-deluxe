@@ -9,7 +9,7 @@
 class ShapeBase {
 public:
 	float Thickness = 1;
-	ColorType Color{ 0, 0, 0, 255 };
+	ColorRGBA Color{ 0, 0, 0, 255 };
 };
 
 class SegmentShape : public ShapeBase {

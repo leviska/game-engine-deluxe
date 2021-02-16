@@ -1,6 +1,9 @@
 #pragma once
+
 #include "sprite.h"
+#include "resources_types.h"
 #include "vector_allocator.h"
+
 #include <vector>
 
 class BatchedRender {
@@ -26,5 +29,4 @@ private:
 	VectorAlloc<Sprite> data;
 
 	void BindArray();
-	
 };

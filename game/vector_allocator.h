@@ -23,8 +23,6 @@ public:
 private:
 	std::vector<T> data;
 	std::unordered_set<size_t> unused;
-
-	size_t Alloc();
 };
 
 

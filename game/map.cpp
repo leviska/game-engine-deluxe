@@ -6,8 +6,8 @@
 
 #include <fstream>
 
-void WallMap::Load(entt::registry& _db) {
-	db = &_db;
+void WallMap::Load(const Context& Context) {
+	context = Context;
 }
 
 void WallMap::Reset() {
@@ -46,8 +46,8 @@ void WallMap::Update(glm::ivec2 pos, entt::entity id) {
 entt::entity WallMap::Create(glm::ivec2 pos) {
 	assert(!Has(pos));
 
-	entt::entity id = db->create();
-	db->emplace<Wall>(id, pos);
+	entt::entity id = context.Reg->create();
+	context.Reg->emplace<Wall>(id, pos);
 	Update(pos, id);
 	return id;
 }
@@ -56,7 +56,7 @@ void WallMap::Erase(glm::ivec2 pos) {
 	assert(Has(pos));
 
 	entt::entity id = At(pos);
-	db->destroy(id);
+	context.Reg->destroy(id);
 	Update(pos, entt::null);
 }
 
@@ -89,16 +89,16 @@ void LoadMap(WallMap& map, const nlohmann::json& levelInfo) {
 	const nlohmann::json& walls = levelInfo["Walls"];
 	for (const auto& elem : walls) {
 		glm::ivec2 pos{ elem["Pos"]["x"].get<int32_t>(), elem["Pos"]["y"].get<int32_t>() };
-		std::vector<Sprite> sprites;
+		MultiRenderable sprites;
 		if (elem.find("Sprites") != elem.end()) {
 			for (const auto& spriteId : elem["Sprites"]) {
-				Sprite sprite(spriteId.get<std::string>());
-				sprite.Pos = glm::vec2{ pos.x * Resources().TileSize, pos.y * Resources().TileSize } +glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
-				sprites.push_back(std::move(sprite));
+				SpritePtr sptr = map.GetContext().Render->Stage(spriteId.get<std::string>());
+				sptr->Pos = glm::vec2{ pos.x * Resources().TileSize, pos.y * Resources().TileSize } +glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
+				sprites.push_back(sptr);
 			}
 		}
 		entt::entity id = map.Create(pos);
-		map.DB().emplace<MultiRenderable>(id, sprites);
+		map.GetContext().Reg->emplace<MultiRenderable>(id, std::move(sprites));
 	}
 }
 
@@ -121,15 +121,15 @@ void SaveMap(WallMap& map, nlohmann::json& result) {
 	result = nlohmann::json::object();
 	result["Walls"] = nlohmann::json::array();
 	nlohmann::json& walls = result["Walls"];
-	auto view = map.DB().view<Wall, MultiRenderable>();
+	auto view = map.GetContext().Reg->view<Wall, MultiRenderable>();
 	for (auto id : view) {
 		glm::ivec2 pos = view.get<Wall>(id).Pos;
-		const std::vector<Sprite> sprites = view.get<MultiRenderable>(id).Images;
+		const MultiRenderable& sprites = view.get<MultiRenderable>(id);
 		nlohmann::json obj;
 		obj["Pos"] = { { "x", pos.x }, { "y", pos.y } };
 		obj["Sprites"] = nlohmann::json::array();
 		for (const auto& i : sprites) {
-			obj["Sprites"].push_back(Resources().GetSpriteInfo(i.Id).Name);
+			//obj["Sprites"].push_back(Resources().GetSpriteInfo(i.Id).Name);
 		}
 		walls.push_back(obj);
 	}

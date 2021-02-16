@@ -10,15 +10,13 @@
 #include <queue>
 
 void SandboxScene::Load() {
-	renders[0].Load(0);
-	map.Load(db);
+	map.Load({ &render, &db });
 	LoadMap(map, "sandboxLevel");
 	
 	//lights.emplace_back(259, 152);
 	//lights.emplace_back(81, 144);
 	//lights.emplace_back(158, 32);
 
-	obstructRender.Load(0, static_cast<uint32_t>(Shaders::Obstruct));
 	frameBuffer.Load(Resources().CanvasSize);
 	tmpBuffer.Load(Resources().CanvasSize);
 
@@ -30,11 +28,10 @@ void SandboxScene::Reset() {
 	db.clear();
 	frameBuffer.Reset();
 	tmpBuffer.Reset();
-	obstructRender.Reset();
 
 	lightTexture.Reset();
 	lights.clear();
-	ResetRenders(renders);
+	//ResetRenders(renders);
 }
 
 void SandboxScene::Lights() {
@@ -86,8 +83,8 @@ void SandboxScene::Update() {
 }
 
 void SandboxScene::Clear() {
-	ClearRenders(renders);
-	obstructRender.Clear();
+	//ClearRenders(renders);
+	//obstructRender.Clear();
 
 	frameBuffer.Select();
 	//frameBuffer.Clear({ 39, 39, 68, 0 });
@@ -102,7 +99,11 @@ void SandboxScene::Clear() {
 void SandboxScene::Draw() {
 	// --------- framebuffer --------- 
 	frameBuffer.Select();
-	RenderSystem(db, renders);
+	render.Draw();
+
+	if (frame == 60) {
+		frameBuffer.GetTexture().Save().Save("tmp.png");
+	}
 
 	// --------- tmpBuffer --------- 
 	tmpBuffer.Select();

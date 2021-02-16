@@ -117,10 +117,11 @@ void ResourcesInst::LoadSpriteInfo(NamedVector<SpriteInfo>& res, const std::stri
 		info.Name = it.key();
 		info.TextureId = textures.GetId("Spritesheet");
 		const auto& textureInfo = it.value()["frame"];
-		info.Position.x = textureInfo["x"].get<float>();
-		info.Position.y = textureInfo["y"].get<float>();
-		info.Size.x = textureInfo["w"].get<float>();
-		info.Size.y = textureInfo["h"].get<float>();
+		info.Value.TextPos.x = textureInfo["x"].get<float>();
+		info.Value.TextPos.y = textureInfo["y"].get<float>();
+		info.Value.TextSize.x = textureInfo["w"].get<float>();
+		info.Value.TextSize.y = textureInfo["h"].get<float>();
+		info.Value.Scale = info.Value.TextSize;
 		res.Add(std::move(info), it.key());
 	}
 }

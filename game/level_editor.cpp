@@ -2,6 +2,7 @@
 
 #include "renderable.h"
 #include "game.h"
+#include "resources.h"
 
 #include <fstream>
 #include <iostream>
@@ -15,8 +16,7 @@
 void LevelEditorScene::Load(const std::string& name) {
 	levelName = name;
 	
-	renders[0].Load(0);
-	map.Load(db);
+	map.Load({ &render, &db });
 	frameBuffer.Load(Resources().CanvasSize);
 
 	try {
@@ -28,8 +28,7 @@ void LevelEditorScene::Load(const std::string& name) {
 }
 
 void LevelEditorScene::Reset() {
-	ResetRenders(renders);
-
+	//ResetRenders(renders);
 	frameBuffer.Reset();
 	map.Reset();
 	db.clear();
@@ -46,6 +45,7 @@ bool IsWallName(const std::string& str) {
 }
 
 void LevelEditorScene::Update() {
+	/*
 	if (ImGui::GetIO().WantCaptureMouse)
 		return;
 	glm::ivec2 mousePos;
@@ -55,7 +55,7 @@ void LevelEditorScene::Update() {
 
 	bb.Center = relPos * static_cast<int32_t>(scaledTile) + glm::ivec2{ scaledTile / 2, scaledTile / 2 };
 	bb.Size = glm::vec2{ scaledTile / 2, scaledTile / 2 };
-	bb.Color = ColorType{ 255, 255, 255, 255 };
+	bb.Color = ColorRGBA{ 255, 255, 255, 255 };
 	if (Game().GetWindow().PressedMouse1) {
 		Sprite sprite(data.CurrentTile);
 		sprite.Pos = glm::vec2{ relPos.x * Resources().TileSize, relPos.y * Resources().TileSize } + glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
@@ -82,14 +82,15 @@ void LevelEditorScene::Update() {
 			map.Erase(relPos);
 		}
 	}
+	*/
 }
 
 bool DrawTileButton(const SpriteInfo& info) {
 	ImTextureID textId = reinterpret_cast<void*>(Resources().GetTexture(1).GetId());
 	glm::vec2 textSize(Resources().GetTexture(1).GetSize());
-	glm::vec2 sizeV = info.Size * 4.0f;
-	glm::vec2 uv0V = info.Position;
-	glm::vec2 uv1V = info.Position + info.Size;
+	glm::vec2 sizeV = info.Value.TextSize * 4.0f;
+	glm::vec2 uv0V = info.Value.TextPos;
+	glm::vec2 uv1V = info.Value.TextPos + info.Value.TextSize;
 	uv0V /= textSize;
 	uv1V /= textSize;
 	ImVec2 size{ sizeV.x, sizeV.y };
@@ -145,14 +146,14 @@ void LevelEditorScene::DrawGui() {
 }
 
 void LevelEditorScene::Clear() {
-	ClearRenders(renders);
+	//ClearRenders(renders);
 	frameBuffer.Select();
 	frameBuffer.Clear({ 39, 39, 68, 255 });
 }
 
 void LevelEditorScene::Draw() {
 	frameBuffer.Select();
-	RenderSystem(db, renders);
+	//RenderSystem(db, renders);
 	frameBuffer.SelectWindow();
 
 	frameBuffer.Draw(Resources().CanvasSize * Game().GetScale() / 2u, Game().GetScale(), Resources().GetShader("BufferShader"));
