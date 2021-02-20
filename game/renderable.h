@@ -1,20 +1,20 @@
 #pragma once
 
-#include "renderable.h"
 #include "sprite_ptr.h"
-#include "animated_sprite.h"
 
 #include <vector>
-#include <unordered_map>
 
-#include <entt/entt.hpp>
+class Renderable {
+public:
+	Renderable() = default;
+	Renderable(Renderable&&) = default;
+	~Renderable();
 
-using Renderable = SpritePtr;
-using MultiRenderable = std::vector<SpritePtr>;
-/*
-void ResetRenders(Renderable& render);
-void ClearRenders(Renderable& render);
+	Renderable(const Renderable&) = delete;
 
-void RenderSystem(entt::registry& db, std::unordered_map<uint32_t, BatchedRender>& renders);
-*/
-//void RenderObstructSystem(entt::registry& db, BatchedRender& render);
+	void Add(SpritePtr ptr);
+	SpritePtr Get(size_t id = 0) const;
+	void Pop();
+private:
+	std::vector<SpritePtr> sprites;
+};
