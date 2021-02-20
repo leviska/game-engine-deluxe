@@ -166,19 +166,18 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="animated_sprite.cpp" />
+    <ClCompile Include="animation.cpp" />
     <ClCompile Include="batching.cpp" />
     <ClCompile Include="framebuffer.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="level_editor.cpp" />
-    <ClCompile Include="renderable.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="glad.c" />
     <ClCompile Include="gui.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="particles.cpp" />
-    <ClCompile Include="rendering.cpp" />
+    <ClCompile Include="renderer.cpp" />
     <ClCompile Include="resources.cpp" />
     <ClCompile Include="sandbox_scene.cpp" />
     <ClCompile Include="scene.cpp" />
@@ -192,7 +191,7 @@
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="animated_sprite.h" />
+    <ClInclude Include="animation.h" />
     <ClInclude Include="assertion.h" />
     <ClInclude Include="batching.h" />
     <ClInclude Include="color.h" />
@@ -207,7 +206,7 @@
     <ClInclude Include="map.h" />
     <ClInclude Include="named_vector.h" />
     <ClInclude Include="particles.h" />
-    <ClInclude Include="rendering.h" />
+    <ClInclude Include="renderer.h" />
     <ClInclude Include="resources.h" />
     <ClInclude Include="resources_types.h" />
     <ClInclude Include="sandbox_scene.h" />

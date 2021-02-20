@@ -34,11 +34,14 @@
     <Filter Include="Resource Files\Shaders">
       <UniqueIdentifier>{e0a17520-fdcc-4a81-b92a-090eba8bc15b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Components">
+      <UniqueIdentifier>{bc8cdd64-12e9-4447-8eeb-7423e32786f4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Components">
+      <UniqueIdentifier>{48933964-59ce-44fc-acd9-504d4a6f1b85}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="animated_sprite.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="batching.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
@@ -99,20 +102,17 @@
     <ClCompile Include="glad.c">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="rendering.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="sprite_ptr.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="renderable.cpp">
-      <Filter>Source Files\Game</Filter>
+    <ClCompile Include="renderer.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="animation.cpp">
+      <Filter>Source Files\Graphics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="animated_sprite.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="batching.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -179,9 +179,6 @@
     <ClInclude Include="state_machine.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="rendering.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="named_vector.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -191,14 +188,20 @@
     <ClInclude Include="sprite_ptr.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="renderable.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="color.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="context.h">
       <Filter>Header Files\Game</Filter>
+    </ClInclude>
+    <ClInclude Include="renderer.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="renderable.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="animation.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,7 @@
-#include "animated_sprite.h"
+#include "animation.h"
 
 #include "resources.h"
-
+/*
 Animation::Animation(const std::string& dataName) {
 	AnimId = Resources().GetAnimationInfoId(dataName);
 }
@@ -29,3 +29,4 @@ void UpdateAnimations(entt::registry& db, uint32_t dt) {
 		rendView.get<Animation>(id).Update(dt);
 	}
 }
+*/

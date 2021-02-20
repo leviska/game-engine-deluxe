@@ -6,6 +6,8 @@
 
 #include <vector>
 
+class SpritePtr;
+
 class BatchedRender {
 public:
 	void Load(uint32_t TextureId, uint32_t ShaderId = static_cast<uint32_t>(Shaders::Batch));
@@ -13,9 +15,9 @@ public:
 	
 	void Clear();
 	
-	size_t Stage();
-	size_t Stage(const Sprite& sprite);
-	void Unstage(size_t id);
+	SpritePtr Stage();
+	SpritePtr Stage(const Sprite& sprite);
+	void Unstage(SpritePtr ptr);
 
 	Sprite& operator[](size_t id);
 	const Sprite& operator[](size_t id) const;

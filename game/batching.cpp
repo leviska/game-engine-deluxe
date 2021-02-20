@@ -1,6 +1,7 @@
 #include "batching.h"
 
 #include "resources.h"
+#include "sprite_ptr.h"
 
 #include <glad/glad.h>
 #include <glm/glm.hpp>
@@ -28,21 +29,21 @@ void BatchedRender::Clear() {
 	data.Clear();
 }
 
-size_t BatchedRender::Stage() {
+SpritePtr BatchedRender::Stage() {
 	size_t id = data.Alloc();
 	data[id] = Sprite();
-	return id;
+	return SpritePtr(id, this);
 }
 
-size_t BatchedRender::Stage(const Sprite& sprite) {
+SpritePtr BatchedRender::Stage(const Sprite& sprite) {
 	size_t id = data.Alloc();
 	data[id] = sprite;
-	return id;
+	return SpritePtr(id, this);
 }
 
-void BatchedRender::Unstage(size_t id) {
-	data[id].Color = glm::vec4{ 0, 0, 0, 0 };
-	data.Dealloc(id);
+void BatchedRender::Unstage(SpritePtr ptr) {
+	ptr->Color = glm::vec4{ 0, 0, 0, 0 };
+	data.Dealloc(ptr.spriteId);
 }
 
 Sprite& BatchedRender::operator[](size_t id) {

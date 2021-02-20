@@ -1,20 +1,20 @@
 #pragma once
 
 #include "sprite_ptr.h"
+#include "resources_types.h"
 
 #include <memory>
 #include <unordered_map>
 
-class Rendering {
-public:
+class Renderer {
+public: 
 	void Load();
 	void Reset();
 
 	SpritePtr Stage(size_t textureId);
 	SpritePtr Stage(const Sprite& sprite, size_t textureId);
+	SpritePtr Stage(const SpriteInfo& info);
 	SpritePtr Stage(const std::string& name);
-
-	void Unstage(const SpritePtr& ptr);
 
 	void Draw();
 private:
