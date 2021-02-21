@@ -5,7 +5,7 @@ Currently not intented to be a full engine, library or starting project, but use
 
 ## Building
 Main project is `game`  
-Opening solution in Visual Studio 2019 and building must do everything
+Opening solution in Visual Studio 2019, selecting `game` as startup project and building must do everything
 
 ## Created with this
 
