@@ -26,12 +26,7 @@ uint32_t GameInst::GetScale() {
 
 void GameInst::Load() {
 	window.Load();
-	if (leOpen) {
-		leScene.Load();
-	}
-	else {
-		scene.Load();
-	}
+	// TODO LOAD
 }
 
 void GameInst::Run() {
@@ -51,22 +46,9 @@ void GameInst::Update() {
 
 	window.Update();
 
-	if (window.F2Pressed) {
-		if (!leOpen) {
-			scene.Reset();
-			leScene.Load();
-		}
-		else {
-			leScene.Reset();
-			scene.Load();
-		}
-		leOpen = !leOpen;
-	}
+	// TODO SWITCH
 
-	if (!leOpen)
-		scene.Update();
-	else
-		leScene.Update();
+	// TODO UPDATE
 
 	if (resetResources) {
 		Resources().Reset();
@@ -81,17 +63,11 @@ void GameInst::Update() {
 
 void GameInst::Clear() {
 	window.Clear();
-	if (!leOpen)
-		scene.Clear();
-	else
-		leScene.Clear();
+	// TODO CLEAR
 }
 
 void GameInst::Draw() {
-	if (!leOpen)
-		scene.Draw();
-	else
-		leScene.Draw();
+	// TODO DRAW
 
 	ImGui::Begin("Resources info", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 	resetResources = ImGui::Button("Reload");

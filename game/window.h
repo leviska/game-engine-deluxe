@@ -2,31 +2,26 @@
 #include "shader.h"
 #include "gui.h"
 
-#include "animated_sprite.h"
-
 #include <sdl2/SDL.h>
 
 class Window
 {
-	bool open = false;
-	bool fullscreen = false;
-
 	SDL_Window* window = nullptr;
 	SDL_GLContext glcontext = nullptr;
 
+	bool open = false;
+	bool fullscreen = false;
 	glm::uvec2 size = { 800, 600 };
+	glm::vec4 clearColor;
 
-	GUI gui{};
+	GUI gui;
 
 	void LoadSDL();
 	void LoadOpenGL();
 
 	void ProcessEvents();
+	void ProcessKeys();
 public:
-	bool F2Pressed = false;
-	bool PressedMouse1 = false;
-	bool PressedMouse2 = false;
-
 	Window() = default;
     ~Window();
 
@@ -39,7 +34,9 @@ public:
 	void Clear();
 	void Render();
 
-	bool Open() { return open; }
+	bool Open();
 
-	glm::uvec2 GetSize() { return size; }
+	void SetClearColor(const glm::vec4& color);
+
+	glm::uvec2 GetSize();
 };

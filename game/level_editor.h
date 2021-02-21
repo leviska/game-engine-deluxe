@@ -9,7 +9,7 @@
 #include "entt/entt.hpp"
 
 class LevelEditorScene : public Scene {
-	Rendering render;
+	Renderer render;
 	FrameBuffer frameBuffer;
 
 	entt::registry db;

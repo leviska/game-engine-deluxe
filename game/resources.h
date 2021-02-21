@@ -5,7 +5,6 @@
 #include "texture.h"
 #include "named_vector.h"
 #include "sprite.h"
-#include "animated_sprite.h"
 
 #include <nlohmann/json.hpp>
 

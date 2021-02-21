@@ -16,7 +16,7 @@
 void LevelEditorScene::Load(const std::string& name) {
 	levelName = name;
 	
-	map.Load({ &render, &db });
+	//map.Load({ &render, &db });
 	frameBuffer.Load(Resources().CanvasSize);
 
 	try {

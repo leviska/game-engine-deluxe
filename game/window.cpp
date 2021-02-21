@@ -4,6 +4,7 @@
 #include "assertion.h"
 
 #include "imgui.h"
+#include "input.h"
 
 #include <cassert>
 #include <stdexcept>
@@ -103,11 +104,10 @@ void Window::Reset() {
 
 void Window::ProcessEvents() {
 	SDL_Event event;
-	F2Pressed = false;
-	PressedMouse1 = false;
-	PressedMouse2 = false;
 	while (SDL_PollEvent(&event) != 0) {
 		gui.ProcessEvents(event);
+		InputMut().Update(event);
+
 		switch (event.type) {
 		case SDL_QUIT: {
 			open = false;
@@ -120,28 +120,14 @@ void Window::ProcessEvents() {
 			}
 			break;
 		}
-		case SDL_KEYDOWN: {
-			if (event.key.keysym.sym == SDLK_F11) {
-				fullscreen = !fullscreen;
-				SDL_SetWindowFullscreen(window, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
-			}
-			else if (event.key.keysym.sym == SDLK_F2) {
-				F2Pressed = true;
-			}
-			break;
 		}
-		case SDL_MOUSEBUTTONDOWN: {
-			if (!ImGui::GetIO().WantCaptureMouse) {
-				if (event.button.button == SDL_BUTTON_LEFT) {
-					PressedMouse1 = true;
-				}
-				else if (event.button.button == SDL_BUTTON_RIGHT) {
-					PressedMouse2 = true;
-				}
-			}
-			break;
-		}
-		}
+	}
+}
+
+void Window::ProcessKeys() {
+	if (Input().KeyPressed(Keyboard::F11)) {
+		fullscreen = !fullscreen;
+		SDL_SetWindowFullscreen(window, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
 	}
 }
 
@@ -150,7 +136,9 @@ void Window::UpdateViewport() {
 }
 
 void Window::Update() {
+	InputMut().Tick();
 	ProcessEvents();
+	ProcessKeys();
 }
 
 void Window::Clear() {
@@ -163,4 +151,16 @@ void Window::Clear() {
 void Window::Render() {
 	gui.Render();
 	SDL_GL_SwapWindow(window);
+}
+
+bool Window::Open() {
+	return open;
+}
+
+void Window::SetClearColor(const glm::vec4& color) {
+	clearColor = color;
+}
+
+glm::uvec2 Window::GetSize() {
+	return size;
 }

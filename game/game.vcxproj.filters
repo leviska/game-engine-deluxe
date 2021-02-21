@@ -40,6 +40,12 @@
     <Filter Include="Source Files\Components">
       <UniqueIdentifier>{48933964-59ce-44fc-acd9-504d4a6f1b85}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Engine">
+      <UniqueIdentifier>{f9cc8af1-b5ed-47aa-95c0-4b5f6cae013a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Engine">
+      <UniqueIdentifier>{ae151ece-e722-45cd-a567-6e6f9369ac5e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="batching.cpp">
@@ -96,9 +102,6 @@
     <ClCompile Include="scene.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="state_machine.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="glad.c">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
@@ -110,6 +113,9 @@
     </ClCompile>
     <ClCompile Include="animation.cpp">
       <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="state_machine.cpp">
+      <Filter>Source Files\Utility</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -176,9 +182,6 @@
     <ClInclude Include="scene.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="state_machine.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="named_vector.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -202,6 +205,9 @@
     </ClInclude>
     <ClInclude Include="animation.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="state_machine.h">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

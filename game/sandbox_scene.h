@@ -15,7 +15,7 @@ public:
 	FrameBuffer frameBuffer;
 	FrameBuffer tmpBuffer;
 
-	Rendering render;
+	Renderer render;
 	Texture lightTexture;
 	std::vector<glm::ivec2> lights;
 
