@@ -101,10 +101,6 @@ void SandboxScene::Draw() {
 	frameBuffer.Select();
 	render.Draw();
 
-	if (frame == 60) {
-		frameBuffer.GetTexture().Save().Save("tmp.png");
-	}
-
 	// --------- tmpBuffer --------- 
 	tmpBuffer.Select();
 	
