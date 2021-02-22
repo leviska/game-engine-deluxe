@@ -170,6 +170,7 @@
     <ClCompile Include="batching.cpp" />
     <ClCompile Include="framebuffer.cpp" />
     <ClCompile Include="image.cpp" />
+    <ClCompile Include="input.cpp" />
     <ClCompile Include="level_editor.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="glad.c" />
@@ -181,6 +182,7 @@
     <ClCompile Include="resources.cpp" />
     <ClCompile Include="sandbox_scene.cpp" />
     <ClCompile Include="scene.cpp" />
+    <ClCompile Include="scene_controller.cpp" />
     <ClCompile Include="shader.cpp" />
     <ClCompile Include="shapes.cpp" />
     <ClCompile Include="sprite.cpp" />
@@ -195,9 +197,9 @@
     <ClInclude Include="assertion.h" />
     <ClInclude Include="batching.h" />
     <ClInclude Include="color.h" />
-    <ClInclude Include="context.h" />
     <ClInclude Include="framebuffer.h" />
     <ClInclude Include="image.h" />
+    <ClInclude Include="input.h" />
     <ClInclude Include="level_editor.h" />
     <ClInclude Include="level_scene.h" />
     <ClInclude Include="renderable.h" />
@@ -211,6 +213,7 @@
     <ClInclude Include="resources_types.h" />
     <ClInclude Include="sandbox_scene.h" />
     <ClInclude Include="scene.h" />
+    <ClInclude Include="scene_controller.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="shapes.h" />
     <ClInclude Include="sprite.h" />

@@ -1,6 +1,7 @@
 #include "game.h"
 
 #include "imgui.h"
+#include "input.h"
 #include "resources.h"
 
 #include <iostream>
@@ -15,9 +16,18 @@ GameInst& Game() {
 	return GameInst::GetInstance();
 }
 
-Scene& GameInst::GetCurrentScene() {
-	return scene;
+FPSInfo GameInst::FPS() {
+	return fps.LastFrame();
 }
+
+SceneController& GameInst::GetSceneController() {
+	return scenes;
+}
+
+Window& GameInst::GetWindow() {
+	return window;
+};
+
 
 uint32_t GameInst::GetScale() {
 	glm::uvec2 scale = window.GetSize() / Resources().CanvasSize;
@@ -26,7 +36,7 @@ uint32_t GameInst::GetScale() {
 
 void GameInst::Load() {
 	window.Load();
-	// TODO LOAD
+	scenes.Load();
 }
 
 void GameInst::Run() {
@@ -46,9 +56,12 @@ void GameInst::Update() {
 
 	window.Update();
 
-	// TODO SWITCH
+	if (Input().KeyPressed(Keyboard::F2)) {
+		Scenes scene = scenes.CurrentState() == Scenes::Sandbox ? Scenes::LevelEditor : Scenes::Sandbox;
+		scenes.SceneState().ChangeState(static_cast<int32_t>(scene));
+	}
 
-	// TODO UPDATE
+	scenes.CurrentScene().Update();
 
 	if (resetResources) {
 		Resources().Reset();
@@ -63,11 +76,11 @@ void GameInst::Update() {
 
 void GameInst::Clear() {
 	window.Clear();
-	// TODO CLEAR
+	scenes.CurrentScene().Clear();
 }
 
 void GameInst::Draw() {
-	// TODO DRAW
+	scenes.CurrentScene().Draw();
 
 	ImGui::Begin("Resources info", nullptr, ImGuiWindowFlags_AlwaysAutoResize);
 	resetResources = ImGui::Button("Reload");

@@ -29,11 +29,64 @@ void KeyManager::Update(size_t id, bool up) {
 
 
 const std::unordered_map<SDL_KeyCode, Keyboard> SDLKEYMAP{
-	{ SDL_KeyCode::SDLK_q, Keyboard::Q }, 
+	{ SDL_KeyCode::SDLK_q, Keyboard::Q },
+	{ SDL_KeyCode::SDLK_w, Keyboard::W },
+	{ SDL_KeyCode::SDLK_e, Keyboard::E },
+	{ SDL_KeyCode::SDLK_r, Keyboard::R },
+	{ SDL_KeyCode::SDLK_t, Keyboard::T },
+	{ SDL_KeyCode::SDLK_y, Keyboard::Y },
+	{ SDL_KeyCode::SDLK_u, Keyboard::U },
+	{ SDL_KeyCode::SDLK_i, Keyboard::I },
+	{ SDL_KeyCode::SDLK_o, Keyboard::O },
+	{ SDL_KeyCode::SDLK_p, Keyboard::P },
+	{ SDL_KeyCode::SDLK_a, Keyboard::A },
+	{ SDL_KeyCode::SDLK_s, Keyboard::S },
+	{ SDL_KeyCode::SDLK_d, Keyboard::D },
+	{ SDL_KeyCode::SDLK_f, Keyboard::F },
+	{ SDL_KeyCode::SDLK_g, Keyboard::G },
+	{ SDL_KeyCode::SDLK_h, Keyboard::H },
+	{ SDL_KeyCode::SDLK_j, Keyboard::J },
+	{ SDL_KeyCode::SDLK_k, Keyboard::K },
+	{ SDL_KeyCode::SDLK_l, Keyboard::L },
+	{ SDL_KeyCode::SDLK_z, Keyboard::Z },
+	{ SDL_KeyCode::SDLK_x, Keyboard::X },
+	{ SDL_KeyCode::SDLK_c, Keyboard::C },
+	{ SDL_KeyCode::SDLK_v, Keyboard::V },
+	{ SDL_KeyCode::SDLK_b, Keyboard::B },
+	{ SDL_KeyCode::SDLK_n, Keyboard::N },
+	{ SDL_KeyCode::SDLK_m, Keyboard::M },
+	{ SDL_KeyCode::SDLK_1, Keyboard::KEY1 },
+	{ SDL_KeyCode::SDLK_2, Keyboard::KEY2 },
+	{ SDL_KeyCode::SDLK_3, Keyboard::KEY3 },
+	{ SDL_KeyCode::SDLK_4, Keyboard::KEY4 },
+	{ SDL_KeyCode::SDLK_5, Keyboard::KEY5 },
+	{ SDL_KeyCode::SDLK_6, Keyboard::KEY6 },
+	{ SDL_KeyCode::SDLK_7, Keyboard::KEY7 },
+	{ SDL_KeyCode::SDLK_8, Keyboard::KEY8 },
+	{ SDL_KeyCode::SDLK_9, Keyboard::KEY9 },
+	{ SDL_KeyCode::SDLK_0, Keyboard::KEY0 },
+	{ SDL_KeyCode::SDLK_F1, Keyboard::F1 },
+	{ SDL_KeyCode::SDLK_F2, Keyboard::F2 },
+	{ SDL_KeyCode::SDLK_F3, Keyboard::F3 },
+	{ SDL_KeyCode::SDLK_F4, Keyboard::F4 },
+	{ SDL_KeyCode::SDLK_F5, Keyboard::F5 },
+	{ SDL_KeyCode::SDLK_F6, Keyboard::F6 },
+	{ SDL_KeyCode::SDLK_F7, Keyboard::F7 },
+	{ SDL_KeyCode::SDLK_F8, Keyboard::F8 },
+	{ SDL_KeyCode::SDLK_F9, Keyboard::F9 },
+	{ SDL_KeyCode::SDLK_F10, Keyboard::F10 },
+	{ SDL_KeyCode::SDLK_F11, Keyboard::F11 },
+	{ SDL_KeyCode::SDLK_F12, Keyboard::F12 },
+	{ SDL_KeyCode::SDLK_ESCAPE, Keyboard::ESC },
+	{ SDL_KeyCode::SDLK_KP_ENTER, Keyboard::ENTER },
+	{ SDL_KeyCode::SDLK_KP_TAB, Keyboard::TAB },
+	{ SDL_KeyCode::SDLK_LCTRL, Keyboard::LCTRL },
+	{ SDL_KeyCode::SDLK_LSHIFT, Keyboard::LSHIFT },
+	{ SDL_KeyCode::SDLK_LALT, Keyboard::LALT },
 };
 
 
-InputImpl::InputImpl() : keyboard(static_cast<size_t>(Keyboard::KEYBOARD_SIZE)) {}
+InputImpl::InputImpl() : keyboard(static_cast<size_t>(Keyboard::KeyboardSize)) {}
 
 void InputImpl::Load() {
 	// TODO: load keymap
@@ -49,15 +102,21 @@ void InputImpl::Tick() {
 }
 
 void InputImpl::Update(const SDL_Event& event) {
+	auto updateKey = [&](bool value) {
+		auto it = SDLKEYMAP.find(static_cast<SDL_KeyCode>(event.key.keysym.sym));
+		if (it != SDLKEYMAP.end()) {
+			Keyboard key = it->second;
+			keyboard.Update(static_cast<size_t>(key), value);
+		}
+	};
+
 	switch (event.type) {
 	case SDL_KEYDOWN: {
-		Keyboard key = SDLKEYMAP.at(static_cast<SDL_KeyCode>(event.key.keysym.sym));
-		keyboard.Update(static_cast<size_t>(key), false);
+		updateKey(false);
 		break;
 	}
 	case SDL_KEYUP: {
-		Keyboard key = SDLKEYMAP.at(static_cast<SDL_KeyCode>(event.key.keysym.sym));
-		keyboard.Update(static_cast<size_t>(key), true);
+		updateKey(true);
 		break;
 	}
 	}

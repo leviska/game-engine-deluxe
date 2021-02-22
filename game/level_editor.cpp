@@ -20,7 +20,7 @@ void LevelEditorScene::Load(const std::string& name) {
 	frameBuffer.Load(Resources().CanvasSize);
 
 	try {
-		LoadMap(map, name);
+		LoadMap(map, db, render, name);
 	}
 	catch (std::runtime_error exp) {
 		// can't find file, ignore
@@ -30,8 +30,9 @@ void LevelEditorScene::Load(const std::string& name) {
 void LevelEditorScene::Reset() {
 	//ResetRenders(renders);
 	frameBuffer.Reset();
-	map.Reset();
+	map.clear();
 	db.clear();
+	render.Reset();
 	levelName.clear();
 }
 
@@ -110,7 +111,7 @@ void LevelEditorScene::DrawGui() {
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("Save")) {
-		SaveMap(map, levelName);
+		SaveMap(map, db, levelName);
 	}
 	
 	ImGuiStyle& style = ImGui::GetStyle();

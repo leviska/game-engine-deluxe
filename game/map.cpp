@@ -7,8 +7,8 @@
 #include <fstream>
 
 
-void LoadMap(MapView& map, entt::registry& reg, Renderer& render, const std::string& fileName) {
-	std::string fileName = std::string("assets/") + fileName + std::string(".json");
+void LoadMap(MapView& map, entt::registry& reg, Renderer& render, const std::string& name) {
+	std::string fileName = std::string("assets/") + name + std::string(".json");
 	std::ifstream file(fileName);
 	if (!file.good()) {
 		THROWERROR("Cannot open file " + fileName);
@@ -36,8 +36,8 @@ void LoadMap(MapView& map, entt::registry& reg, Renderer& render, const nlohmann
 	}
 }
 
-void SaveMap(const MapView& map, const entt::registry& reg, const std::string& fileName) {
-	std::string fileName = std::string("assets/") + fileName + std::string(".json");
+void SaveMap(const MapView& map, const entt::registry& reg, const std::string& name) {
+	std::string fileName = std::string("assets/") + name + std::string(".json");
 	std::ofstream file(fileName);
 	if (!file.good()) {
 		THROWERROR("Cannot open file " + fileName);

@@ -10,8 +10,7 @@
 #include <queue>
 
 void SandboxScene::Load() {
-	map.Load({ &render, &db });
-	LoadMap(map, "sandboxLevel");
+	LoadMap(map, db, render, std::string("sandboxLevel"));
 	
 	//lights.emplace_back(259, 152);
 	//lights.emplace_back(81, 144);
@@ -24,14 +23,14 @@ void SandboxScene::Load() {
 }
 
 void SandboxScene::Reset() {
-	map.Reset();
+	map.clear();
 	db.clear();
 	frameBuffer.Reset();
 	tmpBuffer.Reset();
+	render.Reset();
 
 	lightTexture.Reset();
 	lights.clear();
-	//ResetRenders(renders);
 }
 
 void SandboxScene::Lights() {
@@ -68,13 +67,14 @@ void SandboxScene::Lights() {
 	Resources().GetShader("LightShader").SetFloat("Time", time);
 	Resources().GetShader("LightShader").SetInt32("LightsSize", static_cast<int>(lights.size()));
 	Resources().GetShader("LightShader").SetIVec2Vec("Lights", lights);
-	
-	if (!Game().GetWindow().PressedMouse1) {
+
+	lights.pop_back();
+	/*if (!Game().GetWindow().PressedMouse1) {
 		lights.pop_back();
 	}
 	if (!lights.empty() && Game().GetWindow().PressedMouse2) {
 		lights.pop_back();
-	}
+	}*/
 }
 
 void SandboxScene::Update() {

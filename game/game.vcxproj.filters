@@ -117,6 +117,12 @@
     <ClCompile Include="state_machine.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="input.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
+    <ClCompile Include="scene_controller.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="batching.h">
@@ -194,9 +200,6 @@
     <ClInclude Include="color.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="context.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
     <ClInclude Include="renderer.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
@@ -208,6 +211,12 @@
     </ClInclude>
     <ClInclude Include="state_machine.h">
       <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="input.h">
+      <Filter>Header Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="scene_controller.h">
+      <Filter>Header Files\Game</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

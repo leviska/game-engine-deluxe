@@ -26,7 +26,7 @@ const Sprite* SpritePtr::operator->() const {
 
 
 SpritePtr::operator bool() const {
-	return spriteId != std::numeric_limits<size_t>::max() && render != nullptr;
+	return render != nullptr && spriteId != std::numeric_limits<size_t>::max();
 }
 
 void SpritePtr::Unstage() {
@@ -38,8 +38,23 @@ void SpritePtr::Unstage() {
 
 SpriteOwner::SpriteOwner(SpritePtr ptr) : sprite(ptr) {}
 
+
+SpriteOwner::SpriteOwner(SpriteOwner&& other) noexcept {
+	sprite = other.sprite;
+	other.sprite = SpritePtr();
+}
+
+SpriteOwner& SpriteOwner::operator=(SpriteOwner&& other) noexcept {
+	sprite = other.sprite;
+	other.sprite = SpritePtr();
+	return *this;
+}
+
+ 
 SpriteOwner::~SpriteOwner() {
-	sprite.Unstage();
+	if (sprite) {
+		sprite.Unstage();
+	}
 }
 
 

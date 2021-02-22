@@ -24,14 +24,14 @@ class StateMachine {
 public:
 	StateMachine();
 
-	int32_t State() const { return currentState; }
-	int32_t PreviousState() const { return previousState; }
+	int32_t State() const;
+	int32_t PreviousState() const;
 
-	void AddState(int32_t id) { state.emplace(id, Node()); }
+	void AddState(int32_t id);
 
-	void SetBeginCallback(int32_t st, std::function<void(StateMachine const&)> const& f) { state[st].BeginCallback = f; }
-	void SetUpdateCallback(int32_t st, std::function<int32_t(StateMachine const&)> const& f) { state[st].UpdateCallback = f; }
-	void SetEndCallback(int32_t st, std::function<void(StateMachine const&)> const& f) { state[st].EndCallback = f; }
+	void SetBeginCallback(int32_t st, std::function<void(StateMachine const&)> const& f);
+	void SetUpdateCallback(int32_t st, std::function<int32_t(StateMachine const&)> const& f);
+	void SetEndCallback(int32_t st, std::function<void(StateMachine const&)> const& f);
 
 	void ChangeState(int32_t st);
 	bool Update();

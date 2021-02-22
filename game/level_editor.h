@@ -13,7 +13,7 @@ class LevelEditorScene : public Scene {
 	FrameBuffer frameBuffer;
 
 	entt::registry db;
-	WallMap map;
+	MapView map;
 
 	std::string levelName;
 

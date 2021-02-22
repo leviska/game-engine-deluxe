@@ -13,17 +13,17 @@ enum class Keyboard {
 	F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12, // functional keys
 	ESC, ENTER, TAB, // esc
 	LCTRL, LSHIFT, LALT, // control keys
-	KEYBOARD_SIZE // total keys
+	KeyboardSize // total keys
 };
 
 enum class Gamepad {
 	// TODO
-	GAMEPAD_SIZE // total keys
+	GamepadSize // total keys
 };
 
 enum class GameKey {
 	Top, Right, Bottom, Left, // movement
-	GAMEKEY_SIZE // total keys
+	GameKeySize // total keys
 };
 
 class KeyManager {

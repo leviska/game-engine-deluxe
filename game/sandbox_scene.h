@@ -23,7 +23,7 @@ public:
 	int frame = 0;
 
 	entt::registry db;
-	WallMap map;
+	MapView map;
 
 	void Load();
 	void Reset() override;

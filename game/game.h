@@ -2,12 +2,12 @@
 
 #include "window.h"
 #include "fps.h"
-#include "level_editor.h"
-#include "sandbox_scene.h"
+#include "scene_controller.h"
 
 class GameInst {
 	Window window;
 	FPS fps;
+	SceneController scenes;
 	
 	bool running = true;
 	bool resetResources = false;
@@ -19,9 +19,9 @@ public:
 
 	void Run();
 
-	FPSInfo FPS() { return fps.LastFrame(); }
-	Scene& GetCurrentScene();
-	Window& GetWindow() { return window; };
+	FPSInfo FPS();
+	SceneController& GetSceneController();
+	Window& GetWindow();
 	uint32_t GetScale();
 
 	void UpdateViewport(glm::vec2 size);

@@ -27,8 +27,8 @@ private:
 class SpriteOwner {
 public:
 	SpriteOwner(SpritePtr ptr);
-	SpriteOwner(SpriteOwner&& other) = default;
-	SpriteOwner& operator=(SpriteOwner&&) = default;
+	SpriteOwner(SpriteOwner&& other) noexcept;
+	SpriteOwner& operator=(SpriteOwner&&) noexcept;
 	SpriteOwner(const SpriteOwner&) = delete;
 	SpriteOwner& operator=(const SpriteOwner&) = delete;
 	~SpriteOwner();
