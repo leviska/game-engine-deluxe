@@ -17,7 +17,7 @@ enum class Keyboard {
 };
 
 enum class Mouse {
-	Left, Right,
+	Left, Right, Middle,
 	MouseSize
 };
 
@@ -67,6 +67,8 @@ public:
 
 	bool KeyDown(GameKey key) const;
 	bool KeyPressed(GameKey key) const;
+
+	bool MouseCaptured() const; // by imgui
 private:
 	struct KeyPair {
 		Keyboard Key;

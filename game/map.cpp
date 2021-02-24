@@ -34,46 +34,48 @@ void UpdateWallSprite(entt::entity id, const MapView& map, entt::registry& reg, 
 		return;
 	}
 
-	std::bitset<8> neigh; // right, bottom right, bottom, ...
-	const std::array<glm::ivec2, 8> shifts = { glm::ivec2{ 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 }, { -1, -1 }, { 0, -1 }, { 1, -1 } };
-	for (int i = 0; i < 8; i++) {
-		glm::ivec2 cur = pos + shifts[i];
-		auto it = map.find(cur);
-		neigh[i] = it != map.end() && !it->second.empty() && reg.has<CeilingObstruct>(it->second[0]);
-	}
+	if (reg.has<CeilingObstruct>(id)) {
+		std::bitset<8> neigh; // right, bottom right, bottom, ...
+		const std::array<glm::ivec2, 8> shifts = { glm::ivec2{ 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 }, { -1, -1 }, { 0, -1 }, { 1, -1 } };
+		for (int i = 0; i < 8; i++) {
+			glm::ivec2 cur = pos + shifts[i];
+			auto it = map.find(cur);
+			neigh[i] = it != map.end() && !it->second.empty() && reg.has<CeilingObstruct>(it->second[0]);
+		}
 
-	// middle tiles
-	const std::unordered_map<int, int> mapping = { { 0, 15 }, { 2, 0 }, { 4, 5 }, { 6, 10 } };
-	for (int i = 0; i < 8; i += 2) {
-		if (neigh[i])
-			continue;
-		SpritePtr sptr = render.Stage(Resources().GetSpriteInfo(mapping.at(i)));
-		sptr->Pos = GetSpritePos(pos);
-		rend.emplace_back(sptr);
-	}
+		// middle tiles
+		const std::unordered_map<int, int> mapping = { { 0, 15 }, { 2, 0 }, { 4, 5 }, { 6, 10 } };
+		for (int i = 0; i < 8; i += 2) {
+			if (neigh[i])
+				continue;
+			SpritePtr sptr = render.Stage(Resources().GetSpriteInfo(mapping.at(i)));
+			sptr->Pos = GetSpritePos(pos);
+			rend.emplace_back(sptr);
+		}
 
-	const std::unordered_map<int, int> cormap = { { 1, 16 }, { 3, 1 }, { 5, 6 }, { 7, 11 } };
-	for (int i = 1; i < 8; i += 2) {
-		int type = neigh[i] + neigh[(i + 1) % 8] * 2 + neigh[(i + 7) % 8] * 4;
-		int spr = 0;
-		if (type <= 1) {
-			spr = 0;
+		const std::unordered_map<int, int> cormap = { { 1, 16 }, { 3, 1 }, { 5, 6 }, { 7, 11 } };
+		for (int i = 1; i < 8; i += 2) {
+			int type = neigh[i] + neigh[(i + 1) % 8] * 2 + neigh[(i + 7) % 8] * 4;
+			int spr = 0;
+			if (type <= 1) {
+				spr = 0;
+			}
+			else if (type >= 2 && type <= 3) {
+				spr = 2;
+			}
+			else if (type >= 4 && type <= 5) {
+				spr = 3;
+			}
+			else if (type == 6) {
+				spr = 1;
+			}
+			else {
+				continue;
+			}
+			SpritePtr sptr = render.Stage(Resources().GetSpriteInfo(cormap.at(i) + spr));
+			sptr->Pos = GetSpritePos(pos);
+			rend.emplace_back(sptr);
 		}
-		else if (type >= 2 && type <= 3) {
-			spr = 2;
-		}
-		else if (type >= 4 && type <= 5) {
-			spr = 3;
-		}
-		else if (type == 6) {
-			spr = 1;
-		}
-		else {
-			continue;
-		}
-		SpritePtr sptr = render.Stage(Resources().GetSpriteInfo(cormap.at(i) + spr));
-		sptr->Pos = GetSpritePos(pos);
-		rend.emplace_back(sptr);
 	}
 }
 

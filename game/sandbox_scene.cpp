@@ -3,6 +3,7 @@
 #include "game.h"
 #include "renderable.h"
 #include "resources.h"
+#include "input.h"
 
 #include "imgui.h"
 
@@ -68,13 +69,12 @@ void SandboxScene::Lights() {
 	Resources().GetShader("LightShader").SetInt32("LightsSize", static_cast<int>(lights.size()));
 	Resources().GetShader("LightShader").SetIVec2Vec("Lights", lights);
 
-	lights.pop_back();
-	/*if (!Game().GetWindow().PressedMouse1) {
+	if (!Input().KeyPressed(Mouse::Left)) {
 		lights.pop_back();
 	}
-	if (!lights.empty() && Game().GetWindow().PressedMouse2) {
+	if (!lights.empty() && Input().KeyPressed(Mouse::Right)) {
 		lights.pop_back();
-	}*/
+	}
 }
 
 void SandboxScene::Update() {

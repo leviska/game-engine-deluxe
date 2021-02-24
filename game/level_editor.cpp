@@ -55,37 +55,39 @@ void LevelEditorScene::Update() {
 	bb.Center = relPos * static_cast<int32_t>(scaledTile) + glm::ivec2{ scaledTile / 2, scaledTile / 2 };
 	bb.Size = glm::vec2{ scaledTile / 2, scaledTile / 2 };
 	bb.Color = ColorRGBA{ 255, 255, 255, 255 };
-	if (Input().KeyPressed(Mouse::Left) || Input().KeyDown(Mouse::Left) && prevPos != relPos) {
-		entt::entity id;
-		if (map[relPos].empty()) {
-			id = CreateElement(relPos, map, db);
-		}
-		else {
-			id = map[relPos][0];
-		}
-		db.remove_if_exists<CeilingObstruct>(id);
-		db.remove_if_exists<FrontWallObstruct>(id);
-		if (data.CurrentTile == "WallFace00") {
-			db.emplace<FrontWallObstruct>(id);
-		}
-		else {
-			db.emplace<CeilingObstruct>(id);
-		}
+	if (!Input().MouseCaptured()) {
+		if (Input().KeyPressed(Mouse::Left) || Input().KeyDown(Mouse::Left) && prevPos != relPos) {
+			entt::entity id;
+			if (map[relPos].empty()) {
+				id = CreateElement(relPos, map, db);
+			}
+			else {
+				id = map[relPos][0];
+			}
+			db.remove_if_exists<CeilingObstruct>(id);
+			db.remove_if_exists<FrontWallObstruct>(id);
+			if (data.CurrentTile == "WallFace00") {
+				db.emplace<FrontWallObstruct>(id);
+			}
+			else {
+				db.emplace<CeilingObstruct>(id);
+			}
 
-		for (const auto& vec : map) {
-			for (auto id : vec.second) {
-				UpdateWallSprite(id, map, db, render);
+			for (const auto& vec : map) {
+				for (auto id : vec.second) {
+					UpdateWallSprite(id, map, db, render);
+				}
 			}
 		}
-	}
-	if (Input().KeyPressed(Mouse::Right) || Input().KeyDown(Mouse::Right) && prevPos != relPos) {
-		if (!map[relPos].empty()) {
-			db.destroy(map[relPos][0]);
-			map[relPos].clear();
-		}
-		for (const auto& vec : map) {
-			for (auto id : vec.second) {
-				UpdateWallSprite(id, map, db, render);
+		if (Input().KeyPressed(Mouse::Right) || Input().KeyDown(Mouse::Right) && prevPos != relPos) {
+			if (!map[relPos].empty()) {
+				db.destroy(map[relPos][0]);
+				map[relPos].clear();
+			}
+			for (const auto& vec : map) {
+				for (auto id : vec.second) {
+					UpdateWallSprite(id, map, db, render);
+				}
 			}
 		}
 	}

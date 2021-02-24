@@ -88,6 +88,12 @@ const std::unordered_map<SDL_KeyCode, Keyboard> SDLKEYMAP{
 	{ SDL_KeyCode::SDLK_LALT, Keyboard::LALT },
 };
 
+const std::unordered_map<int, Mouse> SDLMOUSEMAP{
+	{ SDL_BUTTON_LEFT, Mouse::Left },
+	{ SDL_BUTTON_RIGHT, Mouse::Right },
+	{ SDL_BUTTON_MIDDLE, Mouse::Middle },
+};
+
 
 InputImpl::InputImpl()
 	: keyboard(static_cast<size_t>(Keyboard::KeyboardSize))
@@ -107,38 +113,31 @@ void InputImpl::Tick() {
 	mouse.Tick();
 }
 
-void InputImpl::Update(const SDL_Event& event) {
-	auto updateKey = [&](bool value) {
-		auto it = SDLKEYMAP.find(static_cast<SDL_KeyCode>(event.key.keysym.sym));
-		if (it != SDLKEYMAP.end()) {
-			Keyboard key = it->second;
-			keyboard.Update(static_cast<size_t>(key), value);
-		}
-	};
+template<typename SDLType, typename MyType>
+void UpdateKey(const std::unordered_map<SDLType, MyType>& map, KeyManager& manager, SDLType sdlkey, bool value) {
+	auto it = map.find(sdlkey);
+	if (it != map.end()) {
+		MyType key = it->second;
+		manager.Update(static_cast<size_t>(key), value);
+	}
+}
 
+void InputImpl::Update(const SDL_Event& event) {
 	switch (event.type) {
 	case SDL_KEYDOWN: {
-		updateKey(true);
+		UpdateKey<SDL_KeyCode, Keyboard>(SDLKEYMAP, keyboard, static_cast<SDL_KeyCode>(event.key.keysym.sym), true);
 		break;
 	}
 	case SDL_KEYUP: {
-		updateKey(false);
+		UpdateKey<SDL_KeyCode, Keyboard>(SDLKEYMAP, keyboard, static_cast<SDL_KeyCode>(event.key.keysym.sym), false);
 		break;
 	}
 	case SDL_MOUSEBUTTONDOWN: {
-		auto button = event.button.button;
-		if (button == SDL_BUTTON_LEFT || button == SDL_BUTTON_RIGHT) {
-			if (!ImGui::GetIO().WantCaptureMouse) {
-				mouse.Update(button == SDL_BUTTON_LEFT ? 0 : 1, true);
-			}
-		}
+		UpdateKey<int, Mouse>(SDLMOUSEMAP, mouse, event.button.button, true);
 		break;
 	}
 	case SDL_MOUSEBUTTONUP: {
-		auto button = event.button.button;
-		if (button == SDL_BUTTON_LEFT || button == SDL_BUTTON_RIGHT) {
-			mouse.Update(button == SDL_BUTTON_LEFT ? 0 : 1, false);
-		}
+		UpdateKey<int, Mouse>(SDLMOUSEMAP, mouse, event.button.button, false);
 		break;
 	}
 	}
@@ -180,6 +179,10 @@ bool InputImpl::KeyDown(GameKey key) const {
 bool InputImpl::KeyPressed(GameKey key) const {
 	const auto& kp = keymap.at(key);
 	return KeyPressed(kp.Key) || KeyPressed(kp.Pad);
+}
+
+bool InputImpl::MouseCaptured() const {
+	return ImGui::GetIO().WantCaptureMouse;
 }
 
 const InputImpl& Input() {
