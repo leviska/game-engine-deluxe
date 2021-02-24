@@ -66,8 +66,12 @@ void LevelEditorScene::Update() {
 			}
 			db.remove_if_exists<CeilingObstruct>(id);
 			db.remove_if_exists<FrontWallObstruct>(id);
+			db.remove_if_exists<FloorObstruct>(id);
 			if (data.CurrentTile == "WallFace00") {
 				db.emplace<FrontWallObstruct>(id);
+			}
+			else if (data.CurrentTile == "Wall00") {
+				db.emplace<FloorObstruct>(id);
 			}
 			else {
 				db.emplace<CeilingObstruct>(id);
@@ -155,9 +159,8 @@ void LevelEditorScene::DrawGui() {
 }
 
 void LevelEditorScene::Clear() {
-	
 	frameBuffer.Select();
-	frameBuffer.Clear({ 39, 39, 68, 255 });
+	frameBuffer.Clear(RGBA({ 0, 0, 0, 255 }));
 }
 
 void LevelEditorScene::Draw() {

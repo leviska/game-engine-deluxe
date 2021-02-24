@@ -23,7 +23,7 @@ public:
 	void Load(glm::uvec2 size, bool rectangle = true);
 	void Reset();
 
-	void Clear(ColorRGBA color);
+	void Clear(glm::vec4 color);
 
 	void Select();
 	static void SelectWindow();

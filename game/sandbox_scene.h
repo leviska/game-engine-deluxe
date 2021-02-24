@@ -12,12 +12,8 @@
 
 class SandboxScene : public Scene {
 public:
-	FrameBuffer frameBuffer;
-	FrameBuffer tmpBuffer;
-
+	FrameBuffer pixelArt;
 	Renderer render;
-	Texture lightTexture;
-	std::vector<glm::ivec2> lights;
 
 	float time = 0;
 	int frame = 0;

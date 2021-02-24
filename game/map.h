@@ -18,6 +18,7 @@ struct GridElem {
 
 struct CeilingObstruct {};
 struct FrontWallObstruct {};
+struct FloorObstruct {};
 
 using MapView = std::unordered_map<glm::ivec2, std::vector<entt::entity>>;
 

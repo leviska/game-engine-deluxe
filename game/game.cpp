@@ -66,6 +66,8 @@ void GameInst::Update() {
 	if (resetResources) {
 		Resources().Reset();
 		Resources().Load();
+		scenes.Reset();
+		scenes.Load();
 
 		window.UpdateViewport();
 

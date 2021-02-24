@@ -142,7 +142,6 @@ void Window::Update() {
 }
 
 void Window::Clear() {
-	//glClearColor(39.0f / 255.0f, 39.0f / 255.0f, 68.0f / 255.0f, 1.0f);
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	gui.Clear();
@@ -155,10 +154,6 @@ void Window::Render() {
 
 bool Window::Open() {
 	return open;
-}
-
-void Window::SetClearColor(const glm::vec4& color) {
-	clearColor = color;
 }
 
 glm::uvec2 Window::GetSize() {

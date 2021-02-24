@@ -124,6 +124,11 @@ void ResourcesInst::LoadSpriteInfo(NamedVector<SpriteInfo>& res, const std::stri
 		info.Value.Scale = info.Value.TextSize;
 		res.Add(std::move(info), it.key());
 	}
+	SpriteInfo square;
+	square.Name = "Square";
+	square.TextureId = 0;
+	square.Value.TextPos = { -1.0, -1.0 };
+	res.Add(square, square.Name);
 }
 
 void ResourcesInst::LoadAnimationInfo() {

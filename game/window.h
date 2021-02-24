@@ -12,7 +12,6 @@ class Window
 	bool open = false;
 	bool fullscreen = false;
 	glm::uvec2 size = { 800, 600 };
-	glm::vec4 clearColor;
 
 	GUI gui;
 
@@ -35,8 +34,6 @@ public:
 	void Render();
 
 	bool Open();
-
-	void SetClearColor(const glm::vec4& color);
 
 	glm::uvec2 GetSize();
 };
