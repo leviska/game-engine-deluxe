@@ -1,5 +1,8 @@
 #include "input.h"
 
+#include "imgui.h"
+
+#include <iostream>
 
 KeyManager::KeyManager(size_t size) {
 	prev.resize(size);
@@ -86,7 +89,9 @@ const std::unordered_map<SDL_KeyCode, Keyboard> SDLKEYMAP{
 };
 
 
-InputImpl::InputImpl() : keyboard(static_cast<size_t>(Keyboard::KeyboardSize)) {}
+InputImpl::InputImpl()
+	: keyboard(static_cast<size_t>(Keyboard::KeyboardSize))
+	, mouse(static_cast<size_t>(Mouse::MouseSize)) {}
 
 void InputImpl::Load() {
 	// TODO: load keymap
@@ -99,6 +104,7 @@ void InputImpl::Reset() {
 
 void InputImpl::Tick() {
 	keyboard.Tick();
+	mouse.Tick();
 }
 
 void InputImpl::Update(const SDL_Event& event) {
@@ -112,11 +118,27 @@ void InputImpl::Update(const SDL_Event& event) {
 
 	switch (event.type) {
 	case SDL_KEYDOWN: {
-		updateKey(false);
+		updateKey(true);
 		break;
 	}
 	case SDL_KEYUP: {
-		updateKey(true);
+		updateKey(false);
+		break;
+	}
+	case SDL_MOUSEBUTTONDOWN: {
+		auto button = event.button.button;
+		if (button == SDL_BUTTON_LEFT || button == SDL_BUTTON_RIGHT) {
+			if (!ImGui::GetIO().WantCaptureMouse) {
+				mouse.Update(button == SDL_BUTTON_LEFT ? 0 : 1, true);
+			}
+		}
+		break;
+	}
+	case SDL_MOUSEBUTTONUP: {
+		auto button = event.button.button;
+		if (button == SDL_BUTTON_LEFT || button == SDL_BUTTON_RIGHT) {
+			mouse.Update(button == SDL_BUTTON_LEFT ? 0 : 1, false);
+		}
 		break;
 	}
 	}
@@ -129,6 +151,15 @@ bool InputImpl::KeyDown(Keyboard key) const {
 
 bool InputImpl::KeyPressed(Keyboard key) const {
 	return keyboard.KeyPressed(static_cast<size_t>(key));
+}
+
+
+bool InputImpl::KeyDown(Mouse key) const {
+	return mouse.KeyDown(static_cast<size_t>(key));
+}
+
+bool InputImpl::KeyPressed(Mouse key) const {
+	return mouse.KeyPressed(static_cast<size_t>(key));
 }
 
 

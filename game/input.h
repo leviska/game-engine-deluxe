@@ -16,6 +16,11 @@ enum class Keyboard {
 	KeyboardSize // total keys
 };
 
+enum class Mouse {
+	Left, Right,
+	MouseSize
+};
+
 enum class Gamepad {
 	// TODO
 	GamepadSize // total keys
@@ -54,6 +59,9 @@ public:
 	bool KeyDown(Keyboard key) const;
 	bool KeyPressed(Keyboard key) const;
 
+	bool KeyDown(Mouse key) const;
+	bool KeyPressed(Mouse key) const;
+
 	bool KeyDown(Gamepad key) const;
 	bool KeyPressed(Gamepad key) const;
 
@@ -66,6 +74,7 @@ private:
 	};
 
 	KeyManager keyboard;
+	KeyManager mouse;
 	std::unordered_map<GameKey, KeyPair> keymap;
 };
 

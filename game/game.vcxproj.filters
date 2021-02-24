@@ -46,6 +46,9 @@
     <Filter Include="Source Files\Engine">
       <UniqueIdentifier>{ae151ece-e722-45cd-a567-6e6f9369ac5e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Json">
+      <UniqueIdentifier>{41c23534-b16c-45b8-a7b3-d0a443f1e220}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="batching.cpp">
@@ -218,6 +221,9 @@
     <ClInclude Include="scene_controller.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
+    <ClInclude Include="serialization.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="glm.natvis" />
@@ -264,6 +270,18 @@
     </None>
     <None Include="shaders\sprite_vertex.glsl">
       <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="assets\animations.json">
+      <Filter>Resource Files\Json</Filter>
+    </None>
+    <None Include="assets\levels.json">
+      <Filter>Resource Files\Json</Filter>
+    </None>
+    <None Include="assets\sandboxLevel.json">
+      <Filter>Resource Files\Json</Filter>
+    </None>
+    <None Include="assets\spritesheet.json">
+      <Filter>Resource Files\Json</Filter>
     </None>
   </ItemGroup>
 </Project>

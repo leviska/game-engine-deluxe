@@ -15,6 +15,8 @@ class LevelEditorScene : public Scene {
 	entt::registry db;
 	MapView map;
 
+	glm::ivec2 prevPos;
+
 	std::string levelName;
 
 	RectangleShape bb;

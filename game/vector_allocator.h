@@ -20,6 +20,9 @@ public:
 
 	T& operator[](size_t id);
 	const T& operator[](size_t id) const;
+
+	T* Raw();
+	const T* Raw() const;
 private:
 	std::vector<T> data;
 	std::unordered_set<size_t> unused;
@@ -64,4 +67,14 @@ template<typename T>
 const T& VectorAlloc<T>::operator[](size_t id) const { 
 	assert(unused.find(id) == unused.end());
 	return data[id];
+}
+
+template<typename T>
+T* VectorAlloc<T>::Raw() {
+	return data.data();
+}
+
+template<typename T>
+const T* VectorAlloc<T>::Raw() const {
+	return data.data();
 }

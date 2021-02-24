@@ -2,6 +2,7 @@
 
 #include "renderable.h"
 #include "game.h"
+#include "input.h"
 #include "resources.h"
 
 #include <fstream>
@@ -15,8 +16,7 @@
 
 void LevelEditorScene::Load(const std::string& name) {
 	levelName = name;
-	
-	//map.Load({ &render, &db });
+
 	frameBuffer.Load(Resources().CanvasSize);
 
 	try {
@@ -28,7 +28,6 @@ void LevelEditorScene::Load(const std::string& name) {
 }
 
 void LevelEditorScene::Reset() {
-	//ResetRenders(renders);
 	frameBuffer.Reset();
 	map.clear();
 	db.clear();
@@ -46,7 +45,6 @@ bool IsWallName(const std::string& str) {
 }
 
 void LevelEditorScene::Update() {
-	/*
 	if (ImGui::GetIO().WantCaptureMouse)
 		return;
 	glm::ivec2 mousePos;
@@ -57,33 +55,41 @@ void LevelEditorScene::Update() {
 	bb.Center = relPos * static_cast<int32_t>(scaledTile) + glm::ivec2{ scaledTile / 2, scaledTile / 2 };
 	bb.Size = glm::vec2{ scaledTile / 2, scaledTile / 2 };
 	bb.Color = ColorRGBA{ 255, 255, 255, 255 };
-	if (Game().GetWindow().PressedMouse1) {
-		Sprite sprite(data.CurrentTile);
-		sprite.Pos = glm::vec2{ relPos.x * Resources().TileSize, relPos.y * Resources().TileSize } + glm::vec2{ Resources().TileSize / 2, Resources().TileSize / 2 };
-		entt::entity id = map.Get(relPos);
-		if (db.has<MultiRenderable>(id)) {
-			bool alreadyHas = false;
-			auto& images = db.get<MultiRenderable>(id).Images;
-			for (const auto& spr : images) {
-				if (spr.Id == Resources().GetSpriteInfoId(data.CurrentTile)) {
-					alreadyHas = true;
-					break;
-				}
-			}
-			if (!alreadyHas) {
-				images.push_back(sprite);
-			}
+	if (Input().KeyPressed(Mouse::Left) || Input().KeyDown(Mouse::Left) && prevPos != relPos) {
+		entt::entity id;
+		if (map[relPos].empty()) {
+			id = CreateElement(relPos, map, db);
 		}
 		else {
-			db.emplace<MultiRenderable>(id, std::vector<Sprite>{ sprite });
+			id = map[relPos][0];
+		}
+		db.remove_if_exists<CeilingObstruct>(id);
+		db.remove_if_exists<FrontWallObstruct>(id);
+		if (data.CurrentTile == "WallFace00") {
+			db.emplace<FrontWallObstruct>(id);
+		}
+		else {
+			db.emplace<CeilingObstruct>(id);
+		}
+
+		for (const auto& vec : map) {
+			for (auto id : vec.second) {
+				UpdateWallSprite(id, map, db, render);
+			}
 		}
 	}
-	if (Game().GetWindow().PressedMouse2) {
-		if (map.Has(relPos)) {
-			map.Erase(relPos);
+	if (Input().KeyPressed(Mouse::Right) || Input().KeyDown(Mouse::Right) && prevPos != relPos) {
+		if (!map[relPos].empty()) {
+			db.destroy(map[relPos][0]);
+			map[relPos].clear();
+		}
+		for (const auto& vec : map) {
+			for (auto id : vec.second) {
+				UpdateWallSprite(id, map, db, render);
+			}
 		}
 	}
-	*/
+	prevPos = relPos;
 }
 
 bool DrawTileButton(const SpriteInfo& info) {
@@ -147,14 +153,14 @@ void LevelEditorScene::DrawGui() {
 }
 
 void LevelEditorScene::Clear() {
-	//ClearRenders(renders);
+	
 	frameBuffer.Select();
 	frameBuffer.Clear({ 39, 39, 68, 255 });
 }
 
 void LevelEditorScene::Draw() {
 	frameBuffer.Select();
-	//RenderSystem(db, renders);
+	render.Draw();
 	frameBuffer.SelectWindow();
 
 	frameBuffer.Draw(Resources().CanvasSize * Game().GetScale() / 2u, Game().GetScale(), Resources().GetShader("BufferShader"));

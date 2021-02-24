@@ -42,7 +42,7 @@ SpritePtr BatchedRender::Stage(const Sprite& sprite) {
 }
 
 void BatchedRender::Unstage(SpritePtr ptr) {
-	ptr->Color = glm::vec4{ 0, 0, 0, 0 };
+	HideSprite(*ptr);
 	data.Dealloc(ptr.spriteId);
 }
 
@@ -63,7 +63,7 @@ void BatchedRender::Draw() {
 	BindArray();
 
 	glBindBuffer(GL_ARRAY_BUFFER, dataBuffer);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(Sprite) * data.Size(), &data[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Sprite) * data.Capacity(), data.Raw(), GL_STATIC_DRAW);
 
 	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Sprite), (void*)0);
 	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(Sprite), (void*)8);
@@ -73,7 +73,7 @@ void BatchedRender::Draw() {
 	glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(Sprite), (void*)36);
 	glVertexAttribPointer(7, 1, GL_FLOAT, GL_FALSE, sizeof(Sprite), (void*)52);
 
-	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, data.Size());
+	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, data.Capacity());
 
 	glBindVertexArray(0);
 }

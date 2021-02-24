@@ -59,9 +59,9 @@ void RectangleShape::Draw() {
 	DrawShape(&vertexes[0], 8, GL_LINES, Color, Thickness);
 }
 
-const double PI = 3.141592653589793238462643383279;
 
 void CircleShape::Draw() {
+	const double PI = 3.141592653589793238462643383279;
 	LineStripShape poly;
 	poly.Color = Color;
 	poly.Thickness = Thickness;

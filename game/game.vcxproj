@@ -214,6 +214,7 @@
     <ClInclude Include="sandbox_scene.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="scene_controller.h" />
+    <ClInclude Include="serialization.h" />
     <ClInclude Include="shader.h" />
     <ClInclude Include="shapes.h" />
     <ClInclude Include="sprite.h" />
@@ -229,6 +230,10 @@
     <Natvis Include="glm.natvis" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="assets\animations.json" />
+    <None Include="assets\levels.json" />
+    <None Include="assets\sandboxLevel.json" />
+    <None Include="assets\spritesheet.json" />
     <None Include="shaders\batch_fragment.glsl" />
     <None Include="shaders\batch_vertex.glsl" />
     <None Include="shaders\buffer_fragment.glsl" />

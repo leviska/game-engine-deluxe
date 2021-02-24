@@ -16,7 +16,16 @@ struct GridElem {
 	glm::ivec2 Pos;
 };
 
+struct CeilingObstruct {};
+struct FrontWallObstruct {};
+
 using MapView = std::unordered_map<glm::ivec2, std::vector<entt::entity>>;
+
+void UpdateWallSprite(glm::ivec2 pos, const MapView& map, entt::registry& reg, Renderer& render);
+void UpdateWallSprite(entt::entity id, const MapView& map, entt::registry& reg, Renderer& render);
+
+entt::entity CreateElement(glm::ivec2 pos, MapView& map, entt::registry& reg);
+glm::vec2 GetSpritePos(glm::ivec2 pos);
 
 void LoadMap(MapView& map, entt::registry& reg, Renderer& render, const std::string& fileName);
 void LoadMap(MapView& map, entt::registry& reg, Renderer& render, const nlohmann::json& file);
