@@ -23,7 +23,7 @@ void UpdateWallSprite(glm::ivec2 pos, const MapView& map, entt::registry& reg, R
 }
 
 void UpdateFrontWall(Renderer& render, Renderable& rend, glm::ivec2 pos) {
-	SpritePtr sptr = render.Stage(Graphics().Sprites[20]);
+	SpritePtr sptr = render.Stage(Graphics().Sprites["WallFace00"]);
 	sptr->Pos = GetSpritePos(pos);
 	rend.emplace_back(sptr);
 }
@@ -42,7 +42,7 @@ void UpdateCeiling(const MapView& map, entt::registry& reg, Renderer& render, Re
 	for (int i = 0; i < 8; i += 2) {
 		if (neigh[i])
 			continue;
-		SpritePtr sptr = render.Stage(Graphics().Sprites[mapping.at(i)]);
+		SpritePtr sptr = render.Stage(Graphics().Sprites[mapping.at(i) + 1]);
 		sptr->Pos = GetSpritePos(pos);
 		rend.emplace_back(sptr);
 	}
@@ -66,7 +66,7 @@ void UpdateCeiling(const MapView& map, entt::registry& reg, Renderer& render, Re
 		else {
 			continue;
 		}
-		SpritePtr sptr = render.Stage(Graphics().Sprites[cormap.at(i) + spr]);
+		SpritePtr sptr = render.Stage(Graphics().Sprites[cormap.at(i) + spr + 1]);
 		sptr->Pos = GetSpritePos(pos);
 		rend.emplace_back(sptr);
 	}

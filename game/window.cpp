@@ -26,6 +26,13 @@ void GLAPIENTRY GlErrorHandler(
 	const void* userParam)
 {
 	std::cout << "OpenGL error: " << message << std::endl;
+	static bool ignoreErrors = false;
+	if (!ignoreErrors) {
+		DebugBreak();
+	}
+	if (!ignoreErrors) {
+		THROWERROR("OpenGL error: " + std::string(message));
+	}
 }
 
 Window::~Window() {

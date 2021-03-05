@@ -20,8 +20,9 @@ void GraphicsImpl::Load() {
 
 	SpriteInfo square;
 	square.Name = "Square";
-	square.TextureId = 0;
-	square.Value.TextPos = { -1.0, -1.0 };
+	square.TextureId = Textures.GetId("Square");
+	square.Value.TextPos = { 0.0f, 0.0f };
+	square.Value.TextSize = { 1.0f, 1.0f };
 	Sprites.Add(square, square.Name);
 }
 
@@ -33,8 +34,14 @@ void GraphicsImpl::Reset() {
 
 void GraphicsImpl::LoadTextures() {
 	Texture spritesheet;
+	Image white;
+	white.Load({ 1, 1 }, { 255, 255, 255, 255 });
+	spritesheet.Load(white);
+	Textures.Add(std::move(spritesheet), "Square");
 	spritesheet.Load(Paths::Graphics + "spritesheet.png");
 	Textures.Add(std::move(spritesheet), "Spritesheet");
+	spritesheet.Load(Paths::Graphics + "spritesheet.png", false);
+	Textures.Add(std::move(spritesheet), "SpritesheetLE");
 }
 
 

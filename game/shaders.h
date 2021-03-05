@@ -19,9 +19,16 @@ enum class ShadersId {
 	ShadersSize
 };
 
+enum class ShaderViewport {
+	NoUpdate,
+	Normal,
+	Reversed,
+};
+
 class ShadersImpl : public Singleton {
 public:
 	NamedVector<Shader> Shaders;
+	std::vector<ShaderViewport> Updates;
 	
 	void Load();
 	void Reset();

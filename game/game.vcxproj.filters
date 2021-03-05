@@ -55,6 +55,12 @@
     <Filter Include="Source Files\Resources">
       <UniqueIdentifier>{c119b50a-477f-41c8-a14d-28063edc529b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Resource Files\Levels">
+      <UniqueIdentifier>{5b5e2a70-6591-474b-ac2d-0dc065d3d0d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Graphics">
+      <UniqueIdentifier>{f264f65b-8e88-44be-88e0-49aabd88ac6e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="batching.cpp">
@@ -82,9 +88,6 @@
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="texture.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="window.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
     <ClCompile Include="shader.cpp">
@@ -147,6 +150,9 @@
     <ClCompile Include="consts.cpp">
       <Filter>Source Files\Resources</Filter>
     </ClCompile>
+    <ClCompile Include="window.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="batching.h">
@@ -177,9 +183,6 @@
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="texture.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="window.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
     <ClInclude Include="assertion.h">
@@ -263,6 +266,9 @@
     <ClInclude Include="consts.h">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
+    <ClInclude Include="window.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="glm.natvis" />
@@ -309,6 +315,24 @@
     </None>
     <None Include="..\assets\shaders\sprite_vertex.glsl">
       <Filter>Resource Files\Shaders</Filter>
+    </None>
+    <None Include="..\assets\consts.json">
+      <Filter>Resource Files\Json</Filter>
+    </None>
+    <None Include="..\assets\graphics\animations.json">
+      <Filter>Resource Files\Graphics</Filter>
+    </None>
+    <None Include="..\assets\graphics\spritesheet.json">
+      <Filter>Resource Files\Graphics</Filter>
+    </None>
+    <None Include="..\assets\graphics\spritesheet_le.json">
+      <Filter>Resource Files\Graphics</Filter>
+    </None>
+    <None Include="..\assets\levels\level000.json">
+      <Filter>Resource Files\Levels</Filter>
+    </None>
+    <None Include="..\assets\levels\sandboxLevel.json">
+      <Filter>Resource Files\Levels</Filter>
     </None>
   </ItemGroup>
 </Project>

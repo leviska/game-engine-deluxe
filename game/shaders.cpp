@@ -1,7 +1,7 @@
 #include "Shaders.h"
 
+#include "utility.h"
 #include "paths.h"
-
 
 void ShadersImpl::Load() {
 	Shader shader;
@@ -28,6 +28,10 @@ void ShadersImpl::Load() {
 
 	shader.Load(Paths::Shaders + "light_compute.glsl");
 	Shaders.Add(std::move(shader), "GenerateLight");
+
+	Updates.resize(Shaders.Size(), ShaderViewport::NoUpdate);
+	Updates[to_ui32(ShadersId::Buffer)] = ShaderViewport::Reversed;
+	Updates[to_ui32(ShadersId::Shapes)] = ShaderViewport::Reversed;
 }
 
 void ShadersImpl::Reset() {

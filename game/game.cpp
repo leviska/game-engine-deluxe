@@ -80,7 +80,7 @@ void GameInst::Update() {
 	scenes.CurrentScene().Update();
 
 	if (resetResources) {
-
+		Reload();
 		resetResources = false;
 	}
 	running = running && window.Open();
@@ -107,9 +107,12 @@ void GameInst::Render() {
 
 void GameInst::UpdateViewport(glm::vec2 size) {
 	glViewport(0, 0, size.x, size.y);
-	for (const auto& shader : Shaders().Shaders) {
-		shader.Select();
-		shader.UpdateProjection(size.x, size.y);
+	for (size_t i = 0; i < Shaders().Shaders.Size(); i++) {
+		if (Shaders().Updates[i] == ShaderViewport::NoUpdate)
+			continue;
+
+		Shaders().Shaders[i].Select();
+		Shaders().Shaders[i].UpdateProjection(size.x, Shaders().Updates[i] == ShaderViewport::Reversed ? -size.y : size.y);
 	}
 }
 

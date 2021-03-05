@@ -62,11 +62,12 @@ void LevelEditorScene::Update() {
 		return;
 	glm::ivec2 mousePos;
 	SDL_GetMouseState(&(mousePos.x), &(mousePos.y));
+	glm::ivec2 centerShift = Game().GetWindow().GetSize() / 2u - Consts().CanvasSize * Game().GetScale() / 2u;
 	glm::ivec2 cameraShift = glm::ivec2(camera.Size - camera.Pos) * to_i32(Game().GetScale());
-	glm::ivec2 gamePos = mousePos - cameraShift;
+	glm::ivec2 gamePos = mousePos - cameraShift - centerShift;
 	int32_t scaledTile = Consts().TileSize * Game().GetScale();
 	glm::ivec2 relPos = glm::floor(glm::vec2(gamePos) / glm::vec2(scaledTile));
-	glm::ivec2 camShift = (scaledTile + cameraShift) % scaledTile;
+	glm::ivec2 camShift = (scaledTile + cameraShift + centerShift) % scaledTile;
 	glm::ivec2 screenPos = ((mousePos - camShift) / scaledTile * scaledTile + camShift);
 
 	bb.Center = screenPos + glm::ivec2{ scaledTile / 2, scaledTile / 2 };
@@ -114,8 +115,8 @@ void LevelEditorScene::Update() {
 }
 
 bool DrawTileButton(const SpriteInfo& info) {
-	ImTextureID textId = reinterpret_cast<void*>(static_cast<intptr_t>(Graphics().Textures["Spritesheet"].GetId()));
-	glm::vec2 textSize(Graphics().Textures["Spritesheet"].GetSize());
+	ImTextureID textId = reinterpret_cast<void*>(static_cast<intptr_t>(Graphics().Textures["SpritesheetLE"].GetId()));
+	glm::vec2 textSize(Graphics().Textures["SpritesheetLE"].GetSize());
 	glm::vec2 sizeV = info.Value.TextSize * 4.0f;
 	glm::vec2 uv0V = info.Value.TextPos;
 	glm::vec2 uv1V = info.Value.TextPos + info.Value.TextSize;

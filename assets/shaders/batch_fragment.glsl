@@ -7,12 +7,5 @@ uniform sampler2DRect Texture;
 
 void main()
 {
-    vec4 textColor;
-    if (TextCoordsFrag == vec2(-1, -1)) {
-        textColor = vec4(1, 1, 1, 1);
-    }
-    else {
-        textColor = texture(Texture, TextCoordsFrag);
-    }
-    Result = ColorFrag * textColor;
+    Result = ColorFrag * texture(Texture, TextCoordsFrag);
 }
