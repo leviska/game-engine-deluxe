@@ -106,8 +106,11 @@ void Shader::SetIVec2Vec(const std::string& name, const std::vector<glm::ivec2>&
 	glUniform2iv(glGetUniformLocation(id, name.c_str()), vec.size(), glm::value_ptr(vec[0]));
 }
 
-void Shader::UpdateProjection(float width, float height) const {
-	glm::mat4 projection = glm::ortho(0.0f, width, std::abs(std::min(0.0f, height)), std::abs(std::max(0.0f, height)));
+void Shader::UpdateProjection(glm::vec2 size, bool flip) const {
+	if (flip) {
+		size.y = -size.y;
+	}
+	glm::mat4 projection = glm::ortho(0.0f, size.x, std::abs(std::min(0.0f, size.y)), std::abs(std::max(0.0f, size.y)));
 	SetMat4("Projection", projection);
 }
 

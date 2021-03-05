@@ -5,5 +5,8 @@
 
 void DrawFramebufferToScreen(const FrameBuffer& buffer) {
 	FrameBuffer::SelectWindow();
-	buffer.Draw(Game().GetWindow().GetSize() / 2u, Game().GetScale(), Shaders().Shaders[to_ui32(ShadersId::Buffer)]);
+	const Shader& bufShader = Shaders().Shaders[to_ui32(ShadersId::Buffer)];
+	bufShader.Select();
+	bufShader.UpdateProjection(Game().GetWindow().GetSize(), true);
+	buffer.Draw(Game().GetWindow().GetSize() / 2u, Game().GetScale(), bufShader);
 }

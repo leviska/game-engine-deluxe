@@ -118,7 +118,6 @@ void Window::ProcessEvents() {
 		case SDL_WINDOWEVENT: {
 			if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
 				SDL_GL_GetDrawableSize(window, (int*)&size.x, (int*)&size.y);
-				Game().UpdateViewport(size);
 			}
 			break;
 		}

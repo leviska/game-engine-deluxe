@@ -64,7 +64,7 @@ public:
 	void SetIVec2Vec(const std::string& name, const T& vec) const = delete;
 
 
-	void UpdateProjection(float width, float height) const;
+	void UpdateProjection(glm::vec2 size, bool flip) const;
 
 	uint32_t GetId() const;
 

@@ -23,8 +23,6 @@ public:
 	SceneController& GetSceneController();
 	Window& GetWindow();
 	uint32_t GetScale();
-
-	void UpdateViewport(glm::vec2 size);
 private:
 	GameInst() = default;
 	~GameInst() = default;

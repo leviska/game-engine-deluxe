@@ -46,12 +46,14 @@ void FrameBuffer::Clear(glm::vec4 color) {
 
 void FrameBuffer::Select() {
 	glBindFramebuffer(GL_FRAMEBUFFER, id);
-	Game().UpdateViewport(texture.GetSize());
+	glm::vec2 size = texture.GetSize();
+	glViewport(0, 0, size.x, size.y);
 }
 
 void FrameBuffer::SelectWindow() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	Game().UpdateViewport(Game().GetWindow().GetSize());
+	glm::vec2 size = Game().GetWindow().GetSize();
+	glViewport(0, 0, size.x, size.y);
 }
 
 void FrameBuffer::Draw(glm::vec2 pos, float scale, const Shader& shader) const {

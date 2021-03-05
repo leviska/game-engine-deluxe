@@ -43,7 +43,6 @@ uint32_t GameInst::GetScale() {
 void GameInst::Load() {
 	window.Load();
 	Reload();
-	UpdateViewport(window.GetSize());
 }
 
 void GameInst::Run() {
@@ -105,17 +104,6 @@ void GameInst::Render() {
 	window.Render();
 }
 
-void GameInst::UpdateViewport(glm::vec2 size) {
-	glViewport(0, 0, size.x, size.y);
-	for (size_t i = 0; i < Shaders().Shaders.Size(); i++) {
-		if (Shaders().Updates[i] == ShaderViewport::NoUpdate)
-			continue;
-
-		Shaders().Shaders[i].Select();
-		Shaders().Shaders[i].UpdateProjection(size.x, Shaders().Updates[i] == ShaderViewport::Reversed ? -size.y : size.y);
-	}
-}
-
 void GameInst::Reload() {
 	BuffersMut().Reset();
 	GraphicsMut().Reset();
@@ -129,6 +117,4 @@ void GameInst::Reload() {
 
 	scenes.Reset();
 	scenes.Load();
-
-	UpdateViewport(window.GetSize());
 }
