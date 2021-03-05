@@ -15,7 +15,6 @@ class FPS {
 	std::queue<TimePoint> frames;
 	TimePoint lastTime;
 
-	const uint32_t kAvgFrameRate = 10;
 	struct DTInfo {
 		TimePoint index;
 		uint32_t dt;

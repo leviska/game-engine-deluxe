@@ -2,7 +2,13 @@
 
 #include "imgui.h"
 #include "input.h"
-#include "resources.h"
+#include "utility.h"
+
+#include "glbuffers.h"
+#include "graphics.h"
+#include "paths.h"
+#include "consts.h"
+#include "shaders.h"
 
 #include <iostream>
 #include <chrono>
@@ -30,13 +36,14 @@ Window& GameInst::GetWindow() {
 
 
 uint32_t GameInst::GetScale() {
-	glm::uvec2 scale = window.GetSize() / Resources().CanvasSize;
+	glm::uvec2 scale = window.GetSize() / Consts().CanvasSize;
 	return std::min(scale.x, scale.y);
 }
 
 void GameInst::Load() {
 	window.Load();
-	scenes.Load();
+	Reload();
+	UpdateViewport(window.GetSize());
 }
 
 void GameInst::Run() {
@@ -56,20 +63,23 @@ void GameInst::Update() {
 
 	window.Update();
 
+	if (Input().KeyPressed(Keyboard::F1)) {
+		Scenes scene = scenes.SceneState().State<Scenes>() == Scenes::LevelEditor ? Scenes::Level : Scenes::LevelEditor;
+		if (scene == Scenes::Level) {
+			scenes.Level().Reset();
+			scenes.Level().Load(scenes.LevelEditor().CurrentLevel());
+		}
+		scenes.SceneState().ChangeState(to_i32(scene));
+	}
+
 	if (Input().KeyPressed(Keyboard::F2)) {
-		Scenes scene = scenes.CurrentState() == Scenes::Sandbox ? Scenes::LevelEditor : Scenes::Sandbox;
-		scenes.SceneState().ChangeState(static_cast<int32_t>(scene));
+		Scenes scene = scenes.SceneState().State<Scenes>() == Scenes::Sandbox ? Scenes::Level : Scenes::Sandbox;
+		scenes.SceneState().ChangeState(scene);
 	}
 
 	scenes.CurrentScene().Update();
 
 	if (resetResources) {
-		Resources().Reset();
-		Resources().Load();
-		scenes.Reset();
-		scenes.Load();
-
-		window.UpdateViewport();
 
 		resetResources = false;
 	}
@@ -97,8 +107,25 @@ void GameInst::Render() {
 
 void GameInst::UpdateViewport(glm::vec2 size) {
 	glViewport(0, 0, size.x, size.y);
-	for (auto id : ShadersArray) {
-		Resources().GetShader(id).Select();
-		Resources().GetShader(id).UpdateProjection(size.x, (id == Shaders::Buffer || id == Shaders::Shapes ? -size.y : size.y));
+	for (const auto& shader : Shaders().Shaders) {
+		shader.Select();
+		shader.UpdateProjection(size.x, size.y);
 	}
+}
+
+void GameInst::Reload() {
+	BuffersMut().Reset();
+	GraphicsMut().Reset();
+	ConstsMut().Reset();
+	ShadersMut().Reset();
+
+	BuffersMut().Load();
+	GraphicsMut().Load();
+	ConstsMut().Load();
+	ShadersMut().Load();
+
+	scenes.Reset();
+	scenes.Load();
+
+	UpdateViewport(window.GetSize());
 }

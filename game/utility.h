@@ -1,17 +1,10 @@
 #pragma once
 
-#include <utility>
-#include <functional>
-#include <glm/glm.hpp>
+#include <cstdint>
 
-namespace std {
-	template <>
-	struct hash<glm::ivec2> {
-		std::size_t operator()(const glm::ivec2& k) const {
-			std::size_t res = 0;
-			res ^= std::hash<int>{}(k.x) + 0x9e3779b9 + (res << 6) + (res >> 2);
-			res ^= std::hash<int>{}(k.y) + 0x9e3779b9 + (res << 6) + (res >> 2);
-			return res;
-		}
-	};
-}
+// because static_cast<uint32_t>(t) is fucking long
+template <typename T>
+uint32_t to_ui32(T t) { return static_cast<uint32_t>(t); }
+
+template <typename T>
+int32_t to_i32(T t) { return static_cast<int32_t>(t); }

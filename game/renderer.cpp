@@ -1,6 +1,9 @@
 #include "renderer.h"
 
-#include "resources.h"
+#include "graphics.h"
+#include "shaders.h"
+
+#include "camera.h"
 
 void Renderer::Load() {}
 
@@ -23,10 +26,13 @@ SpritePtr Renderer::Stage(const SpriteInfo& info) {
 }
 
 SpritePtr Renderer::Stage(const std::string& name) {
-	return Stage(Resources().GetSpriteInfo(name));
+	return Stage(Graphics().Sprites[name]);
 }
 
-void Renderer::Draw() {
+void Renderer::Draw(const Camera& camera) {
+	const Shader& shader = Shaders().Shaders[to_ui32(ShadersId::Batch)];
+	shader.Select();
+	shader.SetMat4("Projection", camera.Matrix());
 	for (auto& r : renders) {
 		r.second->Draw();
 	}

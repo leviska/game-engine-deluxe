@@ -3,7 +3,11 @@
 #include "renderable.h"
 #include "game.h"
 #include "input.h"
-#include "resources.h"
+#include "utility.h"
+
+#include "consts.h"
+#include "graphics.h"
+#include "shaders.h"
 
 #include <fstream>
 #include <iostream>
@@ -17,7 +21,10 @@
 void LevelEditorScene::Load(const std::string& name) {
 	levelName = name;
 
-	frameBuffer.Load(Resources().CanvasSize);
+	glm::vec2 halfCanvas(Consts().CanvasSize / 2u);
+	camera = Camera{ halfCanvas, halfCanvas };
+
+	frameBuffer.Load(Consts().CanvasSize);
 
 	try {
 		LoadMap(map, db, render, name);
@@ -35,6 +42,10 @@ void LevelEditorScene::Reset() {
 	levelName.clear();
 }
 
+const std::string& LevelEditorScene::CurrentLevel() const {
+	return levelName;
+}
+
 bool IsWallName(const std::string& str) {
 	const std::string& prefix = "Wall";
 	for (size_t k = 0; k < prefix.size(); k++) {
@@ -45,53 +56,57 @@ bool IsWallName(const std::string& str) {
 }
 
 void LevelEditorScene::Update() {
-	if (ImGui::GetIO().WantCaptureMouse)
+	camera.UpdateFreeCamera();
+
+	if (Input().MouseCaptured())
 		return;
 	glm::ivec2 mousePos;
 	SDL_GetMouseState(&(mousePos.x), &(mousePos.y));
-	uint32_t scaledTile = Resources().TileSize * Game().GetScale();
-	glm::ivec2 relPos = mousePos / static_cast<int32_t>(scaledTile);
+	glm::ivec2 cameraShift = glm::ivec2(camera.Size - camera.Pos) * to_i32(Game().GetScale());
+	glm::ivec2 gamePos = mousePos - cameraShift;
+	int32_t scaledTile = Consts().TileSize * Game().GetScale();
+	glm::ivec2 relPos = glm::floor(glm::vec2(gamePos) / glm::vec2(scaledTile));
+	glm::ivec2 camShift = (scaledTile + cameraShift) % scaledTile;
+	glm::ivec2 screenPos = ((mousePos - camShift) / scaledTile * scaledTile + camShift);
 
-	bb.Center = relPos * static_cast<int32_t>(scaledTile) + glm::ivec2{ scaledTile / 2, scaledTile / 2 };
+	bb.Center = screenPos + glm::ivec2{ scaledTile / 2, scaledTile / 2 };
 	bb.Size = glm::vec2{ scaledTile / 2, scaledTile / 2 };
 	bb.Color = ColorRGBA{ 255, 255, 255, 255 };
-	if (!Input().MouseCaptured()) {
-		if (Input().KeyPressed(Mouse::Left) || Input().KeyDown(Mouse::Left) && prevPos != relPos) {
-			entt::entity id;
-			if (map[relPos].empty()) {
-				id = CreateElement(relPos, map, db);
-			}
-			else {
-				id = map[relPos][0];
-			}
-			db.remove_if_exists<CeilingObstruct>(id);
-			db.remove_if_exists<FrontWallObstruct>(id);
-			db.remove_if_exists<FloorObstruct>(id);
-			if (data.CurrentTile == "WallFace00") {
-				db.emplace<FrontWallObstruct>(id);
-			}
-			else if (data.CurrentTile == "Wall00") {
-				db.emplace<FloorObstruct>(id);
-			}
-			else {
-				db.emplace<CeilingObstruct>(id);
-			}
+	if (Input().KeyPressed(Mouse::Left) || Input().KeyDown(Mouse::Left) && prevPos != relPos) {
+		entt::entity id;
+		if (map[relPos].empty()) {
+			id = CreateElement(relPos, map, db);
+		}
+		else {
+			id = map[relPos][0];
+		}
+		db.remove_if_exists<CeilingObstruct>(id);
+		db.remove_if_exists<FrontWallObstruct>(id);
+		db.remove_if_exists<FloorObstruct>(id);
+		if (data.CurrentTile == "WallFace00") {
+			db.emplace<FrontWallObstruct>(id);
+		}
+		else if (data.CurrentTile == "Wall00") {
+			db.emplace<FloorObstruct>(id);
+		}
+		else {
+			db.emplace<CeilingObstruct>(id);
+		}
 
-			for (const auto& vec : map) {
-				for (auto id : vec.second) {
-					UpdateWallSprite(id, map, db, render);
-				}
+		for (const auto& vec : map) {
+			for (auto id : vec.second) {
+				UpdateWallSprite(id, map, db, render);
 			}
 		}
-		if (Input().KeyPressed(Mouse::Right) || Input().KeyDown(Mouse::Right) && prevPos != relPos) {
-			if (!map[relPos].empty()) {
-				db.destroy(map[relPos][0]);
-				map[relPos].clear();
-			}
-			for (const auto& vec : map) {
-				for (auto id : vec.second) {
-					UpdateWallSprite(id, map, db, render);
-				}
+	}
+	if (Input().KeyPressed(Mouse::Right) || Input().KeyDown(Mouse::Right) && prevPos != relPos) {
+		if (!map[relPos].empty()) {
+			db.destroy(map[relPos][0]);
+			map[relPos].clear();
+		}
+		for (const auto& vec : map) {
+			for (auto id : vec.second) {
+				UpdateWallSprite(id, map, db, render);
 			}
 		}
 	}
@@ -99,8 +114,8 @@ void LevelEditorScene::Update() {
 }
 
 bool DrawTileButton(const SpriteInfo& info) {
-	ImTextureID textId = reinterpret_cast<void*>(Resources().GetTexture(1).GetId());
-	glm::vec2 textSize(Resources().GetTexture(1).GetSize());
+	ImTextureID textId = reinterpret_cast<void*>(static_cast<intptr_t>(Graphics().Textures["Spritesheet"].GetId()));
+	glm::vec2 textSize(Graphics().Textures["Spritesheet"].GetSize());
 	glm::vec2 sizeV = info.Value.TextSize * 4.0f;
 	glm::vec2 uv0V = info.Value.TextPos;
 	glm::vec2 uv1V = info.Value.TextPos + info.Value.TextSize;
@@ -130,7 +145,7 @@ void LevelEditorScene::DrawGui() {
 	ImVec2 oldSpacing = style.ItemSpacing;
 	style.ItemSpacing = { 0, 0 };
 	
-	const NamedVector<SpriteInfo>& info = Resources().GetSpriteInfoLE();
+	const NamedVector<SpriteInfo>& info = Graphics().Sprites;
 	uint32_t currentLineDrawed = 0;
 	bool firstDraw = true;
 	for (size_t i = 0; i < info.Size(); i++) {
@@ -165,11 +180,9 @@ void LevelEditorScene::Clear() {
 
 void LevelEditorScene::Draw() {
 	frameBuffer.Select();
-	render.Draw();
-	frameBuffer.SelectWindow();
-
-	frameBuffer.Draw(Resources().CanvasSize * Game().GetScale() / 2u, Game().GetScale(), Resources().GetShader("BufferShader"));
-	bb.Draw();
+	render.Draw(camera);
 	
+	DrawFramebufferToScreen(frameBuffer);
+	bb.Draw();
 	DrawGui();
 }

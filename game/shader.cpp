@@ -56,57 +56,57 @@ void Shader::Select() const {
 	glUseProgram(id);
 }
 
-void Shader::SetBool(const std::string& name, bool value) {
+void Shader::SetBool(const std::string& name, bool value) const {
 	assert(currentId == id);
 	glUniform1i(glGetUniformLocation(id, name.c_str()), (int32_t)value);
 }
 
-void Shader::SetInt32(const std::string& name, int32_t value) {
+void Shader::SetInt32(const std::string& name, int32_t value) const {
 	assert(currentId == id);
 	glUniform1i(glGetUniformLocation(id, name.c_str()), value);
 }
 
-void Shader::SetFloat(const std::string& name, float value) {
+void Shader::SetFloat(const std::string& name, float value) const {
 	assert(currentId == id);
 	glUniform1f(glGetUniformLocation(id, name.c_str()), value);
 }
 
-void Shader::SetVec2(const std::string& name, const glm::vec2& value) {
+void Shader::SetVec2(const std::string& name, const glm::vec2& value) const {
 	assert(currentId == id);
 	glUniform2f(glGetUniformLocation(id, name.c_str()), value.x, value.y);
 }
 
-void Shader::SetVec3(const std::string& name, const glm::vec3& value) {
+void Shader::SetVec3(const std::string& name, const glm::vec3& value) const {
 	assert(currentId == id);
 	glUniform3f(glGetUniformLocation(id, name.c_str()), value.x, value.y, value.z);
 }
 
-void Shader::SetVec4(const std::string& name, const glm::vec4& value) {
+void Shader::SetVec4(const std::string& name, const glm::vec4& value) const {
 	assert(currentId == id);
 	glUniform4f(glGetUniformLocation(id, name.c_str()), value.x, value.y, value.z, value.w);
 }
 
-void Shader::SetMat2(const std::string& name, const glm::mat2& value) {
+void Shader::SetMat2(const std::string& name, const glm::mat2& value) const {
 	assert(currentId == id);
 	glUniformMatrix2fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
 
-void Shader::SetMat3(const std::string& name, const glm::mat3& value) {
+void Shader::SetMat3(const std::string& name, const glm::mat3& value) const {
 	assert(currentId == id);
 	glUniformMatrix3fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
 
-void Shader::SetMat4(const std::string& name, const glm::mat4& value) {
+void Shader::SetMat4(const std::string& name, const glm::mat4& value) const {
 	assert(currentId == id);
 	glUniformMatrix4fv(glGetUniformLocation(id, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
 }
 
-void Shader::SetIVec2Vec(const std::string& name, const std::vector<glm::ivec2>& vec) {
+void Shader::SetIVec2Vec(const std::string& name, const std::vector<glm::ivec2>& vec) const {
 	assert(currentId == id);
 	glUniform2iv(glGetUniformLocation(id, name.c_str()), vec.size(), glm::value_ptr(vec[0]));
 }
 
-void Shader::UpdateProjection(float width, float height) {
+void Shader::UpdateProjection(float width, float height) const {
 	glm::mat4 projection = glm::ortho(0.0f, width, std::abs(std::min(0.0f, height)), std::abs(std::max(0.0f, height)));
 	SetMat4("Projection", projection);
 }

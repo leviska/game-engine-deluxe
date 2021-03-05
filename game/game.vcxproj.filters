@@ -49,6 +49,12 @@
     <Filter Include="Resource Files\Json">
       <UniqueIdentifier>{41c23534-b16c-45b8-a7b3-d0a443f1e220}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Resources">
+      <UniqueIdentifier>{a52aba58-97dd-4091-a74b-d265188a058d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Resources">
+      <UniqueIdentifier>{c119b50a-477f-41c8-a14d-28063edc529b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="batching.cpp">
@@ -96,9 +102,6 @@
     <ClCompile Include="map.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="resources.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="sandbox_scene.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
@@ -125,6 +128,24 @@
     </ClCompile>
     <ClCompile Include="scene_controller.cpp">
       <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="level_scene.cpp">
+      <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="camera.cpp">
+      <Filter>Source Files\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="shaders.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="graphics.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="glbuffers.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="consts.cpp">
+      <Filter>Source Files\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -164,9 +185,6 @@
     <ClInclude Include="assertion.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="utility.h">
-      <Filter>Header Files\Utility</Filter>
-    </ClInclude>
     <ClInclude Include="game.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
@@ -177,12 +195,6 @@
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="map.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="resources.h">
-      <Filter>Header Files\Game</Filter>
-    </ClInclude>
-    <ClInclude Include="resources_types.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="sandbox_scene.h">
@@ -224,64 +236,79 @@
     <ClInclude Include="serialization.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="hashes.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="camera.h">
+      <Filter>Header Files\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="paths.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="shaders.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="singleton.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="graphics.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="utility.h">
+      <Filter>Header Files\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="glbuffers.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="consts.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="glm.natvis" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="shaders\batch_fragment.glsl">
+    <None Include="..\assets\shaders\batch_fragment.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="shaders\batch_vertex.glsl">
+    <None Include="..\assets\shaders\batch_vertex.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="shaders\buffer_fragment.glsl">
+    <None Include="..\assets\shaders\buffer_fragment.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="shaders\buffer_vertex.glsl">
+    <None Include="..\assets\shaders\buffer_vertex.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="shaders\light_compute.glsl">
+    <None Include="..\assets\shaders\light_compute.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="shaders\light_fragment.glsl">
+    <None Include="..\assets\shaders\light_fragment.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="shaders\light_vertex.glsl">
+    <None Include="..\assets\shaders\light_vertex.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="shaders\obstruct_fragment.glsl">
+    <None Include="..\assets\shaders\obstruct_fragment.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="shaders\particle_fragment.glsl">
+    <None Include="..\assets\shaders\particle_fragment.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="shaders\particle_vertex.glsl">
+    <None Include="..\assets\shaders\particle_vertex.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="shaders\shapes_fragment.glsl">
+    <None Include="..\assets\shaders\shapes_fragment.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="shaders\shapes_vertex.glsl">
+    <None Include="..\assets\shaders\shapes_vertex.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="shaders\sprite_fragment.glsl">
+    <None Include="..\assets\shaders\sprite_fragment.glsl">
       <Filter>Resource Files\Shaders</Filter>
     </None>
-    <None Include="shaders\sprite_vertex.glsl">
+    <None Include="..\assets\shaders\sprite_vertex.glsl">
       <Filter>Resource Files\Shaders</Filter>
-    </None>
-    <None Include="assets\animations.json">
-      <Filter>Resource Files\Json</Filter>
-    </None>
-    <None Include="assets\levels.json">
-      <Filter>Resource Files\Json</Filter>
-    </None>
-    <None Include="assets\sandboxLevel.json">
-      <Filter>Resource Files\Json</Filter>
-    </None>
-    <None Include="assets\spritesheet.json">
-      <Filter>Resource Files\Json</Filter>
     </None>
   </ItemGroup>
 </Project>

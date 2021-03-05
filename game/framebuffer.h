@@ -28,7 +28,7 @@ public:
 	void Select();
 	static void SelectWindow();
 
-	void Draw(glm::vec2 pos, float scale, Shader& shader);
+	void Draw(glm::vec2 pos, float scale, const Shader& shader) const;
 
 	Texture& GetTexture() { return texture; }
 };

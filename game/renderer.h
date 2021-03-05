@@ -1,7 +1,8 @@
 #pragma once
 
+#include "graphics.h"
 #include "sprite_ptr.h"
-#include "resources_types.h"
+#include "camera.h"
 
 #include <memory>
 #include <unordered_map>
@@ -16,7 +17,7 @@ public:
 	SpritePtr Stage(const SpriteInfo& info);
 	SpritePtr Stage(const std::string& name);
 
-	void Draw();
+	void Draw(const Camera& camera);
 private:
 	std::unordered_map<uint32_t, std::unique_ptr<BatchedRender>> renders;
 

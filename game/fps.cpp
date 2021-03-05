@@ -1,5 +1,7 @@
 #include "fps.h"
 
+#include "utility.h"
+
 #include "imgui.h"
 
 #include <iostream>
@@ -27,9 +29,10 @@ void FPS::UpdateDt(uint32_t dt, const TimePoint& current) {
 	while (std::chrono::duration_cast<Microseconds>(current - avgDts.front().index).count() >= 1000000) {
 		avgDts.pop_front();
 	}
+	const int32_t updatePeriod = 10;
 	if (!avgFrame) {
-		avgFrame = kAvgFrameRate;
-		avgLast = static_cast<float>(avgSum) / (1000.0f * kAvgFrameRate);
+		avgFrame = updatePeriod;
+		avgLast = static_cast<float>(avgSum) / (1000.0f * updatePeriod);
 		avgSum = 0;
 	}
 	avgFrame--;
@@ -56,7 +59,7 @@ FPSInfo FPS::Update() {
 		lastFrame = res;
 		return res;
 	}
-	res.dt = static_cast<uint32_t>(std::min(60*1000ll, std::chrono::duration_cast<Microseconds>(end - frames.back()).count()));
+	res.dt = to_ui32(std::min(60*1000ll, std::chrono::duration_cast<Microseconds>(end - frames.back()).count()));
 	
 	UpdateFrames(end);
 	
@@ -69,7 +72,7 @@ FPSInfo FPS::Update() {
 
 void FPS::LimitFPS(uint32_t fps) {
 	TimePoint end = std::chrono::steady_clock::now();
-	uint32_t dt = static_cast<uint32_t>(std::chrono::duration_cast<Microseconds>(end - lastTime).count());
+	uint32_t dt = to_ui32(std::chrono::duration_cast<Microseconds>(end - lastTime).count());
 	if (fps > 0) {
 		uint32_t time = (1000000u / fps);
 		if (time > dt) {

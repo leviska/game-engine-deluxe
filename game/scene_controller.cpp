@@ -1,17 +1,20 @@
 #include "scene_controller.h"
 
 void SceneController::Load() {
+	level.Load("sandboxLevel");
 	levelEditor.Load();
 	sandbox.Load();
 
 	stateMap = {
+		{ Scenes::Level, &level },
 		{ Scenes::Sandbox, &sandbox },
 		{ Scenes::LevelEditor, &levelEditor },
 	};
 
-	states.AddState(static_cast<int32_t>(Scenes::Sandbox));
-	states.AddState(static_cast<int32_t>(Scenes::LevelEditor));
-	states.ChangeState(static_cast<int32_t>(Scenes::Sandbox));
+	states.AddState(Scenes::Level);
+	states.AddState(Scenes::Sandbox);
+	states.AddState(Scenes::LevelEditor);
+	states.ChangeState(Scenes::Level);
 }
 
 void SceneController::Reset() {
@@ -23,12 +26,17 @@ void SceneController::Reset() {
 }
 
 
-Scenes SceneController::CurrentState() {
-	return static_cast<Scenes>(states.State());
+Scene& SceneController::CurrentScene() {
+	return *stateMap[states.State<Scenes>()];
 }
 
-Scene& SceneController::CurrentScene() {
-	return *stateMap[CurrentState()];
+
+void SceneController::LoadLevel(const std::string& name) {
+	levelEditor.Reset();
+	levelEditor.Load(name);
+	
+	level.Reset();
+	level.Load(name);
 }
 
 
@@ -38,4 +46,17 @@ const StateMachine& SceneController::SceneState() const {
 
 StateMachine& SceneController::SceneState() {
 	return states;
+}
+
+
+LevelScene& SceneController::Level() {
+	return level;
+}
+
+LevelEditorScene& SceneController::LevelEditor() {
+	return levelEditor;
+}
+
+SandboxScene& SceneController::Sandbox() {
+	return sandbox;
 }

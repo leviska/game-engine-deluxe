@@ -34,6 +34,8 @@ private:
 	void Clear();
 	void Draw();
 	void Render();
+
+	void Reload();
 };
 
 GameInst& Game();

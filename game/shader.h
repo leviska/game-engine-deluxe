@@ -31,40 +31,40 @@ public:
 
 	void Select() const;
 
-	void SetBool(const std::string& name, bool value);
-	void SetInt32(const std::string& name, int32_t value);
-	void SetFloat(const std::string& name, float value);
-	void SetVec2(const std::string& name, const glm::vec2& value);
-	void SetVec3(const std::string& name, const glm::vec3& value);
-	void SetVec4(const std::string& name, const glm::vec4& value);
-	void SetMat2(const std::string& name, const glm::mat2& value);
-	void SetMat3(const std::string& name, const glm::mat3& value);
-	void SetMat4(const std::string& name, const glm::mat4& value);
-	void SetIVec2Vec(const std::string& name, const std::vector<glm::ivec2>& vec);
+	void SetBool(const std::string& name, bool value) const;
+	void SetInt32(const std::string& name, int32_t value) const;
+	void SetFloat(const std::string& name, float value) const;
+	void SetVec2(const std::string& name, const glm::vec2& value) const;
+	void SetVec3(const std::string& name, const glm::vec3& value) const;
+	void SetVec4(const std::string& name, const glm::vec4& value) const;
+	void SetMat2(const std::string& name, const glm::mat2& value) const;
+	void SetMat3(const std::string& name, const glm::mat3& value) const;
+	void SetMat4(const std::string& name, const glm::mat4& value) const;
+	void SetIVec2Vec(const std::string& name, const std::vector<glm::ivec2>& vec) const;
 
 	template <typename T>
-	void SetBool(const std::string& name, T value) = delete;
+	void SetBool(const std::string& name, T value) const = delete;
 	template <typename T>
-	void SetInt32(const std::string& name, T value) = delete;
+	void SetInt32(const std::string& name, T value) const = delete;
 	template <typename T>
-	void SetFloat(const std::string& name, T value) = delete;
+	void SetFloat(const std::string& name, T value) const = delete;
 	template <typename T>
-	void SetVec2(const std::string& name, const T& value) = delete;
+	void SetVec2(const std::string& name, const T& value) const = delete;
 	template <typename T>
-	void SetVec3(const std::string& name, const T& value) = delete;
+	void SetVec3(const std::string& name, const T& value) const = delete;
 	template <typename T>
-	void SetVec4(const std::string& name, const T& value) = delete;
+	void SetVec4(const std::string& name, const T& value) const = delete;
 	template <typename T>
-	void SetMat2(const std::string& name, const T& value) = delete;
+	void SetMat2(const std::string& name, const T& value) const = delete;
 	template <typename T>
-	void SetMat3(const std::string& name, const T& value) = delete;
+	void SetMat3(const std::string& name, const T& value) const = delete;
 	template <typename T>
-	void SetMat4(const std::string& name, const T& value) = delete;
+	void SetMat4(const std::string& name, const T& value) const = delete;
 	template <typename T>
-	void SetIVec2Vec(const std::string& name, const T& vec) = delete;
+	void SetIVec2Vec(const std::string& name, const T& vec) const = delete;
 
 
-	void UpdateProjection(float width, float height);
+	void UpdateProjection(float width, float height) const;
 
 	uint32_t GetId() const;
 

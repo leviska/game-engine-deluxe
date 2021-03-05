@@ -70,4 +70,20 @@ public:
 	const T& operator[](std::string name) const {
 		return values[names.at(name)];
 	}
+
+	typename std::vector<T>::iterator begin() {
+		return values.begin();
+	}
+
+	typename std::vector<T>::iterator end() {
+		return values.end();
+	}
+
+	typename std::vector<T>::const_iterator begin() const {
+		return values.begin();
+	}
+
+	typename std::vector<T>::const_iterator end() const {
+		return values.end();
+	}
 };

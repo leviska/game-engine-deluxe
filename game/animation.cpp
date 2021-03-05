@@ -1,6 +1,5 @@
 #include "animation.h"
 
-#include "resources.h"
 /*
 Animation::Animation(const std::string& dataName) {
 	AnimId = Resources().GetAnimationInfoId(dataName);

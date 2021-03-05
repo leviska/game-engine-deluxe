@@ -2,8 +2,10 @@
 
 #include "game.h"
 #include "renderable.h"
-#include "resources.h"
 #include "input.h"
+
+#include "consts.h"
+#include "shaders.h"
 
 #include "imgui.h"
 
@@ -12,8 +14,11 @@
 
 void SandboxScene::Load() {
 	LoadMap(map, db, render, std::string("sandboxLevel"));
-	
-	pixelArt.Load(Resources().CanvasSize);
+
+	glm::vec2 halfCanvas(Consts().CanvasSize / 2u);
+	camera = Camera{ halfCanvas, halfCanvas };
+
+	pixelArt.Load(Consts().CanvasSize);
 }
 
 void SandboxScene::Reset() {
@@ -24,6 +29,8 @@ void SandboxScene::Reset() {
 }
 
 void SandboxScene::Update() {
+	camera.UpdateFreeCamera();
+
 	frame++;
 	time += Game().FPS().dt / 1000000.f;
 }
@@ -38,9 +45,8 @@ void SandboxScene::Clear() {
 void SandboxScene::Draw() {
 	// --------- pixelArt --------- 
 	pixelArt.Select();
-	render.Draw();
+	render.Draw(camera);
 
 	// --------- screen --------- 
-	FrameBuffer::SelectWindow();
-	pixelArt.Draw(Game().GetWindow().GetSize() / 2u, Game().GetScale(), Resources().GetShader("BufferShader"));
+	DrawFramebufferToScreen(pixelArt);
 }

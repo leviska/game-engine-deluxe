@@ -7,6 +7,7 @@
 #include "state_machine.h"
 #include "map.h"
 #include "framebuffer.h"
+#include "camera.h"
 
 #include <entt/entt.hpp>
 
@@ -14,6 +15,7 @@ class SandboxScene : public Scene {
 public:
 	FrameBuffer pixelArt;
 	Renderer render;
+	Camera camera;
 
 	float time = 0;
 	int frame = 0;

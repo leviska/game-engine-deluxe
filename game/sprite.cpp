@@ -1,5 +1,5 @@
 #include "sprite.h"
-#include "resources.h"
+#include "color.h"
 
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>

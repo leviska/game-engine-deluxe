@@ -1,8 +1,9 @@
 #pragma once
 
+#include "shaders.h"
 #include "sprite.h"
-#include "resources_types.h"
 #include "vector_allocator.h"
+#include "utility.h"
 
 #include <vector>
 
@@ -10,7 +11,7 @@ class SpritePtr;
 
 class BatchedRender {
 public:
-	void Load(uint32_t TextureId, uint32_t ShaderId = static_cast<uint32_t>(Shaders::Batch));
+	void Load(uint32_t TextureId, uint32_t ShaderId = to_ui32(ShadersId::Batch));
 	void Reset();
 	
 	void Clear();
@@ -29,6 +30,4 @@ private:
 
 	uint32_t dataBuffer = 0;
 	VectorAlloc<Sprite> data;
-
-	void BindArray();
 };

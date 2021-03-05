@@ -1,7 +1,10 @@
 #include "particles.h"
-#include "resources.h"
 
 #include "imgui.h"
+#include "utility.h"
+
+#include "shaders.h"
+#include "glbuffers.h"
 
 #include <random>
 
@@ -46,14 +49,14 @@ void ParticleRender::Update() {
 		}
 	}
 
-	Resources().GetShader(Shaders::Particle).Select();
-	glBindVertexArray(Resources().GetParticleVAO());
+	Shaders().Shaders[to_ui32(ShadersId::Particle)].Select();
+	Buffers().ParticleBuffer.Bind();
 
 	glBindBuffer(GL_ARRAY_BUFFER, parametersBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(glm::vec4) * parameters.size(), &parameters[0], GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, sizeof(glm::vec4), (void*)0);
 
-	glBindVertexArray(0);
+	ObjectBuffer::Unbind();
 }
 
 void ParticleRender::GUI() {
@@ -89,15 +92,16 @@ void ParticleRender::GUI() {
 void ParticleRender::Draw(uint32_t dt, bool gui) {
 	if (gui) GUI();
 
-	Resources().GetShader(Shaders::Particle).Select();
-	glBindVertexArray(Resources().GetParticleVAO());
+	const Shader& partShader = Shaders().Shaders[to_ui32(ShadersId::Particle)];
+	partShader.Select();
+	Buffers().ParticleBuffer.Bind();
 
 	time += dt * speed / 1000000.0f;
-	Resources().GetShader(Shaders::Particle).SetFloat("Time", time);
-	Resources().GetShader(Shaders::Particle).SetFloat("MaxX", values[0]);
-	Resources().GetShader(Shaders::Particle).SetInt32("CoordMod", coordMod);
+	partShader.SetFloat("Time", time);
+	partShader.SetFloat("MaxX", values[0]);
+	partShader.SetInt32("CoordMod", coordMod);
 	
-	Resources().GetShader(Shaders::Particle).SetVec4("Transform", transform);
+	partShader.SetVec4("Transform", transform);
 
 	glPointSize(static_cast<float>(pointSize));
 	
@@ -107,5 +111,5 @@ void ParticleRender::Draw(uint32_t dt, bool gui) {
 
 	glDrawArraysInstanced(GL_POINTS, 0, 1, parameters.size());
 
-	glBindVertexArray(0);
+	ObjectBuffer::Unbind();
 }

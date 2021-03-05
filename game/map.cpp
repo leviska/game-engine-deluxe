@@ -1,15 +1,18 @@
 #include "map.h"
 
 #include "renderable.h"
-#include "resources.h"
 #include "assertion.h"
 #include "serialization.h"
+
+#include "consts.h"
+#include "graphics.h"
+#include "paths.h"
 
 #include <fstream>
 #include <bitset>
 
 glm::vec2 GetSpritePos(glm::ivec2 pos) {
-	return glm::vec2(pos) * static_cast<float>(Resources().TileSize) + static_cast<float>(Resources().TileSize / 2);
+	return glm::vec2(pos) * static_cast<float>(Consts().TileSize) + static_cast<float>(Consts().TileSize / 2);
 }
 
 void UpdateWallSprite(glm::ivec2 pos, const MapView& map, entt::registry& reg, Renderer& render) {
@@ -20,7 +23,7 @@ void UpdateWallSprite(glm::ivec2 pos, const MapView& map, entt::registry& reg, R
 }
 
 void UpdateFrontWall(Renderer& render, Renderable& rend, glm::ivec2 pos) {
-	SpritePtr sptr = render.Stage(Resources().GetSpriteInfo(20));
+	SpritePtr sptr = render.Stage(Graphics().Sprites[20]);
 	sptr->Pos = GetSpritePos(pos);
 	rend.emplace_back(sptr);
 }
@@ -39,7 +42,7 @@ void UpdateCeiling(const MapView& map, entt::registry& reg, Renderer& render, Re
 	for (int i = 0; i < 8; i += 2) {
 		if (neigh[i])
 			continue;
-		SpritePtr sptr = render.Stage(Resources().GetSpriteInfo(mapping.at(i)));
+		SpritePtr sptr = render.Stage(Graphics().Sprites[mapping.at(i)]);
 		sptr->Pos = GetSpritePos(pos);
 		rend.emplace_back(sptr);
 	}
@@ -63,14 +66,14 @@ void UpdateCeiling(const MapView& map, entt::registry& reg, Renderer& render, Re
 		else {
 			continue;
 		}
-		SpritePtr sptr = render.Stage(Resources().GetSpriteInfo(cormap.at(i) + spr));
+		SpritePtr sptr = render.Stage(Graphics().Sprites[cormap.at(i) + spr]);
 		sptr->Pos = GetSpritePos(pos);
 		rend.emplace_back(sptr);
 	}
 }
 
 void UpdateFloor(Renderer& render, Renderable& rend, glm::ivec2 pos) {
-	SpritePtr sptr = render.Stage(Resources().GetSpriteInfo("Square"));
+	SpritePtr sptr = render.Stage(Graphics().Sprites["Square"]);
 	sptr->Pos = GetSpritePos(pos);
 	sptr->Scale = { 16.0f, 16.0f };
 	sptr->Color = RGBA({ 31, 14, 28, 255 });
@@ -105,7 +108,7 @@ entt::entity CreateElement(glm::ivec2 pos, MapView& map, entt::registry& reg) {
 }
 
 void LoadMap(MapView& map, entt::registry& reg, Renderer& render, const std::string& name) {
-	std::string fileName = std::string("assets/") + name + std::string(".json");
+	std::string fileName = Paths::Levels + name + std::string(".json");
 	std::ifstream file(fileName);
 	if (!file.good()) {
 		THROWERROR("Cannot open file " + fileName);
@@ -118,7 +121,7 @@ void LoadMap(MapView& map, entt::registry& reg, Renderer& render, const std::str
 void LoadMap(MapView& map, entt::registry& reg, Renderer& render, const nlohmann::json& file) {
 	const nlohmann::json& walls = file["Walls"];
 	for (const auto& elem : walls) {
-		glm::ivec2 pos = ReadVec<glm::ivec2>(elem["Pos"]);
+		glm::ivec2 pos = elem["Pos"].get<glm::ivec2>();
 		entt::entity id = CreateElement(pos, map, reg);
 		if (elem.find("Type") != elem.end()) {
 			if (elem["Type"] == "Ceiling") {
@@ -140,7 +143,7 @@ void LoadMap(MapView& map, entt::registry& reg, Renderer& render, const nlohmann
 }
 
 void SaveMap(const MapView& map, const entt::registry& reg, const std::string& name) {
-	std::string fileName = std::string("assets/") + name + std::string(".json");
+	std::string fileName = Paths::Assets + name + std::string(".json");
 	std::ofstream file(fileName);
 	if (!file.good()) {
 		THROWERROR("Cannot open file " + fileName);
@@ -157,7 +160,7 @@ void SaveMap(const MapView& map, const entt::registry& reg, nlohmann::json& resu
 	for (const auto& p : map) {
 		for (auto id : p.second) {
 			nlohmann::json obj;
-			SaveVec(p.first, obj["Pos"]);
+			obj["Pos"] = p.first;
 			std::string type;
 			if (reg.has<CeilingObstruct>(id)) {
 				type = "Ceiling";

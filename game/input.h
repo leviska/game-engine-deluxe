@@ -18,7 +18,7 @@ enum class Keyboard {
 
 enum class Mouse {
 	Left, Right, Middle,
-	MouseSize
+	MouseSize // total keys
 };
 
 enum class Gamepad {

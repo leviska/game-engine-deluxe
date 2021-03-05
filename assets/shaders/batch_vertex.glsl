@@ -24,7 +24,7 @@ void main()
 	float sn = sin(Rotation);
     gl_Position = Projection * vec4(
 		(Vertex * mat2(cs, sn, -sn, cs))
-		* Scale
+		* Scale * TextSize
 		+ Position, 
 		Layer, 1.0);
 }

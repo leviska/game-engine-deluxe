@@ -1,5 +1,4 @@
 #include "window.h"
-#include "resources.h"
 #include "game.h"
 #include "assertion.h"
 
@@ -81,10 +80,6 @@ void Window::Load() {
 	LoadSDL();
 	LoadOpenGL();
 
-	Resources().Load();
-
-	UpdateViewport();
-
 	gui.Load(window, glcontext);
 
 	SDL_MaximizeWindow(window);
@@ -116,7 +111,7 @@ void Window::ProcessEvents() {
 		case SDL_WINDOWEVENT: {
 			if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
 				SDL_GL_GetDrawableSize(window, (int*)&size.x, (int*)&size.y);
-				UpdateViewport();
+				Game().UpdateViewport(size);
 			}
 			break;
 		}
@@ -129,10 +124,6 @@ void Window::ProcessKeys() {
 		fullscreen = !fullscreen;
 		SDL_SetWindowFullscreen(window, fullscreen ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0);
 	}
-}
-
-void Window::UpdateViewport() {
-	Game().UpdateViewport({ size.x, size.y });
 }
 
 void Window::Update() {

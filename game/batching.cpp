@@ -1,6 +1,8 @@
 #include "batching.h"
 
-#include "resources.h"
+#include "glbuffers.h"
+#include "graphics.h"
+#include "shaders.h"
 #include "sprite_ptr.h"
 
 #include <glad/glad.h>
@@ -19,10 +21,6 @@ void BatchedRender::Reset() {
 	textureId = 0;
 	shaderId = 0;
 	glDeleteBuffers(1, &dataBuffer);
-}
-
-void BatchedRender::BindArray() {
-	glBindVertexArray(Resources().GetBatchVAO());
 }
 
 void BatchedRender::Clear() {
@@ -58,9 +56,9 @@ void BatchedRender::Draw() {
 	if (data.Empty())
 		return;
 
-	Resources().GetShader(shaderId).Select();
-	Resources().GetTexture(textureId).Select();
-	BindArray();
+	Shaders().Shaders[shaderId].Select();
+	Graphics().Textures[textureId].Select();
+	Buffers().BatchBuffer.Bind();
 
 	glBindBuffer(GL_ARRAY_BUFFER, dataBuffer);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(Sprite) * data.Capacity(), data.Raw(), GL_STATIC_DRAW);
@@ -75,5 +73,5 @@ void BatchedRender::Draw() {
 
 	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, data.Capacity());
 
-	glBindVertexArray(0);
+	ObjectBuffer::Unbind();
 }

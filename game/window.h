@@ -28,7 +28,6 @@ public:
 	void Reset();
 
 	void Update();
-	void UpdateViewport();
 
 	void Clear();
 	void Render();

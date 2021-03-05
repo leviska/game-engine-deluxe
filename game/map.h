@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utility.h"
+#include "hashes.h"
 #include "renderer.h"
 
 #include <unordered_map>

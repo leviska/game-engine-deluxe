@@ -1,6 +1,6 @@
 #include "framebuffer.h"
 
-#include "resources.h"
+#include "glbuffers.h"
 #include "game.h"
 #include "image.h"
 #include "assertion.h"
@@ -51,17 +51,18 @@ void FrameBuffer::Select() {
 
 void FrameBuffer::SelectWindow() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	Game().GetWindow().UpdateViewport();
+	Game().UpdateViewport(Game().GetWindow().GetSize());
 }
 
-void FrameBuffer::Draw(glm::vec2 pos, float scale, Shader& shader) {
+void FrameBuffer::Draw(glm::vec2 pos, float scale, const Shader& shader) const {
 	shader.Select();
 	texture.Select();
-	glBindVertexArray(Resources().GetSpriteVAO());
+	Buffers().SpriteBuffer.Bind();
 
 	shader.SetVec2("Position", pos);
 	shader.SetVec3("Transform", glm::vec3(texture.GetSize(), scale));
 
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
+
+	ObjectBuffer::Unbind();
 }

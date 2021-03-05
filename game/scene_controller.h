@@ -11,12 +11,11 @@
 #include "sandbox_scene.h"
 
 enum class Scenes {
-	/*
 	Menu, 
 	Level,
 	Cutscene,
 	Dialog,
-	*/
+	
 	Sandbox,
 	LevelEditor,
 
@@ -33,11 +32,17 @@ public:
 
 	const StateMachine& SceneState() const;
 	StateMachine& SceneState();
+
+	void LoadLevel(const std::string& name);
+
+	LevelScene& Level();
+	LevelEditorScene& LevelEditor();
+	SandboxScene& Sandbox();
 private:
 	// TBA MenuScene
-	// TBA LevelScene
 	// TBA CutScene
 	// TBA DialogScene
+	LevelScene level;
 	LevelEditorScene levelEditor;
 	SandboxScene sandbox;
 
