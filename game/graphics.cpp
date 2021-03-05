@@ -46,6 +46,7 @@ void GraphicsImpl::LoadTextures() {
 
 void GraphicsImpl::LoadSprites() {
 	LoadSpriteInfo(Textures.GetId("Spritesheet"), "spritesheet.json", Sprites);
+	LoadSpriteInfo(Textures.GetId("EditorButtons"), "editor_buttons.json", Sprites);
 	LoadSpriteInfo(Textures.GetId("EditorButtons"), "editor_buttons.json", EditorButtons);
 
 	SpriteInfo square;

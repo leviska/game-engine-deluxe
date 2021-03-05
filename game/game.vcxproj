@@ -210,6 +210,7 @@
     <ClInclude Include="input.h" />
     <ClInclude Include="level_editor.h" />
     <ClInclude Include="level_scene.h" />
+    <ClInclude Include="map_components.h" />
     <ClInclude Include="paths.h" />
     <ClInclude Include="renderable.h" />
     <ClInclude Include="game.h" />

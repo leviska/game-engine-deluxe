@@ -35,4 +35,7 @@ private:
 	uint32_t currentTile = 0;
 
 	void DrawGui();
+
+	void OnLeftPress(glm::ivec2 relPos);
+	void OnRightPress(glm::ivec2 relPos);
 };

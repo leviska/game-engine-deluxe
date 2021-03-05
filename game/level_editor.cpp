@@ -41,13 +41,60 @@ void LevelEditorScene::Reset() {
 	frameBuffer.Reset();
 	map.clear();
 	db.clear();
+	preview.reset();
 	render.Reset();
 	levelName.clear();
-	preview.reset();
 }
 
 const std::string& LevelEditorScene::CurrentLevel() const {
 	return levelName;
+}
+
+void LevelEditorScene::OnLeftPress(glm::ivec2 relPos) {
+	entt::entity id;
+	id = CreateElement(relPos, map, db);
+
+	const std::string& buttonName = Graphics().EditorButtons[currentTile].Name;
+	if (buttonName == "FrontWall") {
+		db.emplace<FrontWall>(id);
+	}
+	else if (buttonName == "Tiling") {
+		db.emplace<TilingMap>(id);
+	}
+	else if (buttonName == "Floor") {
+		db.emplace<Floor>(id);
+	}
+	else if (buttonName == "Player") {
+		db.emplace<Player>(id);
+	}
+	else if (buttonName == "Orc") {
+		db.emplace<Orc>(id);
+	}
+	else if (buttonName == "Ladder") {
+		db.emplace<Ladder>(id);
+	}
+
+	for (int i = -1; i <= 1; i++) {
+		for (int j = -1; j <= 1; j++) {
+			UpdateSprite(relPos + glm::ivec2(i, j), map, db, render);
+		}
+	}
+}
+
+void LevelEditorScene::OnRightPress(glm::ivec2 relPos) {
+	auto it = map.find(relPos);
+	if (it != map.end()) {
+		for (auto id : it->second) {
+			db.destroy(id);
+		}
+		it->second.clear();
+	}
+	
+	for (int i = -1; i <= 1; i++) {
+		for (int j = -1; j <= 1; j++) {
+			UpdateSprite(relPos + glm::ivec2(i, j), map, db, render);
+		}
+	}
 }
 
 void LevelEditorScene::Update() {
@@ -73,45 +120,10 @@ void LevelEditorScene::Update() {
 	(**preview).Pos = GetSpritePos(relPos);
 
 	if (Input().KeyPressed(Mouse::Left) || Input().KeyDown(Mouse::Left) && prevPos != relPos) {
-		entt::entity id;
-		if (map[relPos].empty()) {
-			id = CreateElement(relPos, map, db);
-		}
-		else {
-			id = map[relPos][0];
-		}
-		db.remove_if_exists<CeilingObstruct>(id);
-		db.remove_if_exists<FrontWallObstruct>(id);
-		db.remove_if_exists<FloorObstruct>(id);
-
-		const std::string& buttonName = Graphics().EditorButtons[currentTile].Name;
-
-		if (buttonName == "FrontWall") {
-			db.emplace<FrontWallObstruct>(id);
-		}
-		else if (buttonName == "Tiling") {
-			db.emplace<CeilingObstruct>(id);
-		}
-		else if (buttonName == "Floor") {
-			db.emplace<FloorObstruct>(id);
-		}
-
-		for (const auto& vec : map) {
-			for (auto id : vec.second) {
-				UpdateWallSprite(id, map, db, render);
-			}
-		}
+		OnLeftPress(relPos);
 	}
 	if (Input().KeyPressed(Mouse::Right) || Input().KeyDown(Mouse::Right) && prevPos != relPos) {
-		if (!map[relPos].empty()) {
-			db.destroy(map[relPos][0]);
-			map[relPos].clear();
-		}
-		for (const auto& vec : map) {
-			for (auto id : vec.second) {
-				UpdateWallSprite(id, map, db, render);
-			}
-		}
+		OnRightPress(relPos);
 	}
 	prevPos = relPos;
 }

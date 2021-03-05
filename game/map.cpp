@@ -68,6 +68,13 @@ TilingBitset GetTiling(NeighbourBitset neigh) {
 	return res;
 }
 
+SpritePtr UpdateSpriteWithNamed(Renderer& render, Renderable& rend, glm::ivec2 pos, const std::string& name) {
+	SpritePtr sptr = render.Stage(Graphics().Sprites[name]);
+	sptr->Pos = GetSpritePos(pos);
+	rend.emplace_back(sptr);
+	return sptr;
+}
+
 void UpdateCeiling(const MapView& map, entt::registry& reg, Renderer& render, Renderable& rend, glm::ivec2 pos) {
 	NeighbourBitset neigh; // right, bottom right, bottom, ...
 	const std::array shifts = { 
@@ -76,8 +83,7 @@ void UpdateCeiling(const MapView& map, entt::registry& reg, Renderer& render, Re
 	};
 	for (int i = 0; i < 8; i++) {
 		glm::ivec2 cur = pos + shifts[i];
-		auto it = map.find(cur);
-		neigh[i] = it != map.end() && !it->second.empty() && reg.has<CeilingObstruct>(it->second[0]);
+		neigh[i] = GetFirstOfType<TilingMap>(cur, map, reg) != entt::null;
 	}
 
 	const std::array spriteMap = {
@@ -106,17 +112,9 @@ void UpdateCeiling(const MapView& map, entt::registry& reg, Renderer& render, Re
 	TilingBitset tiles = GetTiling(neigh);
 	for (const auto& p : spriteMap) {
 		if (tiles[to_ui32(p.first)]) {
-			SpritePtr sptr = render.Stage(Graphics().Sprites[p.second]);
-			sptr->Pos = GetSpritePos(pos);
-			rend.emplace_back(sptr);
+			UpdateSpriteWithNamed(render, rend, pos, p.second);
 		}
 	}
-}
-
-void UpdateFrontWall(Renderer& render, Renderable& rend, glm::ivec2 pos) {
-	SpritePtr sptr = render.Stage(Graphics().Sprites["WallFace"]);
-	sptr->Pos = GetSpritePos(pos);
-	rend.emplace_back(sptr);
 }
 
 void UpdateFloor(Renderer& render, Renderable& rend, glm::ivec2 pos) {
@@ -127,14 +125,15 @@ void UpdateFloor(Renderer& render, Renderable& rend, glm::ivec2 pos) {
 	rend.emplace_back(sptr);
 }
 
-void UpdateWallSprite(glm::ivec2 pos, const MapView& map, entt::registry& reg, Renderer& render) {
-	if (map.find(pos) == map.end() || !map.at(pos).empty() == 0) {
-		return;
-	}
-	UpdateWallSprite(map.at(pos)[0], map, reg, render);
+void UpdateSprite(glm::ivec2 pos, const MapView& map, entt::registry& reg, Renderer& render) {
+	auto callback = [&](entt::entity id) {
+		UpdateSprite(id, map, reg, render);
+		return false;
+	};
+	CallForEvery(callback, pos, map);
 }
 
-void UpdateWallSprite(entt::entity id, const MapView& map, entt::registry& reg, Renderer& render) {
+void UpdateSprite(entt::entity id, const MapView& map, entt::registry& reg, Renderer& render) {
 	if (!reg.has<GridElem>(id) || !reg.has<Renderable>(id)) {
 		return;
 	}
@@ -142,14 +141,26 @@ void UpdateWallSprite(entt::entity id, const MapView& map, entt::registry& reg, 
 	Renderable& rend = reg.get<Renderable>(id);
 	rend.clear();
 
-	if (reg.has<FrontWallObstruct>(id)) {
-		UpdateFrontWall(render, rend, pos);
+	if (reg.has<FrontWall>(id)) {
+		UpdateSpriteWithNamed(render, rend, pos, "WallFace");
 	}
-	else if (reg.has<CeilingObstruct>(id)) {
+	else if (reg.has<TilingMap>(id)) {
 		UpdateCeiling(map, reg, render, rend, pos);
 	}
-	else if (reg.has<FloorObstruct>(id)) {
+	else if (reg.has<Floor>(id)) {
 		UpdateFloor(render, rend, pos);
+	}
+	else if (reg.has<Player>(id)) {
+		SpritePtr sptr = UpdateSpriteWithNamed(render, rend, pos, "Player");
+		sptr->Layer = 1;
+	}
+	else if (reg.has<Orc>(id)) {
+		SpritePtr sptr = UpdateSpriteWithNamed(render, rend, pos, "Orc");
+		sptr->Layer = 1;
+	}
+	else if (reg.has<Ladder>(id)) {
+		SpritePtr sptr = UpdateSpriteWithNamed(render, rend, pos, "Ladder");
+		sptr->Layer = 1;
 	}
 }
 
@@ -179,19 +190,19 @@ void LoadMap(MapView& map, entt::registry& reg, Renderer& render, const nlohmann
 		entt::entity id = CreateElement(pos, map, reg);
 		if (elem.find("Type") != elem.end()) {
 			if (elem["Type"] == "Ceiling") {
-				reg.emplace<CeilingObstruct>(id);
+				reg.emplace<TilingMap>(id);
 			}
 			else if (elem["Type"] == "FrontWall") {
-				reg.emplace<FrontWallObstruct>(id);
+				reg.emplace<FrontWall>(id);
 			}
 			else if (elem["Type"] == "Floor") {
-				reg.emplace<FloorObstruct>(id);
+				reg.emplace<Floor>(id);
 			}
 		}
 	}
 	for (const auto& vec : map) {
 		for (auto id : vec.second) {
-			UpdateWallSprite(id, map, reg, render);
+			UpdateSprite(id, map, reg, render);
 		}
 	}
 }
@@ -216,13 +227,13 @@ void SaveMap(const MapView& map, const entt::registry& reg, nlohmann::json& resu
 			nlohmann::json obj;
 			obj["Pos"] = p.first;
 			std::string type;
-			if (reg.has<CeilingObstruct>(id)) {
+			if (reg.has<TilingMap>(id)) {
 				type = "Ceiling";
 			}
-			else if (reg.has<FrontWallObstruct>(id)) {
+			else if (reg.has<FrontWall>(id)) {
 				type = "FrontWall";
 			}
-			else if (reg.has<FloorObstruct>(id)) {
+			else if (reg.has<Floor>(id)) {
 				type = "Floor";
 			}
 			obj["Type"] = type;
