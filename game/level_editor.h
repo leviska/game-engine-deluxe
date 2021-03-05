@@ -24,20 +24,15 @@ private:
 	Camera camera;
 	FrameBuffer frameBuffer;
 
+	std::unique_ptr<SpriteOwner> preview;
+
 	entt::registry db;
 	MapView map;
 
 	glm::ivec2 prevPos;
-
 	std::string levelName;
-
 	RectangleShape bb;
-
-	struct GUIData {
-		std::string CurrentTile = "Wall00";
-	};
-
-	GUIData data;
+	uint32_t currentTile = 0;
 
 	void DrawGui();
 };

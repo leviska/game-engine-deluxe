@@ -9,67 +9,114 @@
 #include "paths.h"
 
 #include <fstream>
-#include <bitset>
 
 glm::vec2 GetSpritePos(glm::ivec2 pos) {
 	return glm::vec2(pos) * static_cast<float>(Consts().TileSize) + static_cast<float>(Consts().TileSize / 2);
 }
 
-void UpdateWallSprite(glm::ivec2 pos, const MapView& map, entt::registry& reg, Renderer& render) {
-	if (map.find(pos) == map.end() || !map.at(pos).empty() == 0) {
-		return;
-	}
-	UpdateWallSprite(map.at(pos)[0], map, reg, render);
-}
+TilingBitset GetTiling(NeighbourBitset neigh) {
+	TilingBitset res;
 
-void UpdateFrontWall(Renderer& render, Renderable& rend, glm::ivec2 pos) {
-	SpritePtr sptr = render.Stage(Graphics().Sprites["WallFace00"]);
-	sptr->Pos = GetSpritePos(pos);
-	rend.emplace_back(sptr);
+	// middle tiles
+	const std::array middleMap = { 
+		std::pair{ NeighbourId::R, TilingId::R },
+		std::pair{ NeighbourId::B, TilingId::B },
+		std::pair{ NeighbourId::L, TilingId::L },
+		std::pair{ NeighbourId::T, TilingId::T }
+	};
+
+	for (const auto& p : middleMap) {
+		res[to_ui32(p.second)] = !neigh[to_ui32(p.first)];
+	}
+
+	// corner tiles
+	const std::array cornerNeighMap = {
+		std::array{ NeighbourId::R, NeighbourId::BR, NeighbourId::B },
+		std::array{ NeighbourId::B, NeighbourId::BL, NeighbourId::L },
+		std::array{ NeighbourId::L, NeighbourId::TL, NeighbourId::T },
+		std::array{ NeighbourId::T, NeighbourId::TR, NeighbourId::R },
+	};
+
+	const std::array cornerTileMap = {
+		std::array{ TilingId::BRFull, TilingId::BRLeft, TilingId::BRRight, TilingId::BRCorner },
+		std::array{ TilingId::BLFull, TilingId::BLLeft, TilingId::BLRight, TilingId::BLCorner },
+		std::array{ TilingId::TLFull, TilingId::TLLeft, TilingId::TLRight, TilingId::TLCorner },
+		std::array{ TilingId::TRFull, TilingId::TRLeft, TilingId::TRRight, TilingId::TRCorner },
+	};
+
+	for (int i = 0; i < 4; i++) {
+		int type = neigh[to_ui32(cornerNeighMap[i][0])] * 4 + neigh[to_ui32(cornerNeighMap[i][1])] + neigh[to_ui32(cornerNeighMap[i][2])] * 2;
+		TilingId id;
+		if (type <= 1) {
+			id = cornerTileMap[i][0];
+		}
+		else if (type >= 2 && type <= 3) {
+			id = cornerTileMap[i][1];
+		}
+		else if (type >= 4 && type <= 5) {
+			id = cornerTileMap[i][2];
+		}
+		else if (type == 6) {
+			id = cornerTileMap[i][3];
+		}
+		else {
+			continue;
+		}
+		res[to_ui32(id)] = true;
+	}
+
+	return res;
 }
 
 void UpdateCeiling(const MapView& map, entt::registry& reg, Renderer& render, Renderable& rend, glm::ivec2 pos) {
-	std::bitset<8> neigh; // right, bottom right, bottom, ...
-	const std::array<glm::ivec2, 8> shifts = { glm::ivec2{ 1, 0 }, { 1, 1 }, { 0, 1 }, { -1, 1 }, { -1, 0 }, { -1, -1 }, { 0, -1 }, { 1, -1 } };
+	NeighbourBitset neigh; // right, bottom right, bottom, ...
+	const std::array shifts = { 
+		glm::ivec2{ 1, 0 }, glm::ivec2{ 1, 1 }, glm::ivec2{ 0, 1 }, glm::ivec2{ -1, 1 }, 
+		glm::ivec2{ -1, 0 }, glm::ivec2{ -1, -1 }, glm::ivec2{ 0, -1 }, glm::ivec2{ 1, -1 }
+	};
 	for (int i = 0; i < 8; i++) {
 		glm::ivec2 cur = pos + shifts[i];
 		auto it = map.find(cur);
 		neigh[i] = it != map.end() && !it->second.empty() && reg.has<CeilingObstruct>(it->second[0]);
 	}
 
-	// middle tiles
-	const std::unordered_map<int, int> mapping = { { 0, 15 }, { 2, 0 }, { 4, 5 }, { 6, 10 } };
-	for (int i = 0; i < 8; i += 2) {
-		if (neigh[i])
-			continue;
-		SpritePtr sptr = render.Stage(Graphics().Sprites[mapping.at(i) + 1]);
-		sptr->Pos = GetSpritePos(pos);
-		rend.emplace_back(sptr);
-	}
+	const std::array spriteMap = {
+		std::pair{ TilingId::R, std::string{"TilingR"} },
+		std::pair{ TilingId::BRFull, std::string{"TilingBRFull"} },
+		std::pair{ TilingId::BRLeft, std::string{"TilingBRLeft"} },
+		std::pair{ TilingId::BRRight, std::string{"TilingBRRight"} },
+		std::pair{ TilingId::BRCorner, std::string{"TilingBRCorner"} },
+		std::pair{ TilingId::B, std::string{"TilingB"} },
+		std::pair{ TilingId::BLFull, std::string{"TilingBLFull"} },
+		std::pair{ TilingId::BLLeft, std::string{"TilingBLLeft"} },
+		std::pair{ TilingId::BLRight, std::string{"TilingBLRight"} },
+		std::pair{ TilingId::BLCorner, std::string{"TilingBLCorner"} },
+		std::pair{ TilingId::L, std::string{"TilingL"} },
+		std::pair{ TilingId::TLFull, std::string{"TilingTLFull"} },
+		std::pair{ TilingId::TLLeft, std::string{"TilingTLLeft"} },
+		std::pair{ TilingId::TLRight, std::string{"TilingTLRight"} },
+		std::pair{ TilingId::TLCorner, std::string{"TilingTLCorner"} },
+		std::pair{ TilingId::T, std::string{"TilingT"} },
+		std::pair{ TilingId::TRFull, std::string{"TilingTRFull"} },
+		std::pair{ TilingId::TRLeft, std::string{"TilingTRLeft"} },
+		std::pair{ TilingId::TRRight, std::string{"TilingTRRight"} },
+		std::pair{ TilingId::TRCorner, std::string{"TilingTRCorner"} },
+	};
 
-	const std::unordered_map<int, int> cormap = { { 1, 16 }, { 3, 1 }, { 5, 6 }, { 7, 11 } };
-	for (int i = 1; i < 8; i += 2) {
-		int type = neigh[i] + neigh[(i + 1) % 8] * 2 + neigh[(i + 7) % 8] * 4;
-		int spr = 0;
-		if (type <= 1) {
-			spr = 0;
+	TilingBitset tiles = GetTiling(neigh);
+	for (const auto& p : spriteMap) {
+		if (tiles[to_ui32(p.first)]) {
+			SpritePtr sptr = render.Stage(Graphics().Sprites[p.second]);
+			sptr->Pos = GetSpritePos(pos);
+			rend.emplace_back(sptr);
 		}
-		else if (type >= 2 && type <= 3) {
-			spr = 2;
-		}
-		else if (type >= 4 && type <= 5) {
-			spr = 3;
-		}
-		else if (type == 6) {
-			spr = 1;
-		}
-		else {
-			continue;
-		}
-		SpritePtr sptr = render.Stage(Graphics().Sprites[cormap.at(i) + spr + 1]);
-		sptr->Pos = GetSpritePos(pos);
-		rend.emplace_back(sptr);
 	}
+}
+
+void UpdateFrontWall(Renderer& render, Renderable& rend, glm::ivec2 pos) {
+	SpritePtr sptr = render.Stage(Graphics().Sprites["WallFace"]);
+	sptr->Pos = GetSpritePos(pos);
+	rend.emplace_back(sptr);
 }
 
 void UpdateFloor(Renderer& render, Renderable& rend, glm::ivec2 pos) {
@@ -78,6 +125,13 @@ void UpdateFloor(Renderer& render, Renderable& rend, glm::ivec2 pos) {
 	sptr->Scale = { 16.0f, 16.0f };
 	sptr->Color = RGBA({ 31, 14, 28, 255 });
 	rend.emplace_back(sptr);
+}
+
+void UpdateWallSprite(glm::ivec2 pos, const MapView& map, entt::registry& reg, Renderer& render) {
+	if (map.find(pos) == map.end() || !map.at(pos).empty() == 0) {
+		return;
+	}
+	UpdateWallSprite(map.at(pos)[0], map, reg, render);
 }
 
 void UpdateWallSprite(entt::entity id, const MapView& map, entt::registry& reg, Renderer& render) {

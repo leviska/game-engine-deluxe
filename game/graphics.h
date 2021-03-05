@@ -24,6 +24,7 @@ class GraphicsImpl : public Singleton {
 public:
 	NamedVector<Texture> Textures;
 	NamedVector<SpriteInfo> Sprites;
+	NamedVector<SpriteInfo> EditorButtons;
 
 	void Load();
 	void Reset();
@@ -31,7 +32,8 @@ private:
 	~GraphicsImpl() { Reset(); }
 
 	void LoadTextures();
-	void LoadSpriteInfo(const std::string& fileName);
+	void LoadSprites();
+	void LoadSpriteInfo(uint32_t textId, const std::string& fileName, NamedVector<SpriteInfo>& res);
 
 	friend GraphicsImpl& GraphicsMut();
 };

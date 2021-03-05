@@ -325,14 +325,14 @@
     <None Include="..\assets\graphics\spritesheet.json">
       <Filter>Resource Files\Graphics</Filter>
     </None>
-    <None Include="..\assets\graphics\spritesheet_le.json">
-      <Filter>Resource Files\Graphics</Filter>
-    </None>
     <None Include="..\assets\levels\level000.json">
       <Filter>Resource Files\Levels</Filter>
     </None>
     <None Include="..\assets\levels\sandboxLevel.json">
       <Filter>Resource Files\Levels</Filter>
+    </None>
+    <None Include="..\assets\graphics\editor_buttons.json">
+      <Filter>Resource Files\Graphics</Filter>
     </None>
   </ItemGroup>
 </Project>

@@ -1,6 +1,6 @@
 { "frames": [
    {
-    "filename": "WallFace00",
+    "filename": "WallFace",
     "frame": { "x": 1, "y": 1, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -9,7 +9,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall00",
+    "filename": "TilingB",
     "frame": { "x": 19, "y": 1, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -18,7 +18,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall01",
+    "filename": "TilingBLFull",
     "frame": { "x": 37, "y": 1, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -27,7 +27,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall02",
+    "filename": "TilingBLCorner",
     "frame": { "x": 55, "y": 1, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -36,7 +36,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall03",
+    "filename": "TilingBLLeft",
     "frame": { "x": 73, "y": 1, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -45,7 +45,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall04",
+    "filename": "TilingBLRight",
     "frame": { "x": 1, "y": 19, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -54,7 +54,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall05",
+    "filename": "TilingL",
     "frame": { "x": 19, "y": 19, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -63,7 +63,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall06",
+    "filename": "TilingTLFull",
     "frame": { "x": 37, "y": 19, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -72,7 +72,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall07",
+    "filename": "TilingTLCorner",
     "frame": { "x": 55, "y": 19, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -81,7 +81,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall08",
+    "filename": "TilingTLLeft",
     "frame": { "x": 73, "y": 19, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -90,7 +90,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall09",
+    "filename": "TilingTLRight",
     "frame": { "x": 1, "y": 37, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -99,7 +99,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall10",
+    "filename": "TilingT",
     "frame": { "x": 19, "y": 37, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -108,7 +108,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall11",
+    "filename": "TilingTRFull",
     "frame": { "x": 37, "y": 37, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -117,7 +117,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall12",
+    "filename": "TilingTRCorner",
     "frame": { "x": 55, "y": 37, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -126,7 +126,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall13",
+    "filename": "TilingTRLeft",
     "frame": { "x": 73, "y": 37, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -135,7 +135,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall14",
+    "filename": "TilingTRRight",
     "frame": { "x": 1, "y": 55, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -144,7 +144,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall15",
+    "filename": "TilingR",
     "frame": { "x": 19, "y": 55, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -153,7 +153,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall16",
+    "filename": "TilingBRFull",
     "frame": { "x": 37, "y": 55, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -162,7 +162,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall17",
+    "filename": "TilingBRCorner",
     "frame": { "x": 55, "y": 55, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -171,7 +171,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall18",
+    "filename": "TilingBRLeft",
     "frame": { "x": 73, "y": 55, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
@@ -180,7 +180,7 @@
     "duration": 100
    },
    {
-    "filename": "Wall19",
+    "filename": "TilingBRRight",
     "frame": { "x": 1, "y": 73, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,

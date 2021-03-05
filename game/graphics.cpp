@@ -16,7 +16,37 @@ void from_json(const nlohmann::json& j, SpriteInfo& info) {
 
 void GraphicsImpl::Load() {
 	LoadTextures();
-	LoadSpriteInfo("spritesheet.json");
+	LoadSprites();
+}
+
+void GraphicsImpl::Reset() {
+	Textures.Clear();
+	Sprites.Clear();
+	EditorButtons.Clear();
+}
+
+
+void GraphicsImpl::LoadTextures() {
+	Texture spritesheet;
+	
+	Image white;
+	white.Load({ 1, 1 }, { 255, 255, 255, 255 });
+	spritesheet.Load(white);
+	Textures.Add(std::move(spritesheet), "Square");
+	
+	spritesheet.Load(Paths::Graphics + "spritesheet.png");
+	Textures.Add(std::move(spritesheet), "Spritesheet");
+
+	spritesheet.Load(Paths::Graphics + "editor_buttons.png");
+	Textures.Add(std::move(spritesheet), "EditorButtons");
+
+	spritesheet.Load(Paths::Graphics + "editor_buttons.png", false);
+	Textures.Add(std::move(spritesheet), "EditorButtons2D");
+}
+
+void GraphicsImpl::LoadSprites() {
+	LoadSpriteInfo(Textures.GetId("Spritesheet"), "spritesheet.json", Sprites);
+	LoadSpriteInfo(Textures.GetId("EditorButtons"), "editor_buttons.json", EditorButtons);
 
 	SpriteInfo square;
 	square.Name = "Square";
@@ -26,26 +56,7 @@ void GraphicsImpl::Load() {
 	Sprites.Add(square, square.Name);
 }
 
-void GraphicsImpl::Reset() {
-	Textures.Clear();
-	Sprites.Clear();
-}
-
-
-void GraphicsImpl::LoadTextures() {
-	Texture spritesheet;
-	Image white;
-	white.Load({ 1, 1 }, { 255, 255, 255, 255 });
-	spritesheet.Load(white);
-	Textures.Add(std::move(spritesheet), "Square");
-	spritesheet.Load(Paths::Graphics + "spritesheet.png");
-	Textures.Add(std::move(spritesheet), "Spritesheet");
-	spritesheet.Load(Paths::Graphics + "spritesheet.png", false);
-	Textures.Add(std::move(spritesheet), "SpritesheetLE");
-}
-
-
-void GraphicsImpl::LoadSpriteInfo(const std::string& fileName) {
+void GraphicsImpl::LoadSpriteInfo(uint32_t textId, const std::string& fileName, NamedVector<SpriteInfo>& res) {
 	std::ifstream file(Paths::Graphics + fileName);
 	if (!file.good()) {
 		THROWERROR("Cannot open " + fileName + " file"); 
@@ -56,8 +67,8 @@ void GraphicsImpl::LoadSpriteInfo(const std::string& fileName) {
 	const auto& frames = parsed["frames"];
 	for (const auto& v : frames) {
 		SpriteInfo value = v.get<SpriteInfo>();
-		value.TextureId = Textures.GetId("Spritesheet");
-		Sprites.Add(value, value.Name);
+		value.TextureId = textId;
+		res.Add(value, value.Name);
 	}
 }
 

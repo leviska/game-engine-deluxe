@@ -243,8 +243,8 @@
   <ItemGroup>
     <None Include="..\assets\consts.json" />
     <None Include="..\assets\graphics\animations.json" />
+    <None Include="..\assets\graphics\editor_buttons.json" />
     <None Include="..\assets\graphics\spritesheet.json" />
-    <None Include="..\assets\graphics\spritesheet_le.json" />
     <None Include="..\assets\levels\level000.json" />
     <None Include="..\assets\levels\sandboxLevel.json" />
     <None Include="..\assets\shaders\batch_fragment.glsl" />
