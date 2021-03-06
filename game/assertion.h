@@ -58,7 +58,7 @@ std::ostream& PrintTime(std::ostream& os, std::chrono::nanoseconds ns);
 #endif
 
 #if defined _DEBUG || defined FORCEOUTPUT
-#define DOUT() PrintTime(COUT(), TimeFromStart()) << ": "
+#define DOUT() PrintTime(COUT(), TimeFromStart()) << " [" << __NOPATHFILE__ << "(" << __LINE__ << ")]: "
 #else 
 #define DOUT() COUT()
 #endif

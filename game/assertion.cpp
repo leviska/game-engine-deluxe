@@ -11,7 +11,7 @@ std::ostream& PrintTime(std::ostream& os, std::chrono::nanoseconds ns)
 {
     using namespace std;
     using namespace std::chrono;
-    typedef duration<int, ratio<86400>> days;
+
     char fill = os.fill();
     os.fill('0');
     auto h = duration_cast<hours>(ns);
@@ -21,10 +21,16 @@ std::ostream& PrintTime(std::ostream& os, std::chrono::nanoseconds ns)
     auto s = duration_cast<seconds>(ns);
     ns -= s;
     auto ms = duration_cast<milliseconds>(ns);
-    os << setw(2) << h.count() << "h:"
-        << setw(2) << m.count() << "m:"
-        << setw(2) << s.count() << "s:"
-        << setw(4) << ms.count() << "ms";
+
+    bool ph = h.count();
+    
+    if (ph)
+        os << setw(2) << h.count() << "h:";
+    
+    os << setw(2) << m.count() << "m:";
+    os << setw(2) << s.count() << "s:";
+    os << setw(4) << ms.count() << "ms";
+
     os.fill(fill);
     return os;
 };
