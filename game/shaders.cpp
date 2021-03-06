@@ -2,37 +2,46 @@
 
 #include "utility.h"
 #include "paths.h"
+#include "assertion.h"
+
+#include <iostream>
 
 void ShadersImpl::Load() {
-	Shader shader;
-	shader.Load(Paths::Shaders + "sprite_vertex.glsl", Paths::Shaders + "sprite_fragment.glsl");
-	Shaders.Add(std::move(shader), "SpriteShader");
+	DOUT() << "Loading Shaders" << std::endl;
 
-	shader.Load(Paths::Shaders + "batch_vertex.glsl", Paths::Shaders + "batch_fragment.glsl");
-	Shaders.Add(std::move(shader), "BatchShader");
+	LoadShader("sprite_vertex.glsl", "sprite_fragment.glsl", "SpriteShader");
+	LoadShader("batch_vertex.glsl", "batch_fragment.glsl", "BatchShader");
+	LoadShader("shapes_vertex.glsl", "shapes_fragment.glsl", "ShapesShader");
+	LoadShader("particle_vertex.glsl", "particle_fragment.glsl", "ParticleShader");
+	LoadShader("light_vertex.glsl", "light_fragment.glsl", "LightShader");
+	LoadShader("batch_vertex.glsl", "obstruct_fragment.glsl", "ObstructShader");
+	LoadShader("buffer_vertex.glsl", "buffer_fragment.glsl", "BufferShader");
 
-	shader.Load(Paths::Shaders + "shapes_vertex.glsl", Paths::Shaders + "shapes_fragment.glsl");
-	Shaders.Add(std::move(shader), "ShapesShader");
+	LoadShader("light_compute.glsl", "GenerateLight");
 
-	shader.Load(Paths::Shaders + "particle_vertex.glsl", Paths::Shaders + "particle_fragment.glsl");
-	Shaders.Add(std::move(shader), "ParticleShader");
-
-	shader.Load(Paths::Shaders + "light_vertex.glsl", Paths::Shaders + "light_fragment.glsl");
-	Shaders.Add(std::move(shader), "LightShader");
-
-	shader.Load(Paths::Shaders + "batch_vertex.glsl", Paths::Shaders + "obstruct_fragment.glsl");
-	Shaders.Add(std::move(shader), "ObstructShader");
-
-	shader.Load(Paths::Shaders + "buffer_vertex.glsl", Paths::Shaders + "buffer_fragment.glsl");
-	Shaders.Add(std::move(shader), "BufferShader");
-
-	shader.Load(Paths::Shaders + "light_compute.glsl");
-	Shaders.Add(std::move(shader), "GenerateLight");
-
-	Updates.resize(Shaders.Size(), ShaderViewport::NoUpdate);
-	Updates[to_ui32(ShadersId::Buffer)] = ShaderViewport::Reversed;
-	Updates[to_ui32(ShadersId::Shapes)] = ShaderViewport::Reversed;
+	DOUT() << "Successfully loaded Shaders" << std::endl;
 }
+
+void ShadersImpl::LoadShader(const std::string& vertex, const std::string& fragment, const std::string& name) {
+	DOUT() << "Compiling shader \"" << name << "\": \"" << vertex << "\" and \"" << fragment << "\"" << std::endl;
+
+	Shader shader;
+	shader.Load(Paths::Shaders + vertex, Paths::Shaders + fragment);
+	Shaders.Add(std::move(shader), name);
+	
+	DOUT() << "Compiled shader \"" << name << "\" successfully" << std::endl;
+}
+
+void ShadersImpl::LoadShader(const std::string& compute, const std::string& name) {
+	DOUT() << "Compiling shader \"" << name << "\": \"" << compute << "\"" << std::endl;
+
+	Shader shader;
+	shader.Load(Paths::Shaders + compute);
+	Shaders.Add(std::move(shader), name);
+
+	DOUT() << "Compiled shader \"" << name << "\" successfully" << std::endl;
+}
+
 
 void ShadersImpl::Reset() {
 	Shaders.Clear();

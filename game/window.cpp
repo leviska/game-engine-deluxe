@@ -5,10 +5,6 @@
 #include "imgui.h"
 #include "input.h"
 
-#include <cassert>
-#include <stdexcept>
-#include <iostream>
-
 #include <glad/glad.h>
 #include <sdl2/SDL_image.h>
 #include <windows.h>
@@ -25,7 +21,7 @@ void GLAPIENTRY GlErrorHandler(
 	const GLchar* message,
 	const void* userParam)
 {
-	std::cout << "OpenGL error: " << message << std::endl;
+	DOUT() << "OpenGL error: " << message << std::endl;
 	static bool ignoreErrors = false;
 	if (!ignoreErrors) {
 		DebugBreak();

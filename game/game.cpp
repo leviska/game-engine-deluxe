@@ -9,6 +9,7 @@
 #include "paths.h"
 #include "consts.h"
 #include "shaders.h"
+#include "assertion.h"
 
 #include <iostream>
 #include <chrono>
@@ -105,6 +106,9 @@ void GameInst::Render() {
 }
 
 void GameInst::Reload() {
+	DOUT() << "========================" << std::endl;
+	DOUT() << "Reloading all the assets" << std::endl;
+
 	BuffersMut().Reset();
 	GraphicsMut().Reset();
 	ConstsMut().Reset();
@@ -117,4 +121,5 @@ void GameInst::Reload() {
 
 	scenes.Reset();
 	scenes.Load();
+	DOUT() << "========================" << std::endl;
 }

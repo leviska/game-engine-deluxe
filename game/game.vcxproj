@@ -167,6 +167,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="animation.cpp" />
+    <ClCompile Include="assertion.cpp" />
     <ClCompile Include="batching.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="consts.cpp" />

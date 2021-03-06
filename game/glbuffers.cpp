@@ -1,5 +1,7 @@
 #include "glbuffers.h"
 
+#include "assertion.h"
+
 void ObjectBuffer::Bind() const {
 	glBindVertexArray(VAO);
 }
@@ -21,10 +23,14 @@ void DeleteObjectBuffer(ObjectBuffer& buffer) {
 
 
 void BuffersImpl::Load() {
+	DOUT() << "Loading GL Buffers" << std::endl;
+
 	LoadSpriteVAO();
 	LoadBatchVAO();
 	LoadParticleVAO();
 	LoadShapeVAO();
+
+	DOUT() << "Successfully loaded GL Buffers" << std::endl;
 }
 
 void BuffersImpl::Reset() {

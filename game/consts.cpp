@@ -9,6 +9,8 @@
 #include <fstream>
 
 void ConstsImpl::Load() {
+	DOUT() << "Loading Constants" << std::endl;
+
 	std::ifstream file(Paths::Assets + "consts.json");
 	if (!file.good()) {
 		THROWERROR("Can't open " + Paths::Assets + "consts.json file");
@@ -20,6 +22,8 @@ void ConstsImpl::Load() {
 	j.at("CanvasSize").get_to(CanvasSize);
 	j.at("Scale").get_to(Scale);
 	j.at("TileSize").get_to(TileSize);
+	
+	DOUT() << "Successfully loaded Constants" << std::endl;
 }
 
 void ConstsImpl::Reset() {

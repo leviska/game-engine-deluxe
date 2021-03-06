@@ -27,6 +27,8 @@ void GraphicsImpl::Reset() {
 
 
 void GraphicsImpl::LoadTextures() {
+	DOUT() << "Loading Textures" << std::endl;
+
 	Texture spritesheet;
 	
 	Image white;
@@ -42,9 +44,13 @@ void GraphicsImpl::LoadTextures() {
 
 	spritesheet.Load(Paths::Graphics + "editor_buttons.png", false);
 	Textures.Add(std::move(spritesheet), "EditorButtons2D");
+
+	DOUT() << "Successfully loaded Textures" << std::endl;
 }
 
 void GraphicsImpl::LoadSprites() {
+	DOUT() << "Loading Sprites" << std::endl;
+
 	LoadSpriteInfo(Textures.GetId("Spritesheet"), "spritesheet.json", Sprites);
 	LoadSpriteInfo(Textures.GetId("EditorButtons"), "editor_buttons.json", Sprites);
 	LoadSpriteInfo(Textures.GetId("EditorButtons"), "editor_buttons.json", EditorButtons);
@@ -55,6 +61,8 @@ void GraphicsImpl::LoadSprites() {
 	square.Value.TextPos = { 0.0f, 0.0f };
 	square.Value.TextSize = { 1.0f, 1.0f };
 	Sprites.Add(square, square.Name);
+
+	DOUT() << "Successfully loaded Sprites" << std::endl;
 }
 
 void GraphicsImpl::LoadSpriteInfo(uint32_t textId, const std::string& fileName, NamedVector<SpriteInfo>& res) {

@@ -1,6 +1,10 @@
 #include "scene_controller.h"
 
+#include "assertion.h"
+
 void SceneController::Load() {
+	DOUT() << "Loading Scenes" << std::endl;
+
 	level.Load("sandboxLevel");
 	levelEditor.Load();
 	sandbox.Load();
@@ -15,6 +19,8 @@ void SceneController::Load() {
 	states.AddState(Scenes::Sandbox);
 	states.AddState(Scenes::LevelEditor);
 	states.ChangeState(Scenes::Level);
+
+	DOUT() << "Successfully loaded Scenes" << std::endl;
 }
 
 void SceneController::Reset() {
