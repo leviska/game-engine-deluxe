@@ -1,7 +1,7 @@
 { "frames": [
    {
     "filename": "FrontWall",
-    "frame": { "x": 2, "y": 2, "w": 16, "h": 16 },
+    "frame": { "x": 1, "y": 1, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
@@ -10,7 +10,7 @@
    },
    {
     "filename": "Tiling",
-    "frame": { "x": 21, "y": 2, "w": 16, "h": 16 },
+    "frame": { "x": 19, "y": 1, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
     "spriteSourceSize": { "x": 16, "y": 0, "w": 16, "h": 16 },
@@ -19,7 +19,7 @@
    },
    {
     "filename": "Floor",
-    "frame": { "x": 40, "y": 2, "w": 16, "h": 16 },
+    "frame": { "x": 37, "y": 1, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
     "spriteSourceSize": { "x": 32, "y": 0, "w": 16, "h": 16 },
@@ -28,7 +28,7 @@
    },
    {
     "filename": "Player",
-    "frame": { "x": 2, "y": 21, "w": 16, "h": 16 },
+    "frame": { "x": 1, "y": 19, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
     "spriteSourceSize": { "x": 48, "y": 0, "w": 16, "h": 16 },
@@ -37,7 +37,7 @@
    },
    {
     "filename": "Orc",
-    "frame": { "x": 21, "y": 21, "w": 16, "h": 16 },
+    "frame": { "x": 19, "y": 19, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
     "spriteSourceSize": { "x": 64, "y": 0, "w": 16, "h": 16 },
@@ -46,10 +46,28 @@
    },
    {
     "filename": "Ladder",
-    "frame": { "x": 40, "y": 21, "w": 16, "h": 16 },
+    "frame": { "x": 37, "y": 19, "w": 16, "h": 16 },
     "rotated": false,
     "trimmed": true,
     "spriteSourceSize": { "x": 80, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 128, "h": 128 },
+    "duration": 100
+   },
+   {
+    "filename": "Rock",
+    "frame": { "x": 1, "y": 37, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 96, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 128, "h": 128 },
+    "duration": 100
+   },
+   {
+    "filename": "Path",
+    "frame": { "x": 19, "y": 37, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": true,
+    "spriteSourceSize": { "x": 112, "y": 0, "w": 16, "h": 16 },
     "sourceSize": { "w": 128, "h": 128 },
     "duration": 100
    }
@@ -57,9 +75,9 @@
  "meta": {
   "app": "http://www.aseprite.org/",
   "version": "1.2.25-x64",
-  "image": "leveleditor_buttons.png",
+  "image": "editor_buttons.png",
   "format": "RGBA8888",
-  "size": { "w": 57, "h": 38 },
+  "size": { "w": 54, "h": 54 },
   "scale": "1",
   "frameTags": [
   ],
@@ -69,7 +87,9 @@
    { "name": "Floor", "opacity": 255, "blendMode": "normal" },
    { "name": "Player", "opacity": 255, "blendMode": "normal" },
    { "name": "Orc", "opacity": 255, "blendMode": "normal" },
-   { "name": "Ladder", "opacity": 255, "blendMode": "normal" }
+   { "name": "Ladder", "opacity": 255, "blendMode": "normal" },
+   { "name": "Rock", "opacity": 255, "blendMode": "normal" },
+   { "name": "Path", "opacity": 255, "blendMode": "normal" }
   ],
   "slices": [
   ]

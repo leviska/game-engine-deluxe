@@ -68,7 +68,7 @@ TilingBitset GetTiling(NeighbourBitset neigh) {
 	return res;
 }
 
-SpritePtr UpdateSpriteWithNamed(Renderer& render, Renderable& rend, glm::ivec2 pos, const std::string& name) {
+SpritePtr UpdateSpriteWithName(Renderer& render, Renderable& rend, glm::ivec2 pos, const std::string& name) {
 	SpritePtr sptr = render.Stage(Graphics().Sprites[name]);
 	sptr->Pos = GetSpritePos(pos);
 	rend.emplace_back(sptr);
@@ -112,7 +112,7 @@ void UpdateCeiling(const MapView& map, entt::registry& reg, Renderer& render, Re
 	TilingBitset tiles = GetTiling(neigh);
 	for (const auto& p : spriteMap) {
 		if (tiles[to_ui32(p.first)]) {
-			UpdateSpriteWithNamed(render, rend, pos, p.second);
+			UpdateSpriteWithName(render, rend, pos, p.second);
 		}
 	}
 }
@@ -142,7 +142,7 @@ void UpdateSprite(entt::entity id, const MapView& map, entt::registry& reg, Rend
 	rend.clear();
 
 	if (reg.has<FrontWall>(id)) {
-		UpdateSpriteWithNamed(render, rend, pos, "WallFace");
+		UpdateSpriteWithName(render, rend, pos, "FrontWall");
 	}
 	else if (reg.has<TilingMap>(id)) {
 		UpdateCeiling(map, reg, render, rend, pos);
@@ -151,15 +151,23 @@ void UpdateSprite(entt::entity id, const MapView& map, entt::registry& reg, Rend
 		UpdateFloor(render, rend, pos);
 	}
 	else if (reg.has<Player>(id)) {
-		SpritePtr sptr = UpdateSpriteWithNamed(render, rend, pos, "Player");
-		sptr->Layer = 1;
+		SpritePtr sptr = UpdateSpriteWithName(render, rend, pos, "Player");
+		sptr->Layer = 2;
 	}
 	else if (reg.has<Orc>(id)) {
-		SpritePtr sptr = UpdateSpriteWithNamed(render, rend, pos, "Orc");
-		sptr->Layer = 1;
+		SpritePtr sptr = UpdateSpriteWithName(render, rend, pos, "Orc");
+		sptr->Layer = 2;
 	}
 	else if (reg.has<Ladder>(id)) {
-		SpritePtr sptr = UpdateSpriteWithNamed(render, rend, pos, "Ladder");
+		SpritePtr sptr = UpdateSpriteWithName(render, rend, pos, "Ladder");
+		sptr->Layer = 1;
+	}
+	else if (reg.has<Rock>(id)) {
+		SpritePtr sptr = UpdateSpriteWithName(render, rend, pos, "Rock");
+		sptr->Layer = 1;
+	}
+	else if (reg.has<Path>(id)) {
+		SpritePtr sptr = UpdateSpriteWithName(render, rend, pos, "Path");
 		sptr->Layer = 1;
 	}
 }

@@ -4,6 +4,7 @@
 
 #include "imgui.h"
 #include "input.h"
+#include "consts.h"
 
 #include <glad/glad.h>
 #include <sdl2/SDL_image.h>
@@ -70,9 +71,10 @@ void Window::LoadSDL() {
 
 void Window::LoadOpenGL() {
 	glEnable(GL_BLEND);
+	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_LINE_SMOOTH);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
+	 
 #ifdef _DEBUG
 	glEnable(GL_DEBUG_OUTPUT);
 	glDebugMessageCallback(GlErrorHandler, 0);
@@ -82,6 +84,8 @@ void Window::LoadOpenGL() {
 void Window::Load() {
 	LoadSDL();
 	LoadOpenGL();
+
+	ConstsMut().WindowSize = size;
 
 	gui.Load(window, glcontext);
 
@@ -114,6 +118,7 @@ void Window::ProcessEvents() {
 		case SDL_WINDOWEVENT: {
 			if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
 				SDL_GL_GetDrawableSize(window, (int*)&size.x, (int*)&size.y);
+				UpdateWindowSize(size);
 			}
 			break;
 		}
@@ -136,7 +141,7 @@ void Window::Update() {
 
 void Window::Clear() {
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-	glClear(GL_COLOR_BUFFER_BIT);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	gui.Clear();
 }
 
@@ -147,8 +152,4 @@ void Window::Render() {
 
 bool Window::Open() {
 	return open;
-}
-
-glm::uvec2 Window::GetSize() {
-	return size;
 }

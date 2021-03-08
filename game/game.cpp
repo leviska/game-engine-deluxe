@@ -36,11 +36,6 @@ Window& GameInst::GetWindow() {
 };
 
 
-uint32_t GameInst::GetScale() {
-	glm::uvec2 scale = window.GetSize() / Consts().CanvasSize;
-	return std::min(scale.x, scale.y);
-}
-
 void GameInst::Load() {
 	window.Load();
 	Reload();

@@ -3,7 +3,7 @@
 #include "utility.h"
 #include "shaders.h"
 #include "glbuffers.h"
-#include "game.h"
+#include "consts.h"
 
 #include <glad/glad.h>
 #include <vector>
@@ -12,7 +12,7 @@ void DrawShape(const glm::vec2* data, size_t size, uint32_t mode, const ColorRGB
 	const Shader& shapeShader = Shaders().Shaders[to_ui32(ShadersId::Shapes)];
 	shapeShader.Select();
 	shapeShader.SetVec4("Color", RGBA(color));
-	shapeShader.UpdateProjection(Game().GetWindow().GetSize(), true);
+	shapeShader.UpdateProjection(Consts().WindowSize, true);
 
 	Buffers().EmptyBuffer.Bind();
 

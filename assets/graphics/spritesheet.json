@@ -1,206 +1,275 @@
 { "frames": [
    {
-    "filename": "WallFace",
+    "filename": "FrontWall",
     "frame": { "x": 1, "y": 1, "w": 16, "h": 16 },
     "rotated": false,
-    "trimmed": true,
+    "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
-    "duration": 100
-   },
-   {
-    "filename": "TilingB",
-    "frame": { "x": 19, "y": 1, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
-    "duration": 100
-   },
-   {
-    "filename": "TilingBLFull",
-    "frame": { "x": 37, "y": 1, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
-    "duration": 100
-   },
-   {
-    "filename": "TilingBLCorner",
-    "frame": { "x": 55, "y": 1, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
-    "duration": 100
-   },
-   {
-    "filename": "TilingBLLeft",
-    "frame": { "x": 73, "y": 1, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
-    "duration": 100
-   },
-   {
-    "filename": "TilingBLRight",
-    "frame": { "x": 1, "y": 19, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
-    "duration": 100
-   },
-   {
-    "filename": "TilingL",
-    "frame": { "x": 19, "y": 19, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
-    "duration": 100
-   },
-   {
-    "filename": "TilingTLFull",
-    "frame": { "x": 37, "y": 19, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
-    "duration": 100
-   },
-   {
-    "filename": "TilingTLCorner",
-    "frame": { "x": 55, "y": 19, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
-    "duration": 100
-   },
-   {
-    "filename": "TilingTLLeft",
-    "frame": { "x": 73, "y": 19, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
-    "duration": 100
-   },
-   {
-    "filename": "TilingTLRight",
-    "frame": { "x": 1, "y": 37, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
-    "duration": 100
-   },
-   {
-    "filename": "TilingT",
-    "frame": { "x": 19, "y": 37, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
-    "duration": 100
-   },
-   {
-    "filename": "TilingTRFull",
-    "frame": { "x": 37, "y": 37, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
-    "duration": 100
-   },
-   {
-    "filename": "TilingTRCorner",
-    "frame": { "x": 55, "y": 37, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
-    "duration": 100
-   },
-   {
-    "filename": "TilingTRLeft",
-    "frame": { "x": 73, "y": 37, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
-    "duration": 100
-   },
-   {
-    "filename": "TilingTRRight",
-    "frame": { "x": 1, "y": 55, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
+    "sourceSize": { "w": 16, "h": 16 },
     "duration": 100
    },
    {
     "filename": "TilingR",
-    "frame": { "x": 19, "y": 55, "w": 16, "h": 16 },
+    "frame": { "x": 19, "y": 1, "w": 16, "h": 16 },
     "rotated": false,
-    "trimmed": true,
+    "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
+    "sourceSize": { "w": 16, "h": 16 },
     "duration": 100
    },
    {
     "filename": "TilingBRFull",
-    "frame": { "x": 37, "y": 55, "w": 16, "h": 16 },
+    "frame": { "x": 37, "y": 1, "w": 16, "h": 16 },
     "rotated": false,
-    "trimmed": true,
+    "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
-    "duration": 100
-   },
-   {
-    "filename": "TilingBRCorner",
-    "frame": { "x": 55, "y": 55, "w": 16, "h": 16 },
-    "rotated": false,
-    "trimmed": true,
-    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
+    "sourceSize": { "w": 16, "h": 16 },
     "duration": 100
    },
    {
     "filename": "TilingBRLeft",
-    "frame": { "x": 73, "y": 55, "w": 16, "h": 16 },
+    "frame": { "x": 55, "y": 1, "w": 16, "h": 16 },
     "rotated": false,
-    "trimmed": true,
+    "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
+    "sourceSize": { "w": 16, "h": 16 },
     "duration": 100
    },
    {
     "filename": "TilingBRRight",
+    "frame": { "x": 73, "y": 1, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "TilingBRCorner",
+    "frame": { "x": 91, "y": 1, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "TilingB",
+    "frame": { "x": 1, "y": 19, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "TilingBLFull",
+    "frame": { "x": 19, "y": 19, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "TilingBLLeft",
+    "frame": { "x": 37, "y": 19, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "TilingBLRight",
+    "frame": { "x": 55, "y": 19, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "TilingBLCorner",
+    "frame": { "x": 73, "y": 19, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "TilingL",
+    "frame": { "x": 91, "y": 19, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "TilingTLFull",
+    "frame": { "x": 1, "y": 37, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "TilingTLLeft",
+    "frame": { "x": 19, "y": 37, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "TilingTLRight",
+    "frame": { "x": 37, "y": 37, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "TilingTLCorner",
+    "frame": { "x": 55, "y": 37, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "TilingT",
+    "frame": { "x": 73, "y": 37, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "TilingTRFull",
+    "frame": { "x": 91, "y": 37, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "TilingTRLeft",
+    "frame": { "x": 1, "y": 55, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "TilingTRRight",
+    "frame": { "x": 19, "y": 55, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "TilingTRCorner",
+    "frame": { "x": 37, "y": 55, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "Player",
+    "frame": { "x": 55, "y": 55, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "Orc",
+    "frame": { "x": 73, "y": 55, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "Ladder",
+    "frame": { "x": 91, "y": 55, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "Rock",
     "frame": { "x": 1, "y": 73, "w": 16, "h": 16 },
     "rotated": false,
-    "trimmed": true,
+    "trimmed": false,
     "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
-    "sourceSize": { "w": 128, "h": 128 },
+    "sourceSize": { "w": 16, "h": 16 },
+    "duration": 100
+   },
+   {
+    "filename": "Path",
+    "frame": { "x": 19, "y": 73, "w": 16, "h": 16 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 16, "h": 16 },
+    "sourceSize": { "w": 16, "h": 16 },
     "duration": 100
    }
  ],
  "meta": {
   "app": "http://www.aseprite.org/",
-  "version": "1.2.17-x64",
+  "version": "1.2.25-x64",
   "image": "spritesheet.png",
   "format": "RGBA8888",
-  "size": { "w": 90, "h": 90 },
+  "size": { "w": 108, "h": 90 },
   "scale": "1",
   "frameTags": [
   ],
   "layers": [
-   { "name": "WallFace", "opacity": 255, "blendMode": "normal" },
-   { "name": "Wall", "opacity": 255, "blendMode": "normal" }
+   { "name": "FrontWall", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingR", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingBRFull", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingBRLeft", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingBRRight", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingBRCorner", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingB", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingBLFull", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingBLLeft", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingBLRight", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingBLCorner", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingL", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingTLFull", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingTLLeft", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingTLRight", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingTLCorner", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingT", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingTRFull", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingTRLeft", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingTRRight", "opacity": 255, "blendMode": "normal" },
+   { "name": "TilingTRCorner", "opacity": 255, "blendMode": "normal" },
+   { "name": "Player", "opacity": 255, "blendMode": "normal" },
+   { "name": "Orc", "opacity": 255, "blendMode": "normal" },
+   { "name": "Ladder", "opacity": 255, "blendMode": "normal" },
+   { "name": "Rock", "opacity": 255, "blendMode": "normal" },
+   { "name": "Path", "opacity": 255, "blendMode": "normal" }
   ],
   "slices": [
   ]

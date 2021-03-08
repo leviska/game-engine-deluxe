@@ -1,7 +1,6 @@
 #include "level_editor.h"
 
 #include "renderable.h"
-#include "game.h"
 #include "input.h"
 #include "utility.h"
 
@@ -73,6 +72,12 @@ void LevelEditorScene::OnLeftPress(glm::ivec2 relPos) {
 	else if (buttonName == "Ladder") {
 		db.emplace<Ladder>(id);
 	}
+	else if (buttonName == "Rock") {
+		db.emplace<Rock>(id);
+	}
+	else if (buttonName == "Path") {
+		db.emplace<Path>(id);
+	}
 
 	for (int i = -1; i <= 1; i++) {
 		for (int j = -1; j <= 1; j++) {
@@ -104,10 +109,10 @@ void LevelEditorScene::Update() {
 		return;
 	glm::ivec2 mousePos;
 	SDL_GetMouseState(&(mousePos.x), &(mousePos.y));
-	glm::ivec2 centerShift = Game().GetWindow().GetSize() / 2u - Consts().CanvasSize * Game().GetScale() / 2u;
-	glm::ivec2 cameraShift = glm::ivec2(camera.Size - camera.Pos) * to_i32(Game().GetScale());
+	glm::ivec2 centerShift = Consts().WindowSize / 2u - Consts().CanvasSize * Consts().Scale / 2u;
+	glm::ivec2 cameraShift = glm::ivec2(camera.Size - camera.Pos) * to_i32(Consts().Scale);
 	glm::ivec2 gamePos = mousePos - cameraShift - centerShift;
-	int32_t scaledTile = Consts().TileSize * Game().GetScale();
+	int32_t scaledTile = Consts().TileSize * Consts().Scale;
 	glm::ivec2 relPos = glm::floor(glm::vec2(gamePos) / glm::vec2(scaledTile));
 	glm::ivec2 camShift = (scaledTile + cameraShift + centerShift) % scaledTile;
 	glm::ivec2 screenPos = ((mousePos - camShift) / scaledTile * scaledTile + camShift);

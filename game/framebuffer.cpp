@@ -1,8 +1,8 @@
 #include "framebuffer.h"
 
-#include "glbuffers.h"
-#include "game.h"
 #include "image.h"
+#include "glbuffers.h"
+#include "consts.h"
 #include "assertion.h"
 
 #include <stdexcept>
@@ -52,7 +52,7 @@ void FrameBuffer::Select() {
 
 void FrameBuffer::SelectWindow() {
 	glBindFramebuffer(GL_FRAMEBUFFER, 0);
-	glm::vec2 size = Game().GetWindow().GetSize();
+	glm::vec2 size = Consts().WindowSize;
 	glViewport(0, 0, size.x, size.y);
 }
 

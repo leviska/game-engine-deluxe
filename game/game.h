@@ -22,7 +22,6 @@ public:
 	FPSInfo FPS();
 	SceneController& GetSceneController();
 	Window& GetWindow();
-	uint32_t GetScale();
 private:
 	GameInst() = default;
 	~GameInst() = default;

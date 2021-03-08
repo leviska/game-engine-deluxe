@@ -33,6 +33,4 @@ public:
 	void Render();
 
 	bool Open();
-
-	glm::uvec2 GetSize();
 };

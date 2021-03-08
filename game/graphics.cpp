@@ -44,7 +44,6 @@ void GraphicsImpl::LoadTextures() {
 
 	spritesheet.Load(Paths::Graphics + "editor_buttons.png", false);
 	Textures.Add(std::move(spritesheet), "EditorButtons2D");
-
 	DOUT() << "Successfully loaded Textures" << std::endl;
 }
 
@@ -52,7 +51,6 @@ void GraphicsImpl::LoadSprites() {
 	DOUT() << "Loading Sprites" << std::endl;
 
 	LoadSpriteInfo(Textures.GetId("Spritesheet"), "spritesheet.json", Sprites);
-	LoadSpriteInfo(Textures.GetId("EditorButtons"), "editor_buttons.json", Sprites);
 	LoadSpriteInfo(Textures.GetId("EditorButtons"), "editor_buttons.json", EditorButtons);
 
 	SpriteInfo square;

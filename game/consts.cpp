@@ -20,8 +20,9 @@ void ConstsImpl::Load() {
 	file >> j;
 
 	j.at("CanvasSize").get_to(CanvasSize);
-	j.at("Scale").get_to(Scale);
 	j.at("TileSize").get_to(TileSize);
+
+	UpdateWindowSize(WindowSize);
 	
 	DOUT() << "Successfully loaded Constants" << std::endl;
 }
@@ -40,4 +41,11 @@ const ConstsImpl& Consts() {
 ConstsImpl& ConstsMut() {
 	static ConstsImpl impl;
 	return impl;
+}
+
+void UpdateWindowSize(glm::uvec2 size) {
+	auto& impl = ConstsMut();
+	impl.WindowSize = size;
+	glm::uvec2 scale = size / impl.CanvasSize;
+	impl.Scale = std::min(scale.x, scale.y);
 }
