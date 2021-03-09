@@ -1,13 +1,16 @@
 #include "camera.h"
 
 #include "input.h"
+#include "consts.h"
+
+#include <glm/gtc/matrix_transform.hpp>
 
 Camera::Camera(glm::vec2 pos, glm::vec2 size) : Pos(pos), Size(size) {}
 
 glm::mat4 Camera::Matrix() const {
 	glm::vec2 a = Pos - Size;
 	glm::vec2 b = Pos + Size;
-	return glm::ortho(a.x, b.x, a.y, b.y, -3.0f, 3.0f);
+	return glm::ortho(a.x, b.x, a.y, b.y, -1.0f, Consts().MaxLayers + 1.0f);
 }
 
 void Camera::UpdateFreeCamera() {

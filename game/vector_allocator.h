@@ -15,6 +15,8 @@ public:
 	size_t Size() const { return data.size() - unused.size(); }
 	size_t Capacity() const { return data.size(); }
 
+	bool Check(size_t id) const;
+
 	std::vector<T>& Data() { return data; }
 	const std::vector<T>& Data() const { return data; }
 
@@ -77,4 +79,9 @@ T* VectorAlloc<T>::Raw() {
 template<typename T>
 const T* VectorAlloc<T>::Raw() const {
 	return data.data();
+}
+
+template<typename T>
+bool VectorAlloc<T>::Check(size_t id) const {
+	return id < data.size() && unused.find(id) == unused.end();
 }

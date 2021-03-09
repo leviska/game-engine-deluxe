@@ -1,4 +1,8 @@
 {
-	"CanvasSize": { "x": 384, "y": 216 },
-	"TileSize": 16
+	"CanvasSize": {
+		"x": 384,
+		"y": 216
+	},
+	"TileSize": 16,
+	"MaxLayers": 10
 }

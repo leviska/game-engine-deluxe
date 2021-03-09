@@ -74,7 +74,7 @@ void FPS::LimitFPS(uint32_t fps) {
 	TimePoint end = std::chrono::steady_clock::now();
 	uint32_t dt = to_ui32(std::chrono::duration_cast<Microseconds>(end - lastTime).count());
 	if (fps > 0) {
-		uint32_t time = (1000000u / fps);
+		uint32_t time = (1000000u / (fps + 1));
 		if (time > dt) {
 			std::this_thread::sleep_for(Microseconds(time - dt));
 		}

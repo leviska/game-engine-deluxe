@@ -6,6 +6,8 @@ class ConstsImpl {
 public:
 	glm::uvec2 CanvasSize{ 0, 0 };
 	uint32_t TileSize{ 0 };
+	uint32_t MaxLayers{ 0 };
+
 	glm::uvec2 WindowSize{ 0, 0 }; // will be updated on resize
 	uint32_t Scale{ 0 }; // will be updated
 

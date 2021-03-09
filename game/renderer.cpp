@@ -34,15 +34,14 @@ void Renderer::Draw(const Camera& camera) {
 	shader.Select();
 	shader.SetMat4("Projection", camera.Matrix());
 	for (auto& r : renders) {
-		r.second->Draw();
+		r.second.Draw();
 	}
 }
 
 BatchedRender& Renderer::GetRenderForTexture(size_t textureId) {
-	std::unique_ptr<BatchedRender>& ptr = renders[textureId];
-	if (!ptr) {
-		ptr = std::make_unique<BatchedRender>();
-		ptr->Load(textureId);
+	auto it = renders.emplace(textureId, BatchedRender());
+	if (it.second) {
+		it.first->second.Load(textureId);
 	}
-	return *ptr;
+	return it.first->second;
 }

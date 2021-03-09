@@ -71,6 +71,7 @@ TilingBitset GetTiling(NeighbourBitset neigh) {
 SpritePtr UpdateSpriteWithName(Renderer& render, Renderable& rend, glm::ivec2 pos, const std::string& name) {
 	SpritePtr sptr = render.Stage(Graphics().Sprites[name]);
 	sptr->Pos = GetSpritePos(pos);
+	sptr->Layer = -10;
 	rend.emplace_back(sptr);
 	return sptr;
 }
@@ -122,6 +123,7 @@ void UpdateFloor(Renderer& render, Renderable& rend, glm::ivec2 pos) {
 	sptr->Pos = GetSpritePos(pos);
 	sptr->Scale = { 16.0f, 16.0f };
 	sptr->Color = RGBA({ 31, 14, 28, 255 });
+	sptr->Layer = -10;
 	rend.emplace_back(sptr);
 }
 
@@ -152,23 +154,23 @@ void UpdateSprite(entt::entity id, const MapView& map, entt::registry& reg, Rend
 	}
 	else if (reg.has<Player>(id)) {
 		SpritePtr sptr = UpdateSpriteWithName(render, rend, pos, "Player");
-		sptr->Layer = 2;
+		sptr->Layer = -4;
 	}
 	else if (reg.has<Orc>(id)) {
 		SpritePtr sptr = UpdateSpriteWithName(render, rend, pos, "Orc");
-		sptr->Layer = 2;
+		sptr->Layer = -4;
 	}
 	else if (reg.has<Ladder>(id)) {
 		SpritePtr sptr = UpdateSpriteWithName(render, rend, pos, "Ladder");
-		sptr->Layer = 1;
+		sptr->Layer = -2;
 	}
 	else if (reg.has<Rock>(id)) {
 		SpritePtr sptr = UpdateSpriteWithName(render, rend, pos, "Rock");
-		sptr->Layer = 1;
+		sptr->Layer = -2;
 	}
 	else if (reg.has<Path>(id)) {
 		SpritePtr sptr = UpdateSpriteWithName(render, rend, pos, "Path");
-		sptr->Layer = 1;
+		sptr->Layer = -2;
 	}
 }
 

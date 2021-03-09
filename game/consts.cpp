@@ -21,6 +21,7 @@ void ConstsImpl::Load() {
 
 	j.at("CanvasSize").get_to(CanvasSize);
 	j.at("TileSize").get_to(TileSize);
+	j.at("MaxLayers").get_to(MaxLayers);
 
 	UpdateWindowSize(WindowSize);
 	
