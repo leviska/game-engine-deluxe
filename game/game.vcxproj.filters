@@ -99,9 +99,6 @@
     <ClCompile Include="level_editor.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
-    <ClCompile Include="main.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="map.cpp">
       <Filter>Source Files\Game</Filter>
     </ClCompile>
@@ -155,6 +152,9 @@
     </ClCompile>
     <ClCompile Include="assertion.cpp">
       <Filter>Source Files\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -274,6 +274,9 @@
     </ClInclude>
     <ClInclude Include="map_components.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="sorted_alloc.h">
+      <Filter>Header Files\Utility</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

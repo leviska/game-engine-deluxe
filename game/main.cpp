@@ -2,12 +2,18 @@
 #include <iostream>
 #include <fstream>
 
+#ifdef DEBUGCONFIG
+#include "test_main.h"
+#endif
+
 void Run() {
 	Game().Run();
 }
 
-int main(int argc, char* args[]) {
-#ifdef _DEBUG
+int main(int argc, char* argv[]) {
+#ifdef DEBUGCONFIG
+	return RunTests(argc, argv);
+#elif defined _DEBUG
 	Run();
 #else
 	std::ofstream errfile("stderr.log");
