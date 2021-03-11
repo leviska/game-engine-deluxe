@@ -113,5 +113,8 @@
     <ClCompile Include="alloc_tests.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="gtest_main.cc">
+      <Filter>Source Files\google_tests</Filter>
+    </ClCompile>
   </ItemGroup>
 </Project>

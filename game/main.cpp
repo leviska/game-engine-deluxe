@@ -1,19 +1,16 @@
+#ifndef TESTCONFIG
+
 #include "game.h"
 #include <iostream>
 #include <fstream>
 
-#ifdef DEBUGCONFIG
-#include "test_main.h"
-#endif
 
 void Run() {
 	Game().Run();
 }
 
 int main(int argc, char* argv[]) {
-#ifdef DEBUGCONFIG
-	return RunTests(argc, argv);
-#elif defined _DEBUG
+#ifdef _DEBUG
 	Run();
 #else
 	std::ofstream errfile("stderr.log");
@@ -29,3 +26,5 @@ int main(int argc, char* argv[]) {
 #endif
 	return 0;
 }
+
+#endif
