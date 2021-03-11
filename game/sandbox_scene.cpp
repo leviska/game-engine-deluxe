@@ -11,9 +11,11 @@
 
 #include <fstream>
 #include <queue>
+#include <thread>
 
 void SandboxScene::Load() {
 	LoadMap(map, db, render, std::string("sandboxLevel"));
+	render.Load();
 
 	glm::vec2 halfCanvas(Consts().CanvasSize / 2u);
 	camera = Camera{ halfCanvas, halfCanvas };

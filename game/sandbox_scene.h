@@ -2,7 +2,6 @@
 
 #include "scene.h"
 
-#include "batching.h"
 #include "particles.h"
 #include "state_machine.h"
 #include "map.h"

@@ -90,7 +90,7 @@ void BuffersImpl::LoadBatchVAO() {
 	BindRectangle(BatchBuffer);
 
 	// struct fields
-	for (int i = 1; i < 8; i++) {
+	for (int i = 1; i < 9; i++) {
 		glEnableVertexAttribArray(i);
 		glVertexAttribDivisor(i, 1);
 	}

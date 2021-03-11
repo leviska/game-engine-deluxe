@@ -3,6 +3,7 @@
 #include "renderable.h"
 #include "assertion.h"
 #include "serialization.h"
+#include "utility.h"
 
 #include "consts.h"
 #include "graphics.h"

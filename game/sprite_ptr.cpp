@@ -1,6 +1,8 @@
 #include "sprite_ptr.h"
 
-SpritePtr::SpritePtr(size_t SpriteId, BatchedRender* Render)
+#include "renderer.h"
+
+SpritePtr::SpritePtr(size_t SpriteId, Renderer* Render)
 	: spriteId(SpriteId), render(Render) {}
 
 
@@ -31,7 +33,7 @@ SpritePtr::operator bool() const {
 
 void SpritePtr::Unstage() {
 	assert((*this));
-	render->Unstage(*this);
+	render->Unstage(spriteId);
 }
 
 

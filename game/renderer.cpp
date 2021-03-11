@@ -1,47 +1,98 @@
 #include "renderer.h"
 
-#include "graphics.h"
 #include "shaders.h"
+#include "utility.h"
+#include "glbuffers.h"
 
 #include "camera.h"
 
-void Renderer::Load() {}
+
+Renderer::Renderer() : data(CompareSprites()) {}
+
+void Renderer::Load() {
+	glGenBuffers(1, &dataBuffer);
+}
 
 void Renderer::Reset() {
-	renders.clear();
+	data.Clear();
+	textureIds.clear();
+	textSearch.clear();
+	glDeleteBuffers(1, &dataBuffer);
+}
+
+size_t Renderer::StageRaw(Sprite sprite) {
+	AddTextureIfNeeded(sprite.TextureId);
+	sprite.TextureId = textSearch.at(sprite.TextureId);
+	return data.Push(sprite);
+}
+
+SpritePtr Renderer::Stage(const Sprite& sprite) {
+	return SpritePtr(StageRaw(sprite), this);
 }
 
 SpritePtr Renderer::Stage(size_t textureId) {
-	BatchedRender& render = GetRenderForTexture(textureId);
-	return render.Stage();
+	Sprite sprite;
+	sprite.TextureId = textSearch.at(textureId);
+	return Stage(sprite);
 }
 
-SpritePtr Renderer::Stage(const Sprite& sprite, size_t textureId) {
-	BatchedRender& render = GetRenderForTexture(textureId);
-	return render.Stage(sprite);
-}
 
 SpritePtr Renderer::Stage(const SpriteInfo& info) {
-	return Stage(info.Value, info.TextureId);
+	return Stage(info.Value);
 }
 
 SpritePtr Renderer::Stage(const std::string& name) {
 	return Stage(Graphics().Sprites[name]);
 }
 
+void Renderer::Unstage(size_t id) {
+	data.Erase(id);
+}
+
+Sprite& Renderer::operator[](size_t id) {
+	return data[id];
+}
+
+const Sprite& Renderer::operator[](size_t id) const {
+	return data[id];
+}
+
 void Renderer::Draw(const Camera& camera) {
 	const Shader& shader = Shaders().Shaders[to_ui32(ShadersId::Batch)];
 	shader.Select();
 	shader.SetMat4("Projection", camera.Matrix());
-	for (auto& r : renders) {
-		r.second.Draw();
+
+	if (data.Empty()) {
+		return;
 	}
+
+	data.Sort();
+
+	Buffers().BatchBuffer.Bind();
+	for (size_t i = 0; i < textureIds.size(); i++) {
+		Graphics().Textures[textureIds[i]].Select(i);
+	}
+
+	glBindBuffer(GL_ARRAY_BUFFER, dataBuffer);
+
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Sprite), (void*)0);
+	glVertexAttribPointer(2, 1, GL_FLOAT, GL_FALSE, sizeof(Sprite), (void*)8);
+	glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Sprite), (void*)12);
+	glVertexAttribPointer(4, 2, GL_FLOAT, GL_FALSE, sizeof(Sprite), (void*)20);
+	glVertexAttribPointer(5, 2, GL_FLOAT, GL_FALSE, sizeof(Sprite), (void*)28);
+	glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(Sprite), (void*)36);
+	glVertexAttribPointer(7, 1, GL_FLOAT, GL_FALSE, sizeof(Sprite), (void*)52);
+	glVertexAttribPointer(8, 1, GL_FLOAT, GL_FALSE, sizeof(Sprite), (void*)56);
+
+	const auto& curData = data.Data();
+	glBufferData(GL_ARRAY_BUFFER, sizeof(Sprite) * curData.size(), curData.data(), GL_STATIC_DRAW);
+	glDrawElementsInstanced(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0, curData.size());
 }
 
-BatchedRender& Renderer::GetRenderForTexture(size_t textureId) {
-	auto it = renders.emplace(textureId, BatchedRender());
-	if (it.second) {
-		it.first->second.Load(textureId);
+void Renderer::AddTextureIfNeeded(size_t textId) {
+	auto res = textSearch.insert({ textId, textureIds.size() });
+	if (res.second) {
+		textureIds.push_back(textId);
+		assert(textureIds.size() < MaxTextures);
 	}
-	return it.first->second;
 }

@@ -9,7 +9,8 @@ struct Sprite {
 	glm::vec2 TextSize{ 0.0, 0.0 };
 	glm::vec2 Scale{ 1.0, 1.0 };
 	glm::vec4 Color{ 1.0, 1.0, 1.0, 1.0 };
-	float rotation = 0.0;
+	float Rotation = 0.0;
+	float TextureId = 0;
 };
 
 void HideSprite(Sprite& sprite);

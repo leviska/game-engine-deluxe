@@ -5,6 +5,8 @@
 #include <algorithm>
 #include <unordered_map>
 
+#include <iostream>
+
 template<typename T, typename Comp>
 class SortedAlloc {
 public:
@@ -21,8 +23,13 @@ public:
 
 	T& operator[](size_t id) { return data[indexes.at(id)]; }
 	const T& operator[](size_t id) const { return data[indexes.at(id)]; }
+
+	size_t Size() const { return data.size(); }
+	bool Empty() const { return data.empty(); }
+
+	void Clear();
 private:
-	void Swap(size_t a, size_t b);
+	void Move(size_t a, size_t b);
 
 	Comp compare;
 	std::vector<T> data;
@@ -69,22 +76,40 @@ void SortedAlloc<T, Comp>::Sort() {
 		return compare(data[a], data[b]);
 	});
 	for (size_t i = 0; i < perm.size(); i++) {
-		if (perm[i] >= perm.size()) {
+		if (perm[i] == i || perm[i] >= perm.size()) {
 			continue;
 		}
 		size_t j = i;
-		do {
-			Swap(j, perm[j]);
+
+		T tmpData = std::move(data[j]);
+		size_t tmpId = ids[j];
+		while (true) {
+			if (perm[j] == i) {
+				data[j] = std::move(tmpData);
+				ids[j] = tmpId;
+				indexes.at(ids[j]) = j;
+				indexes.at(ids[perm[j]]) = perm[j];
+				perm[j] = perm.size();
+				break;
+			}
+			Move(j, perm[j]);
 			size_t t = j;
 			j = perm[j];
 			perm[t] = perm.size();
-		} while (j != i);
+		};
 	}
 }
 
 template<typename T, typename Comp>
-void SortedAlloc<T, Comp>::Swap(size_t a, size_t b) {
-	std::swap(data[a], data[b]);
-	std::swap(ids[a], ids[b]);
-	std::swap(indexes.at(a), indexes.at(b));
+void SortedAlloc<T, Comp>::Move(size_t a, size_t b) {
+	data[a] = std::move(data[b]);
+	ids[a] = ids[b];
+	indexes.at(ids[a]) = a;
+}
+
+template<typename T, typename Comp>
+void SortedAlloc<T, Comp>::Clear() {
+	data.clear();
+	ids.clear();
+	indexes.clear();
 }

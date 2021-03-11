@@ -75,6 +75,7 @@ void GraphicsImpl::LoadSpriteInfo(uint32_t textId, const std::string& fileName, 
 	for (const auto& v : frames) {
 		SpriteInfo value = v.get<SpriteInfo>();
 		value.TextureId = textId;
+		value.Value.TextureId = textId;
 		res.Add(value, value.Name);
 	}
 }

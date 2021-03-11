@@ -63,9 +63,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="batching.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="fps.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
@@ -158,9 +155,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="batching.h">
-      <Filter>Header Files\Graphics</Filter>
-    </ClInclude>
     <ClInclude Include="fps.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>

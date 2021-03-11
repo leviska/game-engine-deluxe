@@ -240,7 +240,6 @@
   <ItemGroup>
     <ClCompile Include="animation.cpp" />
     <ClCompile Include="assertion.cpp" />
-    <ClCompile Include="batching.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="consts.cpp" />
     <ClCompile Include="framebuffer.cpp" />
@@ -273,7 +272,6 @@
   <ItemGroup>
     <ClInclude Include="animation.h" />
     <ClInclude Include="assertion.h" />
-    <ClInclude Include="batching.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="color.h" />
     <ClInclude Include="framebuffer.h" />

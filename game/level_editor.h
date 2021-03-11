@@ -3,7 +3,6 @@
 #include "scene.h"
 #include "shapes.h"
 #include "map.h"
-#include "batching.h"
 #include "framebuffer.h"
 #include "camera.h"
 

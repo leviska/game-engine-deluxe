@@ -19,6 +19,7 @@
 
 void LevelEditorScene::Load(const std::string& name) {
 	levelName = name;
+	render.Load();
 
 	glm::vec2 halfCanvas(Consts().CanvasSize / 2u);
 	camera = Camera{ halfCanvas, halfCanvas };

@@ -1,10 +1,13 @@
 #pragma once
 
-#include "batching.h"
+#include "sprite.h"
+
+class Renderer;
 
 class SpritePtr {
 public:
 	SpritePtr() = default;
+	SpritePtr(size_t id, Renderer* rend);
 
 	Sprite& operator*();
 	const Sprite& operator*() const;
@@ -17,11 +20,9 @@ public:
 	void Unstage();
 private:
 	size_t spriteId = std::numeric_limits<size_t>::max();
-	BatchedRender* render = nullptr;
-
-	SpritePtr(size_t id, BatchedRender* batchRender);
+	Renderer* render;
 	
-	friend BatchedRender;
+	friend Renderer;
 };
 
 class SpriteOwner {
