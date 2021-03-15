@@ -46,6 +46,10 @@ public:
 	}
 
 
+	bool Has(const std::string& name) const {
+		return names.find(name) != names.end();
+	}
+
 	size_t GetId(const std::string& name) const {
 		return names.at(name);
 	}

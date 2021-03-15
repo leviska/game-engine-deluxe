@@ -6,6 +6,5 @@ uniform sampler2DRect Texture;
 
 void main()
 {
-
 	Result = texture(Texture, TextCoordsFrag);
 }

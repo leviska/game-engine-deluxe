@@ -35,3 +35,6 @@ namespace nlohmann {
 		}
 	};
 }
+
+void SaveJson(const nlohmann::json& data, const std::string& name);
+nlohmann::json LoadJson(const std::string& name);

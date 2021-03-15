@@ -2,6 +2,9 @@
 
 #include <glm/glm.hpp>
 
+class Renderer;
+struct SpriteInfo;
+
 struct Sprite {
 	glm::vec2 Pos{ 0.0, 0.0 };
 	float Layer = 0.0;
@@ -10,7 +13,17 @@ struct Sprite {
 	glm::vec2 Scale{ 1.0, 1.0 };
 	glm::vec4 Color{ 1.0, 1.0, 1.0, 1.0 };
 	float Rotation = 0.0;
-	float TextureId = 0;
+
+	Sprite() = default;
+	Sprite(const SpriteInfo& sprite);
+
+	Sprite& operator=(const SpriteInfo& sprite);
+private:
+	float textureIndex = 0;
+
+	void Copy(const Sprite& sprite);
+
+	friend class Renderer;
 };
 
 void HideSprite(Sprite& sprite);

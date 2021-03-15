@@ -7,7 +7,7 @@
 // Scenes
 #include "level_scene.h"
 
-#include "level_editor.h"
+#include "editor.h"
 #include "sandbox_scene.h"
 
 enum class Scenes {
@@ -17,7 +17,7 @@ enum class Scenes {
 	Dialog,
 	
 	Sandbox,
-	LevelEditor,
+	Editor,
 
 	ScenesSize
 };
@@ -27,7 +27,6 @@ public:
 	void Load();
 	void Reset();
 
-	Scenes CurrentState();
 	Scene& CurrentScene();
 
 	const StateMachine& SceneState() const;
@@ -36,14 +35,14 @@ public:
 	void LoadLevel(const std::string& name);
 
 	LevelScene& Level();
-	LevelEditorScene& LevelEditor();
+	EditorScene& Editor();
 	SandboxScene& Sandbox();
 private:
 	// TBA MenuScene
 	// TBA CutScene
 	// TBA DialogScene
 	LevelScene level;
-	LevelEditorScene levelEditor;
+	EditorScene editor;
 	SandboxScene sandbox;
 
 	StateMachine states;

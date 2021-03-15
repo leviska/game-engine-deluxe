@@ -1,6 +1,9 @@
 #pragma once
 
+#include "camera.h"
+
 #include <sdl2/SDL.h>
+#include <glm/glm.hpp>
 
 #include <vector>
 #include <unordered_map>
@@ -13,6 +16,7 @@ enum class Keyboard {
 	F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12, // functional keys
 	ESC, ENTER, TAB, // esc
 	LCTRL, LSHIFT, LALT, // control keys
+	SPACE,
 	KeyboardSize // total keys
 };
 
@@ -68,7 +72,16 @@ public:
 	bool KeyDown(GameKey key) const;
 	bool KeyPressed(GameKey key) const;
 
+	bool GlobalKeyDown(Keyboard key) const;
+	bool GlobalKeyPressed(Keyboard key) const;
+
+	bool GlobalKeyDown(Mouse key) const;
+	bool GlobalKeyPressed(Mouse key) const;
+
 	bool MouseCaptured() const; // by imgui
+	bool KeyboardCaptured() const; // by imgui
+
+	glm::ivec2 MousePos() const;
 private:
 	struct KeyPair {
 		Keyboard Key;
@@ -77,6 +90,7 @@ private:
 
 	KeyManager keyboard;
 	KeyManager mouse;
+	glm::ivec2 mousePos;
 	std::unordered_map<GameKey, KeyPair> keymap;
 };
 

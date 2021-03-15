@@ -1,4 +1,4 @@
-#version 330 core
+#version 430 core
 in vec2 TextCoordsFrag;
 in vec4 ColorFrag;
 in float TextureIdFrag;

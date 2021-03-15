@@ -27,3 +27,30 @@ void Camera::UpdateFreeCamera() {
 		Pos.x++;
 	}
 }
+
+
+glm::ivec2 GlobalToGamePos(glm::ivec2 pos) {
+	glm::ivec2 centerShift = Consts().WindowSize / (Consts().Scale * 2) - (Consts().CanvasSize >> 1u);
+	return pos / static_cast<int32_t>(Consts().Scale) - centerShift;
+}
+
+glm::ivec2 GlobalToGamePos(glm::ivec2 pos, const Camera& camera) {
+	return GlobalToGamePos(pos) - glm::ivec2(camera.Size - camera.Pos);
+}
+
+glm::ivec2 GlobalToGridPos(glm::ivec2 pos, const Camera& camera) {
+	return glm::floor(glm::vec2(GlobalToGamePos(pos, camera)) / glm::vec2(Consts().TileSize));
+}
+
+glm::ivec2 GameToGlobalPos(glm::ivec2 pos) {
+	glm::ivec2 centerShift = Consts().WindowSize / (Consts().Scale * 2) - (Consts().CanvasSize >> 1u);
+	return (pos + centerShift) * static_cast<int32_t>(Consts().Scale);
+}
+
+glm::ivec2 GameToGlobalPos(glm::ivec2 pos, const Camera& camera) {
+	return GameToGlobalPos(pos + glm::ivec2(camera.Size - camera.Pos));
+}
+
+glm::ivec2 GridToGlobalPos(glm::ivec2 pos, const Camera& camera) {
+	return GameToGlobalPos(pos * static_cast<int32_t>(Consts().TileSize), camera);
+}

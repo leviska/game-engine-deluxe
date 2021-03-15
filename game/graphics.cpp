@@ -8,11 +8,12 @@
 void from_json(const nlohmann::json& j, SpriteInfo& info) {
 	j.at("filename").get_to(info.Name);
 	const auto& frame = j.at("frame");
-	frame.at("x").get_to(info.Value.TextPos.x);
-	frame.at("y").get_to(info.Value.TextPos.y);
-	frame.at("w").get_to(info.Value.TextSize.x);
-	frame.at("h").get_to(info.Value.TextSize.y);
+	frame.at("x").get_to(info.TextPos.x);
+	frame.at("y").get_to(info.TextPos.y);
+	frame.at("w").get_to(info.TextSize.x);
+	frame.at("h").get_to(info.TextSize.y);
 }
+
 
 void GraphicsImpl::Load() {
 	LoadTextures();
@@ -23,6 +24,17 @@ void GraphicsImpl::Reset() {
 	Textures.Clear();
 	Sprites.Clear();
 	EditorButtons.Clear();
+}
+
+
+void GraphicsImpl::AddSquare(NamedVector<SpriteInfo>& to) {
+	SpriteInfo square;
+	square.Name = "Square";
+	square.TextureId = Textures.GetId("Square");
+	square.TextPos = { 0.0f, 0.0f };
+	square.TextSize = { 1.0f, 1.0f };
+	square.Scale = glm::vec2{ 16.0f, 16.0f };
+	to.Add(square, square.Name);
 }
 
 
@@ -53,12 +65,8 @@ void GraphicsImpl::LoadSprites() {
 	LoadSpriteInfo(Textures.GetId("Spritesheet"), "spritesheet.json", Sprites);
 	LoadSpriteInfo(Textures.GetId("EditorButtons"), "editor_buttons.json", EditorButtons);
 
-	SpriteInfo square;
-	square.Name = "Square";
-	square.TextureId = Textures.GetId("Square");
-	square.Value.TextPos = { 0.0f, 0.0f };
-	square.Value.TextSize = { 1.0f, 1.0f };
-	Sprites.Add(square, square.Name);
+	AddSquare(Sprites);
+	AddSquare(EditorButtons);
 
 	DOUT() << "Successfully loaded Sprites" << std::endl;
 }
@@ -75,7 +83,6 @@ void GraphicsImpl::LoadSpriteInfo(uint32_t textId, const std::string& fileName, 
 	for (const auto& v : frames) {
 		SpriteInfo value = v.get<SpriteInfo>();
 		value.TextureId = textId;
-		value.Value.TextureId = textId;
 		res.Add(value, value.Name);
 	}
 }

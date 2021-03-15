@@ -59,10 +59,10 @@ void GameInst::Update() {
 	window.Update();
 
 	if (Input().KeyPressed(Keyboard::F1)) {
-		Scenes scene = scenes.SceneState().State<Scenes>() == Scenes::LevelEditor ? Scenes::Level : Scenes::LevelEditor;
+		Scenes scene = scenes.SceneState().State<Scenes>() == Scenes::Editor ? Scenes::Level : Scenes::Editor;
 		if (scene == Scenes::Level) {
 			scenes.Level().Reset();
-			scenes.Level().Load(scenes.LevelEditor().CurrentLevel());
+			scenes.Level().Load(scenes.Editor().CurrentLevel());
 		}
 		scenes.SceneState().ChangeState(to_i32(scene));
 	}
@@ -114,7 +114,12 @@ void GameInst::Reload() {
 	ConstsMut().Load();
 	ShadersMut().Load();
 
+	int32_t cur = scenes.SceneState().State();
 	scenes.Reset();
 	scenes.Load();
+	if (cur >= 0) {
+		scenes.SceneState().ChangeState(cur);
+	}
+
 	DOUT() << "========================" << std::endl;
 }

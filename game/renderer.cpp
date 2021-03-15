@@ -20,25 +20,23 @@ void Renderer::Reset() {
 	glDeleteBuffers(1, &dataBuffer);
 }
 
-size_t Renderer::StageRaw(Sprite sprite) {
-	AddTextureIfNeeded(sprite.TextureId);
-	sprite.TextureId = textSearch.at(sprite.TextureId);
+size_t Renderer::StageRaw(Sprite sprite, size_t textureId) {
+	AddTextureIfNeeded(textureId);
+	sprite.textureIndex = textSearch.at(textureId);
 	return data.Push(sprite);
 }
 
-SpritePtr Renderer::Stage(const Sprite& sprite) {
-	return SpritePtr(StageRaw(sprite), this);
+SpritePtr Renderer::Stage(const Sprite& sprite, size_t textureId) {
+	return SpritePtr(StageRaw(sprite, textureId), this);
 }
 
 SpritePtr Renderer::Stage(size_t textureId) {
-	Sprite sprite;
-	sprite.TextureId = textSearch.at(textureId);
-	return Stage(sprite);
+	return Stage(Sprite(), textureId);
 }
 
 
 SpritePtr Renderer::Stage(const SpriteInfo& info) {
-	return Stage(info.Value);
+	return Stage(static_cast<const Sprite&>(info), info.TextureId);
 }
 
 SpritePtr Renderer::Stage(const std::string& name) {

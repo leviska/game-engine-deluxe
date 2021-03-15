@@ -1,9 +1,30 @@
 #include "sprite.h"
+
 #include "color.h"
+#include "graphics.h"
 
 #include <glad/glad.h>
 #include <glm/gtc/matrix_transform.hpp>
 
+Sprite::Sprite(const SpriteInfo& sprite) {
+	Copy(static_cast<const Sprite&>(sprite));
+}
+
+Sprite& Sprite::operator=(const SpriteInfo& sprite) {
+	Copy(static_cast<const Sprite&>(sprite));
+	return *this;
+}
+
+
+void Sprite::Copy(const Sprite& sprite) {
+	Pos = sprite.Pos;
+	Layer = sprite.Layer;
+	TextPos = sprite.TextPos;
+	TextSize = sprite.TextSize;
+	Scale = sprite.Scale;
+	Color = sprite.Color;
+	Rotation = sprite.Rotation;
+}
 
 void HideSprite(Sprite& sprite) {
 	sprite.Color = Colors::Invisible;

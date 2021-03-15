@@ -7,10 +7,9 @@
 
 #include <nlohmann/json.hpp>
 
-struct SpriteInfo {
+struct SpriteInfo : public Sprite {
 	std::string Name;
-	uint32_t TextureId;
-	Sprite Value;
+	uint32_t TextureId{ 0 };
 };
 
 void from_json(const nlohmann::json& j, SpriteInfo& info);
@@ -34,6 +33,8 @@ private:
 	void LoadTextures();
 	void LoadSprites();
 	void LoadSpriteInfo(uint32_t textId, const std::string& fileName, NamedVector<SpriteInfo>& res);
+
+	void AddSquare(NamedVector<SpriteInfo>& to);
 
 	friend GraphicsImpl& GraphicsMut();
 };

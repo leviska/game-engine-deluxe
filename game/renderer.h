@@ -20,12 +20,12 @@ public:
 	void Load();
 	void Reset();
 
-	SpritePtr Stage(const Sprite& sprite);
+	SpritePtr Stage(const Sprite& sprite, size_t textureId);
 	SpritePtr Stage(size_t textureId);
 	SpritePtr Stage(const SpriteInfo& info);
 	SpritePtr Stage(const std::string& name);
 
-	size_t StageRaw(Sprite sprite);
+	size_t StageRaw(Sprite sprite, size_t textureId);
 
 	Sprite& operator[](size_t id);
 	const Sprite& operator[](size_t id) const;

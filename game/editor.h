@@ -8,7 +8,7 @@
 
 #include "entt/entt.hpp"
 
-class LevelEditorScene : public Scene {
+class EditorScene : public Scene {
 public:
 	void Load(const std::string& name = "sandboxLevel");
 	void Reset() override;
@@ -23,18 +23,18 @@ private:
 	Camera camera;
 	FrameBuffer frameBuffer;
 
-	std::unique_ptr<SpriteOwner> preview;
-
-	entt::registry db;
+	entt::registry reg;
 	MapView map;
 
-	glm::ivec2 prevPos;
 	std::string levelName;
+	entt::entity currentId{ entt::null };
 	RectangleShape bb;
-	uint32_t currentTile = 0;
+
+	glm::ivec2 selectorPos{ 0, 0 };
 
 	void DrawGui();
 
-	void OnLeftPress(glm::ivec2 relPos);
-	void OnRightPress(glm::ivec2 relPos);
+	void DrawMainGui();
+	void DrawEntityGui();
+	void DrawSelectorGui();
 };

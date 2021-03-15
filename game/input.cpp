@@ -1,6 +1,8 @@
 #include "input.h"
 
-#include "imgui.h"
+#include "consts.h"
+
+#include <imgui.h>
 
 #include <iostream>
 
@@ -86,6 +88,7 @@ const std::unordered_map<SDL_KeyCode, Keyboard> SDLKEYMAP{
 	{ SDL_KeyCode::SDLK_LCTRL, Keyboard::LCTRL },
 	{ SDL_KeyCode::SDLK_LSHIFT, Keyboard::LSHIFT },
 	{ SDL_KeyCode::SDLK_LALT, Keyboard::LALT },
+	{ SDL_KeyCode::SDLK_SPACE, Keyboard::SPACE },
 };
 
 const std::unordered_map<int, Mouse> SDLMOUSEMAP{
@@ -111,6 +114,7 @@ void InputImpl::Reset() {
 void InputImpl::Tick() {
 	keyboard.Tick();
 	mouse.Tick();
+	SDL_GetMouseState(&(mousePos.x), &(mousePos.y));
 }
 
 template<typename SDLType, typename MyType>
@@ -145,20 +149,20 @@ void InputImpl::Update(const SDL_Event& event) {
 
 
 bool InputImpl::KeyDown(Keyboard key) const {
-	return keyboard.KeyDown(static_cast<size_t>(key));
+	return !KeyboardCaptured() && GlobalKeyDown(key);
 }
 
 bool InputImpl::KeyPressed(Keyboard key) const {
-	return keyboard.KeyPressed(static_cast<size_t>(key));
+	return !KeyboardCaptured() && GlobalKeyPressed(key);
 }
 
 
 bool InputImpl::KeyDown(Mouse key) const {
-	return mouse.KeyDown(static_cast<size_t>(key));
+	return !MouseCaptured() && GlobalKeyDown(key);
 }
 
 bool InputImpl::KeyPressed(Mouse key) const {
-	return mouse.KeyPressed(static_cast<size_t>(key));
+	return !MouseCaptured() && GlobalKeyPressed(key);
 }
 
 
@@ -181,9 +185,37 @@ bool InputImpl::KeyPressed(GameKey key) const {
 	return KeyPressed(kp.Key) || KeyPressed(kp.Pad);
 }
 
+bool InputImpl::GlobalKeyDown(Keyboard key) const {
+	return keyboard.KeyDown(static_cast<size_t>(key));
+}
+
+bool InputImpl::GlobalKeyPressed(Keyboard key) const {
+	return keyboard.KeyPressed(static_cast<size_t>(key));
+}
+
+
+bool InputImpl::GlobalKeyDown(Mouse key) const {
+	return mouse.KeyDown(static_cast<size_t>(key));
+}
+
+bool InputImpl::GlobalKeyPressed(Mouse key) const {
+	return mouse.KeyPressed(static_cast<size_t>(key));
+}
+
+
 bool InputImpl::MouseCaptured() const {
 	return ImGui::GetIO().WantCaptureMouse;
 }
+
+bool InputImpl::KeyboardCaptured() const {
+	return ImGui::GetIO().WantCaptureKeyboard;
+}
+
+
+glm::ivec2 InputImpl::MousePos() const {
+	return mousePos;
+}
+
 
 const InputImpl& Input() {
 	return InputMut();

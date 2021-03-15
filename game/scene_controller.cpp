@@ -6,25 +6,25 @@ void SceneController::Load() {
 	DOUT() << "Loading Scenes" << std::endl;
 
 	level.Load("sandboxLevel");
-	levelEditor.Load();
+	editor.Load();
 	sandbox.Load();
 
 	stateMap = {
 		{ Scenes::Level, &level },
 		{ Scenes::Sandbox, &sandbox },
-		{ Scenes::LevelEditor, &levelEditor },
+		{ Scenes::Editor, &editor },
 	};
 
 	states.AddState(Scenes::Level);
 	states.AddState(Scenes::Sandbox);
-	states.AddState(Scenes::LevelEditor);
+	states.AddState(Scenes::Editor);
 	states.ChangeState(Scenes::Level);
 
 	DOUT() << "Successfully loaded Scenes" << std::endl;
 }
 
 void SceneController::Reset() {
-	levelEditor.Reset();
+	editor.Reset();
 	sandbox.Reset();
 
 	stateMap.clear();
@@ -38,8 +38,8 @@ Scene& SceneController::CurrentScene() {
 
 
 void SceneController::LoadLevel(const std::string& name) {
-	levelEditor.Reset();
-	levelEditor.Load(name);
+	editor.Reset();
+	editor.Load(name);
 	
 	level.Reset();
 	level.Load(name);
@@ -59,8 +59,8 @@ LevelScene& SceneController::Level() {
 	return level;
 }
 
-LevelEditorScene& SceneController::LevelEditor() {
-	return levelEditor;
+EditorScene& SceneController::Editor() {
+	return editor;
 }
 
 SandboxScene& SceneController::Sandbox() {
