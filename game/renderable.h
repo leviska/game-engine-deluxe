@@ -11,7 +11,7 @@
 using Renderable = std::vector<SpriteOwner>;
 
 struct SimpleSpriteData {
-	std::string Name; 
+	std::string Name = "Square"; 
 
 	inline static const std::string ComponentName{ "SimpleSpriteData" };
 

@@ -105,33 +105,55 @@ void EditorScene::DrawMainGui() {
 	ImGui::End();
 }
 
+struct CreateCompButton {
+	template<typename Comp>
+	void operator()(entt::registry& reg, entt::entity id) {
+		if (!reg.has<Comp>(id) && ImGui::Button(Comp::ComponentName.c_str())) {
+			reg.emplace<Comp>(id);
+		}
+	}
+};
+
+struct ShowComponent {
+	template<typename Comp>
+	void operator()(entt::registry& reg, entt::entity id) {
+		if (!reg.has<Comp>(id)) {
+			return;
+		}
+		if (ImGui::CollapsingHeader(Comp::ComponentName.c_str())) {
+			if (ImGui::Button("Remove")) {
+				reg.remove<Comp>(id);
+			}
+			else {
+				if constexpr (!std::is_empty_v<Comp>) {
+					reg.get<Comp>(id).Edit();
+				}
+			}
+		}
+	}
+};
+
 void EditorScene::DrawEntityGui() {
 	ImGui::Begin("Entity Editor");
 	if (currentId != entt::null) {
 		std::string sid = std::string("Entity: ") + std::to_string(static_cast<uint32_t>(currentId));
 		ImGui::Text(sid.c_str());
-		/*
-		if (ImGui::Button("AddComponent")) {
-			auto createCallback = [&](auto& comp) {
-				if (ImGui::Button(comp.ComponentName.c_str())) {
-					reg.emplace<decltype(comp)>()
-				}
-			};
-			CallForEveryComp(reg, currentId, callEdit, EditorCompList());
+		
+		if (ImGui::CollapsingHeader("AddComponent")) {
+			CallForEveryComp(reg, currentId, CreateCompButton(), EditorCompList());
 		}
-		*/
-		auto callEdit = [](auto& comp) {
-			if (ImGui::CollapsingHeader(comp.ComponentName.c_str())) {
-				comp.Edit();
+		
+		CallForEveryComp(reg, currentId, ShowComponent(), EditorCompList());
+		if (reg.has<SimpleSpriteData>(currentId)) {
+			if (Graphics().Sprites.Has(reg.get<SimpleSpriteData>(currentId).Name)) {
+				Renderable& rend = reg.emplace_or_replace<Renderable>(currentId);
+				SpritePtr sptr = render.Stage(reg.get<SimpleSpriteData>(currentId).Name);
+				sptr->Pos = GetSpritePos(reg.get<GridElem>(currentId).Pos);
+				rend.push_back(sptr);
 			}
-		};
-		CallForEveryComp(reg, currentId, callEdit, EditorCompList());
-		if (Graphics().Sprites.Has(reg.get<SimpleSpriteData>(currentId).Name)) {
-			Renderable& rend = reg.get<Renderable>(currentId);
-			rend.clear();
-			SpritePtr sptr = render.Stage(reg.get<SimpleSpriteData>(currentId).Name);
-			sptr->Pos = GetSpritePos(reg.get<GridElem>(currentId).Pos);
-			rend.push_back(sptr);
+		}
+		else {
+			reg.remove_if_exists<Renderable>(currentId);
 		}
 	}
 	ImGui::End();
