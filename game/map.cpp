@@ -1,11 +1,18 @@
 #include "map.h"
 
+#include "serialization.h"
+
 #include <imgui.h>
 
-void GridElem::Load(const nlohmann::json& data) {}
+void GridElem::Load(const nlohmann::json& data) {
+	data.at("Pos").get_to(Pos);
+}
 
-void GridElem::Save(nlohmann::json& data) const {}
+void GridElem::Save(nlohmann::json& data) const {
+	data["Pos"] = Pos;
+}
+
 
 void GridElem::Edit() {
-	ImGui::SliderInt2("Position", &Pos[0], 0, 400);
+	ImGui::DragInt2("Position", &Pos[0]);
 }

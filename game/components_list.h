@@ -3,17 +3,20 @@
 #include <entt/entt.hpp>
 
 #include "renderable.h"
-#include "map_components.h"
 #include "map.h"
 
 using AllCompList = entt::type_list<
 	SimpleSpriteData,
 	TilableSpriteData,
+	ComplexSpriteData,
 	GridElem
 >;
 
-using EditorCompList = entt::type_list<
+using LevelCompList = entt::type_list<
 	SimpleSpriteData,
 	TilableSpriteData,
+	ComplexSpriteData,
 	GridElem
 >;
+
+using EditorCompList = LevelCompList;

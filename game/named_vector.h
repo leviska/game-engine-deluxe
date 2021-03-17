@@ -5,9 +5,6 @@
 
 template<typename T>
 class NamedVector {
-	std::vector<T> values;
-	std::unordered_map<std::string, size_t> names;
-
 public:
 	size_t Add(const T& value) {
 		size_t id = values.size();
@@ -90,4 +87,15 @@ public:
 	typename std::vector<T>::const_iterator end() const {
 		return values.end();
 	}
+
+	const std::vector<T>& Data() const {
+		return values;
+	}
+
+	const std::unordered_map<std::string, size_t>& Names() const {
+		return names;
+	}
+private:
+	std::vector<T> values;
+	std::unordered_map<std::string, size_t> names;
 };

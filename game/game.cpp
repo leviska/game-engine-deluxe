@@ -9,6 +9,7 @@
 #include "paths.h"
 #include "consts.h"
 #include "shaders.h"
+#include "editor_info.h"
 #include "assertion.h"
 
 #include <iostream>
@@ -108,11 +109,13 @@ void GameInst::Reload() {
 	GraphicsMut().Reset();
 	ConstsMut().Reset();
 	ShadersMut().Reset();
+	EditorInfoMut().Reset();
 
 	BuffersMut().Load();
 	GraphicsMut().Load();
 	ConstsMut().Load();
 	ShadersMut().Load();
+	EditorInfoMut().Load();
 
 	int32_t cur = scenes.SceneState().State();
 	scenes.Reset();

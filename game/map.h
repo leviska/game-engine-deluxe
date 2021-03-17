@@ -1,10 +1,10 @@
 #pragma once
 
-#include "map_components.h"
 #include "hashes.h"
 #include "renderer.h"
 
 #include <unordered_map>
+#include <unordered_set>
 #include <vector>
 
 #include <nlohmann/json.hpp>
@@ -23,10 +23,10 @@ struct GridElem {
 	void Edit();
 };
 
-using MapView = std::unordered_map<glm::ivec2, std::vector<entt::entity>>;
+using MapView = std::unordered_map<glm::ivec2, std::unordered_set<entt::entity>>;
 
 template<typename Callback>
-void CallForEvery(Callback& f, glm::ivec2 pos, const MapView& map) {
+void ForEachMapEntity(Callback& f, glm::ivec2 pos, const MapView& map) {
 	auto it = map.find(pos);
 	if (it == map.end()) {
 		return;
@@ -40,7 +40,7 @@ void CallForEvery(Callback& f, glm::ivec2 pos, const MapView& map) {
 
 // returns null if nothing found
 template<typename Type>
-entt::entity GetFirstOfType(glm::ivec2 pos, const MapView& map, const entt::registry& reg) {
+entt::entity GetFirstTypeInMap(glm::ivec2 pos, const MapView& map, const entt::registry& reg) {
 	entt::entity res = entt::null;
 	auto callback = [&](entt::entity id) {
 		if (reg.has<Type>(id)) {
@@ -49,6 +49,6 @@ entt::entity GetFirstOfType(glm::ivec2 pos, const MapView& map, const entt::regi
 		}
 		return false;
 	};
-	CallForEvery(callback, pos, map);
+	ForEachMapEntity(callback, pos, map);
 	return res;
 }

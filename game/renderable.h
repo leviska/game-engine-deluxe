@@ -2,6 +2,7 @@
 
 #include "sprite_ptr.h"
 #include "tiling.h"
+#include "graphics.h"
 
 #include <nlohmann/json.hpp>
 #include <entt/entt.hpp>
@@ -20,6 +21,21 @@ struct SimpleSpriteData {
 
 	void Edit();
 };
+
+
+struct ComplexSpriteData {
+	ComplexSpriteData();
+
+	SpriteInfo Info;
+
+	inline static const std::string ComponentName{ "ComplexSpriteData" };
+
+	void Load(const nlohmann::json& data);
+	void Save(nlohmann::json& data) const;
+
+	void Edit();
+};
+
 
 struct TilableSpriteData {
 	TilingBitset Data;

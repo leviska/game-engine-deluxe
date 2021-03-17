@@ -242,6 +242,7 @@
     <ClCompile Include="assertion.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="consts.cpp" />
+    <ClCompile Include="editor_info.cpp" />
     <ClCompile Include="framebuffer.cpp" />
     <ClCompile Include="glbuffers.cpp" />
     <ClCompile Include="graphics.cpp" />
@@ -280,6 +281,7 @@
     <ClInclude Include="color.h" />
     <ClInclude Include="components_list.h" />
     <ClInclude Include="components_utility.h" />
+    <ClInclude Include="editor_info.h" />
     <ClInclude Include="framebuffer.h" />
     <ClInclude Include="glbuffers.h" />
     <ClInclude Include="graphics.h" />
@@ -288,7 +290,6 @@
     <ClInclude Include="level.h" />
     <ClInclude Include="editor.h" />
     <ClInclude Include="level_scene.h" />
-    <ClInclude Include="map_components.h" />
     <ClInclude Include="paths.h" />
     <ClInclude Include="renderable.h" />
     <ClInclude Include="game.h" />
@@ -324,6 +325,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\assets\consts.json" />
+    <None Include="..\assets\editor\sprites_names.json" />
     <None Include="..\assets\graphics\animations.json" />
     <None Include="..\assets\graphics\editor_buttons.json" />
     <None Include="..\assets\graphics\spritesheet.json" />

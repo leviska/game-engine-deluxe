@@ -6,7 +6,8 @@
 #include "framebuffer.h"
 #include "camera.h"
 
-#include "entt/entt.hpp"
+#include <entt/entt.hpp>
+#include <nlohmann/json.hpp>
 
 class EditorScene : public Scene {
 public:
@@ -19,22 +20,37 @@ public:
 
 	const std::string& CurrentLevel() const;
 private:
-	Renderer render;
-	Camera camera;
-	FrameBuffer frameBuffer;
-
 	entt::registry reg;
+	Renderer render;
 	MapView map;
 
+	FrameBuffer frameBuffer;
+	Camera camera;
+
 	std::string levelName;
+
 	entt::entity currentId{ entt::null };
 	RectangleShape bb;
+	RectangleShape curbb;
 
-	glm::ivec2 selectorPos{ 0, 0 };
+	nlohmann::json entityPresets;
+	nlohmann::json curPreset;
+	std::string curPresetName;
+	std::string presetsName;
+
+	void ShowEntity(entt::entity id);
 
 	void DrawGui();
-
 	void DrawMainGui();
 	void DrawEntityGui();
 	void DrawSelectorGui();
+	void DrawEntityPresetsGui();
+
+	void ResetMap();
+	void LoadMap();
+
+	void UpdateSystems();
+	void UpdateMouseEditor();
+	void UpdateMoving();
+	void UpdateBB();
 };

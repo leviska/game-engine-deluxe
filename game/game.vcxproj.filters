@@ -61,6 +61,15 @@
     <Filter Include="Resource Files\Graphics">
       <UniqueIdentifier>{f264f65b-8e88-44be-88e0-49aabd88ac6e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Systems">
+      <UniqueIdentifier>{3dcc2fe0-3ef2-4255-a8a7-a10da1eefb37}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Systems">
+      <UniqueIdentifier>{eb4b8f44-6aed-4aad-a25c-88b1b69ac974}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Editor">
+      <UniqueIdentifier>{ed665aff-6ee2-48d7-84eb-0aa58e11acdd}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="fps.cpp">
@@ -153,9 +162,6 @@
     <ClCompile Include="serialization.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="level.cpp">
-      <Filter>Source Files\Game</Filter>
-    </ClCompile>
     <ClCompile Include="renderable.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
@@ -164,6 +170,12 @@
     </ClCompile>
     <ClCompile Include="editor.cpp">
       <Filter>Source Files\Game</Filter>
+    </ClCompile>
+    <ClCompile Include="level.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="editor_info.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -275,17 +287,11 @@
     <ClInclude Include="window.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="map_components.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="sorted_alloc.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
     <ClInclude Include="serialize_components.h">
       <Filter>Header Files\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="level.h">
-      <Filter>Header Files\Game</Filter>
     </ClInclude>
     <ClInclude Include="tiling.h">
       <Filter>Header Files\Engine</Filter>
@@ -298,6 +304,12 @@
     </ClInclude>
     <ClInclude Include="components_list.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="level.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="editor_info.h">
+      <Filter>Header Files\Resources</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -363,6 +375,9 @@
     </None>
     <None Include="..\assets\graphics\editor_buttons.json">
       <Filter>Resource Files\Graphics</Filter>
+    </None>
+    <None Include="..\assets\editor\sprites_names.json">
+      <Filter>Resource Files\Editor</Filter>
     </None>
   </ItemGroup>
 </Project>

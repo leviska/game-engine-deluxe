@@ -88,6 +88,10 @@ const std::unordered_map<SDL_KeyCode, Keyboard> SDLKEYMAP{
 	{ SDL_KeyCode::SDLK_LCTRL, Keyboard::LCTRL },
 	{ SDL_KeyCode::SDLK_LSHIFT, Keyboard::LSHIFT },
 	{ SDL_KeyCode::SDLK_LALT, Keyboard::LALT },
+	{ SDL_KeyCode::SDLK_UP, Keyboard::UP },
+	{ SDL_KeyCode::SDLK_RIGHT, Keyboard::RIGHT },
+	{ SDL_KeyCode::SDLK_DOWN, Keyboard::DOWN },
+	{ SDL_KeyCode::SDLK_LEFT, Keyboard::LEFT },
 	{ SDL_KeyCode::SDLK_SPACE, Keyboard::SPACE },
 };
 
@@ -209,6 +213,44 @@ bool InputImpl::MouseCaptured() const {
 
 bool InputImpl::KeyboardCaptured() const {
 	return ImGui::GetIO().WantCaptureKeyboard;
+}
+
+
+glm::ivec2 InputImpl::Direction(Keyboard key) const {
+	const glm::ivec2 dirUP{ 0, -1 };
+	const glm::ivec2 dirRIGHT{ 1, 0 };
+	const glm::ivec2 dirDOWN{ 0, 1 };
+	const glm::ivec2 dirLEFT{ -1, 0 };
+	const std::unordered_map<Keyboard, glm::ivec2> dirMap{
+		{ Keyboard::UP, dirUP },
+		{ Keyboard::W, dirUP },
+		{ Keyboard::LEFT, dirLEFT },
+		{ Keyboard::A, dirLEFT },
+		{ Keyboard::DOWN, dirDOWN },
+		{ Keyboard::S, dirDOWN },
+		{ Keyboard::RIGHT, dirRIGHT },
+		{ Keyboard::D, dirRIGHT },
+	};
+	return dirMap.at(key);
+}
+
+
+glm::ivec2 InputImpl::DirectionDown(const Keys<4>& keys) const {
+	for (auto key : keys) {
+		if (KeyDown(key)) {
+			return Direction(key);
+		}
+	}
+	return { 0, 0 };
+}
+
+glm::ivec2 InputImpl::DirectionPressed(const Keys<4>& keys) const {
+	for (auto key : keys) {
+		if (KeyPressed(key)) {
+			return Direction(key);
+		}
+	}
+	return { 0, 0 };
 }
 
 

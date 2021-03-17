@@ -1,6 +1,7 @@
 #pragma once
 
 #include <glm/glm.hpp>
+#include <nlohmann/json.hpp>
 
 class Renderer;
 struct SpriteInfo;
@@ -25,6 +26,11 @@ private:
 
 	friend class Renderer;
 };
+
+void from_json(const nlohmann::json& j, Sprite& info);
+void to_json(nlohmann::json& j, const Sprite& info);
+
+void EditSprite(Sprite& sprite);
 
 void HideSprite(Sprite& sprite);
 void ShowSprite(Sprite& sprite);

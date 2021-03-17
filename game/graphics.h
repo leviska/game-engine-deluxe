@@ -13,6 +13,7 @@ struct SpriteInfo : public Sprite {
 };
 
 void from_json(const nlohmann::json& j, SpriteInfo& info);
+void to_json(nlohmann::json& j, const SpriteInfo& info);
 
 struct AnimationInfo {
 	uint32_t SpriteId;
@@ -22,8 +23,8 @@ struct AnimationInfo {
 class GraphicsImpl : public Singleton {
 public:
 	NamedVector<Texture> Textures;
+	NamedVector<Texture> Textures2D;
 	NamedVector<SpriteInfo> Sprites;
-	NamedVector<SpriteInfo> EditorButtons;
 
 	void Load();
 	void Reset();
@@ -31,6 +32,8 @@ private:
 	~GraphicsImpl() { Reset(); }
 
 	void LoadTextures();
+	void LoadTexture(const std::string& fileName, const std::string& name);
+	void LoadTexture(const Image& image, const std::string& name);
 	void LoadSprites();
 	void LoadSpriteInfo(uint32_t textId, const std::string& fileName, NamedVector<SpriteInfo>& res);
 

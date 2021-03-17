@@ -6,6 +6,18 @@
 #include <fstream>
 
 void from_json(const nlohmann::json& j, SpriteInfo& info) {
+	from_json(j, static_cast<Sprite&>(info));
+	j.at("Name").get_to(info.Name);
+	j.at("TextureId").get_to(info.TextureId);
+}
+
+void to_json(nlohmann::json& j, const SpriteInfo& info) {
+	to_json(j, static_cast<const Sprite&>(info));
+	j["Name"] = info.Name;
+	j["TextureId"] = info.TextureId;
+}
+
+void FromAseprite(const nlohmann::json& j, SpriteInfo& info) {
 	j.at("filename").get_to(info.Name);
 	const auto& frame = j.at("frame");
 	frame.at("x").get_to(info.TextPos.x);
@@ -13,7 +25,6 @@ void from_json(const nlohmann::json& j, SpriteInfo& info) {
 	frame.at("w").get_to(info.TextSize.x);
 	frame.at("h").get_to(info.TextSize.y);
 }
-
 
 void GraphicsImpl::Load() {
 	LoadTextures();
@@ -23,7 +34,6 @@ void GraphicsImpl::Load() {
 void GraphicsImpl::Reset() {
 	Textures.Clear();
 	Sprites.Clear();
-	EditorButtons.Clear();
 }
 
 
@@ -38,6 +48,27 @@ void GraphicsImpl::AddSquare(NamedVector<SpriteInfo>& to) {
 }
 
 
+void GraphicsImpl::LoadTexture(const std::string& fileName, const std::string& name) {
+	Texture spritesheet;
+
+	spritesheet.Load(fileName);
+	Textures.Add(std::move(spritesheet), name);
+
+	spritesheet.Load(fileName, false);
+	Textures2D.Add(std::move(spritesheet), name);
+}
+
+void GraphicsImpl::LoadTexture(const Image& image, const std::string& name) {
+	Texture spritesheet;
+
+	spritesheet.Load(image);
+	Textures.Add(std::move(spritesheet), name);
+
+	spritesheet.Load(image, false);
+	Textures2D.Add(std::move(spritesheet), name);
+}
+
+
 void GraphicsImpl::LoadTextures() {
 	DOUT() << "Loading Textures" << std::endl;
 
@@ -45,17 +76,10 @@ void GraphicsImpl::LoadTextures() {
 	
 	Image white;
 	white.Load({ 1, 1 }, { 255, 255, 255, 255 });
-	spritesheet.Load(white);
-	Textures.Add(std::move(spritesheet), "Square");
-	
-	spritesheet.Load(Paths::Graphics + "spritesheet.png");
-	Textures.Add(std::move(spritesheet), "Spritesheet");
 
-	spritesheet.Load(Paths::Graphics + "editor_buttons.png");
-	Textures.Add(std::move(spritesheet), "EditorButtons");
+	LoadTexture(white, "Square");
+	LoadTexture(Paths::Graphics + "spritesheet.png", "Spritesheet");
 
-	spritesheet.Load(Paths::Graphics + "editor_buttons.png", false);
-	Textures.Add(std::move(spritesheet), "EditorButtons2D");
 	DOUT() << "Successfully loaded Textures" << std::endl;
 }
 
@@ -63,10 +87,8 @@ void GraphicsImpl::LoadSprites() {
 	DOUT() << "Loading Sprites" << std::endl;
 
 	LoadSpriteInfo(Textures.GetId("Spritesheet"), "spritesheet.json", Sprites);
-	LoadSpriteInfo(Textures.GetId("EditorButtons"), "editor_buttons.json", EditorButtons);
 
 	AddSquare(Sprites);
-	AddSquare(EditorButtons);
 
 	DOUT() << "Successfully loaded Sprites" << std::endl;
 }
@@ -81,7 +103,8 @@ void GraphicsImpl::LoadSpriteInfo(uint32_t textId, const std::string& fileName, 
 	
 	const auto& frames = parsed["frames"];
 	for (const auto& v : frames) {
-		SpriteInfo value = v.get<SpriteInfo>();
+		SpriteInfo value;
+		FromAseprite(v, value);
 		value.TextureId = textId;
 		res.Add(value, value.Name);
 	}

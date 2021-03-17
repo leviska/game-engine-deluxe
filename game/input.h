@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 
 #include <vector>
+#include <array>
 #include <unordered_map>
 
 enum class Keyboard {
@@ -16,6 +17,7 @@ enum class Keyboard {
 	F1, F2, F3, F4, F5, F6, F7, F8, F9, F10, F11, F12, // functional keys
 	ESC, ENTER, TAB, // esc
 	LCTRL, LSHIFT, LALT, // control keys
+	UP, RIGHT, DOWN, LEFT,
 	SPACE,
 	KeyboardSize // total keys
 };
@@ -34,6 +36,18 @@ enum class GameKey {
 	Top, Right, Bottom, Left, // movement
 	GameKeySize // total keys
 };
+
+template<size_t size>
+using Keys = std::array<Keyboard, size>;
+
+constexpr Keys<4> WASD = {
+	Keyboard::W, Keyboard::A, Keyboard::S, Keyboard::D
+};
+
+constexpr Keys<4> ARROWS = {
+	Keyboard::UP, Keyboard::LEFT, Keyboard::DOWN, Keyboard::RIGHT
+};
+
 
 class KeyManager {
 public:
@@ -81,6 +95,11 @@ public:
 	bool MouseCaptured() const; // by imgui
 	bool KeyboardCaptured() const; // by imgui
 
+	glm::ivec2 Direction(Keyboard key) const;
+
+	glm::ivec2 DirectionDown(const Keys<4>& keys) const;
+	glm::ivec2 DirectionPressed(const Keys<4>& keys) const;
+
 	glm::ivec2 MousePos() const;
 private:
 	struct KeyPair {
@@ -90,7 +109,7 @@ private:
 
 	KeyManager keyboard;
 	KeyManager mouse;
-	glm::ivec2 mousePos;
+	glm::ivec2 mousePos{ 0, 0 };
 	std::unordered_map<GameKey, KeyPair> keymap;
 };
 
