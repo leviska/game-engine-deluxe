@@ -1,6 +1,6 @@
 #pragma once
 
-#include <sprite_ptr.h>
+#include <graphics/sprite_ptr.h>
 
 #include <cinttypes>
 #include <string>

@@ -1,7 +1,7 @@
 #include <resources/shaders.h>
 
-#include <utility.h>
-#include <assertion.h>
+#include <utility/casts.h>
+#include <utility/assertion.h>
 
 #include <resources/paths.h>
 

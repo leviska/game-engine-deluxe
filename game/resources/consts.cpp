@@ -1,13 +1,15 @@
 #include <resources/consts.h>
 
-#include <serialization.h>
-#include <assertion.h>
+#include <engine/serialization.h>
+
+#include <utility/assertion.h>
 
 #include <resources/paths.h>
 
 #include <nlohmann/json.hpp>
 
 #include <fstream>
+#include <algorithm>
 
 void ConstsImpl::Load() {
 	DOUT() << "Loading Constants" << std::endl;

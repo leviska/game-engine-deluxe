@@ -1,7 +1,7 @@
 #pragma once
 
-#include <sprite_ptr.h>
-#include <tiling.h>
+#include <graphics/sprite_ptr.h>
+#include <systems/tiling.h>
 
 #include <resources/graphics.h>
 

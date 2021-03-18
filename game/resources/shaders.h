@@ -1,8 +1,9 @@
 #pragma once
 
-#include <shader.h>
-#include <singleton.h>
-#include <named_vector.h>
+#include <graphics/shader.h>
+
+#include <utility/singleton.h>
+#include <utility/named_vector.h>
 
 #include <array>
 

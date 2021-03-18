@@ -1,9 +1,10 @@
 #pragma once
 
-#include <texture.h>
-#include <sprite.h>
-#include <singleton.h>
-#include <named_vector.h>
+#include <graphics/texture.h>
+#include <graphics/sprite.h>
+
+#include <utility/singleton.h>
+#include <utility/named_vector.h>
 
 #include <cinttypes>
 
