@@ -1,15 +1,15 @@
-#include "level.h"
+#include <level.h>
 
-#include "serialize_components.h"
-#include "serialization.h"
-#include "tiling.h"
-#include "utility.h"
+#include <serialization.h>
+#include <tiling.h>
+#include <utility.h>
 
-#include "components_list.h"
+#include <components/serialize.h>
+#include <components/list.h>
 
-#include "paths.h"
-#include "graphics.h"
-#include "consts.h"
+#include <resources/paths.h>
+#include <resources/graphics.h>
+#include <resources/consts.h>
 
 
 void LoadLevelData(entt::registry& reg, const std::string& name) {

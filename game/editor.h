@@ -1,10 +1,10 @@
 #pragma once
 
-#include "scene.h"
-#include "shapes.h"
-#include "map.h"
-#include "framebuffer.h"
-#include "camera.h"
+#include <scene.h>
+#include <shapes.h>
+#include <map.h>
+#include <framebuffer.h>
+#include <camera.h>
 
 #include <entt/entt.hpp>
 #include <nlohmann/json.hpp>

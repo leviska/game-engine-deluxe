@@ -1,17 +1,18 @@
-#include "editor.h"
+#include <editor.h>
 
-#include "renderable.h"
-#include "input.h"
-#include "utility.h"
-#include "level.h"
-#include "serialize_components.h"
-#include "components_utility.h"
-#include "components_list.h"
+#include <input.h>
+#include <utility.h>
+#include <level.h>
 
-#include "consts.h"
-#include "graphics.h"
-#include "paths.h"
-#include "shaders.h"
+#include <components/serialize.h>
+#include <components/renderable.h>
+#include <components/utility.h>
+#include <components/list.h>
+
+#include <resources/consts.h>
+#include <resources/graphics.h>
+#include <resources/paths.h>
+#include <resources/shaders.h>
 
 #include <fstream>
 #include <iostream>
@@ -191,6 +192,13 @@ void EditorScene::DrawMainGui() {
 	ImGui::End();
 }
 
+template<typename T>
+using HasEditT = decltype(std::declval<T&>().Edit());
+
+template<typename T>
+constexpr bool HasEdit = detect_v<T, HasEditT>::value;
+
+
 void EditorScene::DrawEntityGui() {
 	bool entityDeleted = false;
 	ImGui::Begin("Entity Editor");
@@ -237,7 +245,7 @@ void EditorScene::DrawEntityGui() {
 					reg.remove<Comp>(currentId);
 				}
 				else {
-					if constexpr (!std::is_empty_v<Comp>) {
+					if constexpr (!std::is_empty_v<Comp> && HasEdit<Comp>) {
 						reg.get<Comp>(currentId).Edit();
 					}
 				}

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "hashes.h"
-#include "renderer.h"
+#include <hashes.h>
+#include <renderer.h>
 
 #include <unordered_map>
 #include <unordered_set>

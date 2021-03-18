@@ -1,6 +1,6 @@
 #pragma once
 
-#include "components_utility.h"
+#include <components/utility.h>
 
 #include <nlohmann/json.hpp>
 #include <entt/entt.hpp>

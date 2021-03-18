@@ -1,7 +1,8 @@
-#include "graphics.h"
+#include <resources/graphics.h>
 
-#include "paths.h"
-#include "assertion.h"
+#include <assertion.h>
+
+#include <resources/paths.h>
 
 #include <fstream>
 
@@ -29,6 +30,7 @@ void FromAseprite(const nlohmann::json& j, SpriteInfo& info) {
 void GraphicsImpl::Load() {
 	LoadTextures();
 	LoadSprites();
+	LoadTilingNames();
 }
 
 void GraphicsImpl::Reset() {
@@ -96,7 +98,7 @@ void GraphicsImpl::LoadSprites() {
 void GraphicsImpl::LoadSpriteInfo(uint32_t textId, const std::string& fileName, NamedVector<SpriteInfo>& res) {
 	std::ifstream file(Paths::Graphics + fileName);
 	if (!file.good()) {
-		THROWERROR("Cannot open " + fileName + " file"); 
+		THROWERROR("Cannot open " + Paths::Graphics + fileName + " file");
 	}
 	nlohmann::json parsed;
 	file >> parsed;
@@ -107,6 +109,18 @@ void GraphicsImpl::LoadSpriteInfo(uint32_t textId, const std::string& fileName, 
 		FromAseprite(v, value);
 		value.TextureId = textId;
 		res.Add(value, value.Name);
+	}
+}
+
+void GraphicsImpl::LoadTilingNames() {
+	std::ifstream file(Paths::Graphics + "tile_names.json");
+	if (!file.good()) {
+		THROWERROR("Cannot open " + Paths::Graphics + "tile_names.json" + " file");
+	}
+	nlohmann::json data;
+	file >> data;
+	for (const auto& name : data) {
+		TilingNames.push_back(name);
 	}
 }
 

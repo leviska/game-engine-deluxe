@@ -1,7 +1,7 @@
 #pragma once
 
-#include "renderer.h"
-#include "map.h"
+#include <renderer.h>
+#include <map.h>
 
 #include <nlohmann/json.hpp>
 #include <entt/entt.hpp>

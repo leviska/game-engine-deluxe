@@ -1,4 +1,4 @@
-#include "animation.h"
+#include <components/animation.h>
 
 /*
 Animation::Animation(const std::string& dataName) {

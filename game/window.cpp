@@ -1,10 +1,11 @@
-#include "window.h"
-#include "game.h"
-#include "assertion.h"
+#include <window.h>
+#include <game.h>
+#include <assertion.h>
 
-#include "imgui.h"
-#include "input.h"
-#include "consts.h"
+#include <imgui.h>
+#include <input.h>
+
+#include <resources/consts.h>
 
 #include <glad/glad.h>
 #include <sdl2/SDL_image.h>

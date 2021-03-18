@@ -1,14 +1,14 @@
 #pragma once
 
-#include "state_machine.h"
+#include <state_machine.h>
 
 #include <unordered_map>
 
 // Scenes
-#include "level_scene.h"
+#include <level_scene.h>
 
-#include "editor.h"
-#include "sandbox_scene.h"
+#include <editor.h>
+#include <sandbox_scene.h>
 
 enum class Scenes {
 	Menu, 

@@ -1,7 +1,8 @@
-#include "camera.h"
+#include <camera.h>
 
-#include "input.h"
-#include "consts.h"
+#include <input.h>
+
+#include <resources/consts.h>
 
 #include <glm/gtc/matrix_transform.hpp>
 

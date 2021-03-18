@@ -120,9 +120,6 @@
     <ClCompile Include="renderer.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="animation.cpp">
-      <Filter>Source Files\Graphics</Filter>
-    </ClCompile>
     <ClCompile Include="state_machine.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
@@ -138,18 +135,6 @@
     <ClCompile Include="camera.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
-    <ClCompile Include="shaders.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="graphics.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="glbuffers.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
-    <ClCompile Include="consts.cpp">
-      <Filter>Source Files\Resources</Filter>
-    </ClCompile>
     <ClCompile Include="window.cpp">
       <Filter>Source Files\Graphics</Filter>
     </ClCompile>
@@ -162,9 +147,6 @@
     <ClCompile Include="serialization.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="renderable.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="tiling.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
@@ -174,8 +156,26 @@
     <ClCompile Include="level.cpp">
       <Filter>Source Files\Systems</Filter>
     </ClCompile>
-    <ClCompile Include="editor_info.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="components\animation.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="components\renderable.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="resources\consts.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="resources\editor_info.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="resources\glbuffers.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="resources\graphics.cpp">
+      <Filter>Source Files\Resources</Filter>
+    </ClCompile>
+    <ClCompile Include="resources\shaders.cpp">
+      <Filter>Source Files\Resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -239,12 +239,6 @@
     <ClInclude Include="renderer.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="renderable.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="animation.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="state_machine.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
@@ -263,26 +257,11 @@
     <ClInclude Include="camera.h">
       <Filter>Header Files\Graphics</Filter>
     </ClInclude>
-    <ClInclude Include="paths.h">
-      <Filter>Header Files\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="shaders.h">
-      <Filter>Header Files\Resources</Filter>
-    </ClInclude>
     <ClInclude Include="singleton.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="graphics.h">
-      <Filter>Header Files\Resources</Filter>
-    </ClInclude>
     <ClInclude Include="utility.h">
       <Filter>Header Files\Utility</Filter>
-    </ClInclude>
-    <ClInclude Include="glbuffers.h">
-      <Filter>Header Files\Resources</Filter>
-    </ClInclude>
-    <ClInclude Include="consts.h">
-      <Filter>Header Files\Resources</Filter>
     </ClInclude>
     <ClInclude Include="window.h">
       <Filter>Header Files\Graphics</Filter>
@@ -290,25 +269,49 @@
     <ClInclude Include="sorted_alloc.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
-    <ClInclude Include="serialize_components.h">
-      <Filter>Header Files\Engine</Filter>
-    </ClInclude>
     <ClInclude Include="tiling.h">
-      <Filter>Header Files\Engine</Filter>
-    </ClInclude>
-    <ClInclude Include="components_utility.h">
       <Filter>Header Files\Engine</Filter>
     </ClInclude>
     <ClInclude Include="editor.h">
       <Filter>Header Files\Game</Filter>
     </ClInclude>
-    <ClInclude Include="components_list.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
     <ClInclude Include="level.h">
       <Filter>Header Files\Systems</Filter>
     </ClInclude>
-    <ClInclude Include="editor_info.h">
+    <ClInclude Include="components\animation.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="components\renderable.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="components\utility.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="components\list.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="components\serialize.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="components\tiling.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\consts.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\editor_info.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\glbuffers.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\graphics.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\paths.h">
+      <Filter>Header Files\Resources</Filter>
+    </ClInclude>
+    <ClInclude Include="resources\shaders.h">
       <Filter>Header Files\Resources</Filter>
     </ClInclude>
   </ItemGroup>

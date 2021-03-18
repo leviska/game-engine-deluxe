@@ -1,10 +1,10 @@
-#include "particles.h"
+#include <particles.h>
 
-#include "imgui.h"
-#include "utility.h"
+#include <imgui.h>
+#include <utility.h>
 
-#include "shaders.h"
-#include "glbuffers.h"
+#include <resources/shaders.h>
+#include <resources/glbuffers.h>
 
 #include <random>
 

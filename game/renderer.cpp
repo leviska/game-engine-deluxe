@@ -1,10 +1,10 @@
-#include "renderer.h"
+#include <renderer.h>
 
-#include "shaders.h"
-#include "utility.h"
-#include "glbuffers.h"
+#include <camera.h>
+#include <utility.h>
 
-#include "camera.h"
+#include <resources/shaders.h>
+#include <resources/glbuffers.h>
 
 
 Renderer::Renderer() : data(CompareSprites()) {}

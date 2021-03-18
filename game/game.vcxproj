@@ -103,7 +103,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\imgui;..\include;..\google_test</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\imgui;..\include;..\google_test;..\game</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <CombineFilesOnlyFromTheSameFolder>true</CombineFilesOnlyFromTheSameFolder>
@@ -125,7 +125,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\imgui;..\include;..\google_test</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\imgui;..\include;..\google_test;..\game</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <CombineFilesOnlyFromTheSameFolder>true</CombineFilesOnlyFromTheSameFolder>
@@ -149,7 +149,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>..\imgui;..\include;..\google_test</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\imgui;..\include;..\google_test;..\game</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <CombineFilesOnlyFromTheSameFolder>true</CombineFilesOnlyFromTheSameFolder>
       <IncludeInUnityFile>false</IncludeInUnityFile>
@@ -171,7 +171,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>..\imgui;..\include;..\google_test</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\imgui;..\include;..\google_test;..\game</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <CombineFilesOnlyFromTheSameFolder>true</CombineFilesOnlyFromTheSameFolder>
       <IncludeInUnityFile>false</IncludeInUnityFile>
@@ -195,7 +195,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>..\imgui;..\include;..\google_test</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\imgui;..\include;..\google_test;..\game</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <CombineFilesOnlyFromTheSameFolder>false</CombineFilesOnlyFromTheSameFolder>
@@ -221,7 +221,7 @@
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <AdditionalIncludeDirectories>..\imgui;..\include;..\google_test</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\imgui;..\include;..\google_test;..\game</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <CombineFilesOnlyFromTheSameFolder>false</CombineFilesOnlyFromTheSameFolder>
       <DisableSpecificWarnings>4267;4244;4005</DisableSpecificWarnings>
@@ -238,14 +238,11 @@
     </Manifest>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="animation.cpp" />
     <ClCompile Include="assertion.cpp" />
     <ClCompile Include="camera.cpp" />
-    <ClCompile Include="consts.cpp" />
-    <ClCompile Include="editor_info.cpp" />
+    <ClCompile Include="components\animation.cpp" />
+    <ClCompile Include="components\renderable.cpp" />
     <ClCompile Include="framebuffer.cpp" />
-    <ClCompile Include="glbuffers.cpp" />
-    <ClCompile Include="graphics.cpp" />
     <ClCompile Include="image.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="level.cpp" />
@@ -257,14 +254,17 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="map.cpp" />
     <ClCompile Include="particles.cpp" />
-    <ClCompile Include="renderable.cpp" />
     <ClCompile Include="renderer.cpp" />
+    <ClCompile Include="resources\consts.cpp" />
+    <ClCompile Include="resources\editor_info.cpp" />
+    <ClCompile Include="resources\glbuffers.cpp" />
+    <ClCompile Include="resources\graphics.cpp" />
+    <ClCompile Include="resources\shaders.cpp" />
     <ClCompile Include="sandbox_scene.cpp" />
     <ClCompile Include="scene.cpp" />
     <ClCompile Include="scene_controller.cpp" />
     <ClCompile Include="serialization.cpp" />
     <ClCompile Include="shader.cpp" />
-    <ClCompile Include="shaders.cpp" />
     <ClCompile Include="shapes.cpp" />
     <ClCompile Include="sprite.cpp" />
     <ClCompile Include="sprite_ptr.cpp" />
@@ -275,37 +275,38 @@
     <ClCompile Include="window.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="animation.h" />
     <ClInclude Include="assertion.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="color.h" />
-    <ClInclude Include="components_list.h" />
-    <ClInclude Include="components_utility.h" />
-    <ClInclude Include="editor_info.h" />
+    <ClInclude Include="components\animation.h" />
+    <ClInclude Include="components\list.h" />
+    <ClInclude Include="components\serialize.h" />
+    <ClInclude Include="components\tiling.h" />
+    <ClInclude Include="components\utility.h" />
+    <ClInclude Include="components\renderable.h" />
     <ClInclude Include="framebuffer.h" />
-    <ClInclude Include="glbuffers.h" />
-    <ClInclude Include="graphics.h" />
     <ClInclude Include="image.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="level.h" />
     <ClInclude Include="editor.h" />
     <ClInclude Include="level_scene.h" />
-    <ClInclude Include="paths.h" />
-    <ClInclude Include="renderable.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="gui.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="named_vector.h" />
     <ClInclude Include="particles.h" />
     <ClInclude Include="renderer.h" />
-    <ClInclude Include="consts.h" />
+    <ClInclude Include="resources\consts.h" />
+    <ClInclude Include="resources\editor_info.h" />
+    <ClInclude Include="resources\glbuffers.h" />
+    <ClInclude Include="resources\graphics.h" />
+    <ClInclude Include="resources\paths.h" />
+    <ClInclude Include="resources\shaders.h" />
     <ClInclude Include="sandbox_scene.h" />
     <ClInclude Include="scene.h" />
     <ClInclude Include="scene_controller.h" />
     <ClInclude Include="serialization.h" />
-    <ClInclude Include="serialize_components.h" />
     <ClInclude Include="shader.h" />
-    <ClInclude Include="shaders.h" />
     <ClInclude Include="shapes.h" />
     <ClInclude Include="singleton.h" />
     <ClInclude Include="sorted_alloc.h" />

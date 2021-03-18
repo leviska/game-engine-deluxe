@@ -1,8 +1,9 @@
-#include "level_scene.h"
+#include <level_scene.h>
 
-#include "game.h"
-#include "consts.h"
-#include "shaders.h"
+#include <game.h>
+
+#include <resources/consts.h>
+#include <resources/shaders.h>
 
 void LevelScene::Load(const std::string& name) {
 	//LoadMap(map, reg, render, name);

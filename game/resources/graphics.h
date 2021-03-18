@@ -1,9 +1,9 @@
 #pragma once
 
-#include "texture.h"
-#include "sprite.h"
-#include "singleton.h"
-#include "named_vector.h"
+#include <texture.h>
+#include <sprite.h>
+#include <singleton.h>
+#include <named_vector.h>
 
 #include <nlohmann/json.hpp>
 
@@ -26,6 +26,8 @@ public:
 	NamedVector<Texture> Textures2D;
 	NamedVector<SpriteInfo> Sprites;
 
+	std::vector<std::string> TilingNames;
+	
 	void Load();
 	void Reset();
 private:
@@ -36,6 +38,7 @@ private:
 	void LoadTexture(const Image& image, const std::string& name);
 	void LoadSprites();
 	void LoadSpriteInfo(uint32_t textId, const std::string& fileName, NamedVector<SpriteInfo>& res);
+	void LoadTilingNames();
 
 	void AddSquare(NamedVector<SpriteInfo>& to);
 

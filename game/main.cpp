@@ -1,6 +1,6 @@
 #ifndef TESTCONFIG
 
-#include "game.h"
+#include <game.h>
 #include <iostream>
 #include <fstream>
 

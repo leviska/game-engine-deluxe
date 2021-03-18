@@ -1,9 +1,9 @@
-#include "sprite.h"
+#include <sprite.h>
 
-#include "serialization.h"
+#include <serialization.h>
+#include <color.h>
 
-#include "color.h"
-#include "graphics.h"
+#include <resources/graphics.h>
 
 #include <imgui.h>
 #include <glad/glad.h>

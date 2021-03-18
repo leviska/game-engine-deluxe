@@ -1,6 +1,6 @@
-#include "gtest/gtest.h"
+#include <gtest/gtest.h>
 
-#include "sorted_alloc.h"
+#include <sorted_alloc.h>
 
 TEST(Unit_Alloc_Sorted, Basic) {
 	auto comp = [](int a, int b) {

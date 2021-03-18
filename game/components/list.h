@@ -1,9 +1,11 @@
 #pragma once
 
-#include <entt/entt.hpp>
+#include <map.h>
 
-#include "renderable.h"
-#include "map.h"
+#include <components/renderable.h>
+#include <components/tiling.h>
+
+#include <entt/entt.hpp>
 
 using AllCompList = entt::type_list<
 	SimpleSpriteData,

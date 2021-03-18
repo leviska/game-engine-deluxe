@@ -1,6 +1,6 @@
-#include "scene_controller.h"
+#include <scene_controller.h>
 
-#include "assertion.h"
+#include <assertion.h>
 
 void SceneController::Load() {
 	DOUT() << "Loading Scenes" << std::endl;

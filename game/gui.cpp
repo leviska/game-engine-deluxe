@@ -1,8 +1,8 @@
-#include "gui.h"
+#include <gui.h>
 
-#include "imgui.h"
-#include "imgui_impl_sdl.h"
-#include "imgui_impl_opengl3.h"
+#include <imgui.h>
+#include <imgui_impl_sdl.h>
+#include <imgui_impl_opengl3.h>
 
 void GUI::Load(SDL_Window* _window, SDL_GLContext glcontext) {
 	window = _window;

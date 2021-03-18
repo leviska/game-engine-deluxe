@@ -1,6 +1,6 @@
-#include "tiling.h"
+#include <tiling.h>
 
-#include "utility.h"
+#include <utility.h>
 
 TilingBitset GetTiling(NeighbourBitset neigh) {
 	TilingBitset res;

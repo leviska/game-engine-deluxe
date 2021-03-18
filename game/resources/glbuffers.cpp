@@ -1,6 +1,6 @@
-#include "glbuffers.h"
+#include <resources/glbuffers.h>
 
-#include "assertion.h"
+#include <assertion.h>
 
 void ObjectBuffer::Bind() const {
 	glBindVertexArray(VAO);

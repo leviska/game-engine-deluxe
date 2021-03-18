@@ -1,9 +1,9 @@
-#include "editor_info.h"
+#include <resources/editor_info.h>
 
-#include "assertion.h"
+#include <assertion.h>
 
-#include "paths.h"
-#include "graphics.h"
+#include <resources/paths.h>
+#include <resources/graphics.h>
 
 #include <nlohmann/json.hpp>
 

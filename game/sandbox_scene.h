@@ -1,12 +1,12 @@
 #pragma once
 
-#include "scene.h"
+#include <scene.h>
 
-#include "particles.h"
-#include "state_machine.h"
-#include "map.h"
-#include "framebuffer.h"
-#include "camera.h"
+#include <particles.h>
+#include <state_machine.h>
+#include <map.h>
+#include <framebuffer.h>
+#include <camera.h>
 
 #include <entt/entt.hpp>
 

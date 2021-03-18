@@ -1,6 +1,6 @@
 #pragma once
 
-#include "framebuffer.h"
+#include <framebuffer.h>
 
 class Scene {
 public:

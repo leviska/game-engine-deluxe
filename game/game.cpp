@@ -1,16 +1,16 @@
-#include "game.h"
+#include <game.h>
 
-#include "imgui.h"
-#include "input.h"
-#include "utility.h"
+#include <imgui.h>
+#include <input.h>
+#include <utility.h>
+#include <assertion.h>
 
-#include "glbuffers.h"
-#include "graphics.h"
-#include "paths.h"
-#include "consts.h"
-#include "shaders.h"
-#include "editor_info.h"
-#include "assertion.h"
+#include <resources/glbuffers.h>
+#include <resources/graphics.h>
+#include <resources/paths.h>
+#include <resources/consts.h>
+#include <resources/shaders.h>
+#include <resources/editor_info.h>
 
 #include <iostream>
 #include <chrono>

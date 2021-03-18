@@ -1,6 +1,6 @@
 #pragma once
-#include "shader.h"
-#include "gui.h"
+#include <shader.h>
+#include <gui.h>
 
 #include <sdl2/SDL.h>
 

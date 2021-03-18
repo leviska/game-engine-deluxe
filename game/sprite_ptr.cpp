@@ -1,6 +1,6 @@
-#include "sprite_ptr.h"
+#include <sprite_ptr.h>
 
-#include "renderer.h"
+#include <renderer.h>
 
 SpritePtr::SpritePtr(size_t SpriteId, Renderer* Render)
 	: spriteId(SpriteId), render(Render) {}

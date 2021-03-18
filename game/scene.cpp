@@ -1,8 +1,9 @@
-#include "scene.h"
+#include <scene.h>
 
-#include "shaders.h"
-#include "consts.h"
-#include "utility.h"
+#include <utility.h>
+
+#include <resources/shaders.h>
+#include <resources/consts.h>
 
 void DrawFramebufferToScreen(const FrameBuffer& buffer) {
 	FrameBuffer::SelectWindow();

@@ -1,6 +1,6 @@
-#include "input.h"
+#include <input.h>
 
-#include "consts.h"
+#include <resources/consts.h>
 
 #include <imgui.h>
 

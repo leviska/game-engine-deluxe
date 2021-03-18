@@ -1,8 +1,8 @@
 #pragma once
 
-#include "window.h"
-#include "fps.h"
-#include "scene_controller.h"
+#include <window.h>
+#include <fps.h>
+#include <scene_controller.h>
 
 class GameInst {
 	Window window;

@@ -1,8 +1,9 @@
-#include "consts.h"
+#include <resources/consts.h>
 
-#include "paths.h"
-#include "serialization.h"
-#include "assertion.h"
+#include <serialization.h>
+#include <assertion.h>
+
+#include <resources/paths.h>
 
 #include <nlohmann/json.hpp>
 

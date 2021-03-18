@@ -1,9 +1,10 @@
 #pragma once
 
-#include "graphics.h"
-#include "camera.h"
-#include "sorted_alloc.h"
-#include "sprite_ptr.h"
+#include <camera.h>
+#include <sorted_alloc.h>
+#include <sprite_ptr.h>
+
+#include <resources/graphics.h>
 
 #include <vector>
 #include <unordered_map>

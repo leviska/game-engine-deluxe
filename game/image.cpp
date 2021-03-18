@@ -1,6 +1,6 @@
-#include "image.h"
+#include <image.h>
 
-#include "assertion.h"
+#include <assertion.h>
 
 #include <stdexcept>
 

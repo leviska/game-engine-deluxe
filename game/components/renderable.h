@@ -1,8 +1,9 @@
 #pragma once
 
-#include "sprite_ptr.h"
-#include "tiling.h"
-#include "graphics.h"
+#include <sprite_ptr.h>
+#include <tiling.h>
+
+#include <resources/graphics.h>
 
 #include <nlohmann/json.hpp>
 #include <entt/entt.hpp>
@@ -38,7 +39,7 @@ struct ComplexSpriteData {
 
 
 struct TilableSpriteData {
-	std::string Prefix;
+	size_t Id;
 
 	inline static const std::string ComponentName{ "TilableSpriteData" };
 

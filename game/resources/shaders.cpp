@@ -1,8 +1,9 @@
-#include "Shaders.h"
+#include <resources/shaders.h>
 
-#include "utility.h"
-#include "paths.h"
-#include "assertion.h"
+#include <utility.h>
+#include <assertion.h>
+
+#include <resources/paths.h>
 
 #include <iostream>
 

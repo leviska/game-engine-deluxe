@@ -1,8 +1,8 @@
 #pragma once
 
-#include "texture.h"
-#include "sprite.h"
-#include "shader.h"
+#include <texture.h>
+#include <sprite.h>
+#include <shader.h>
 
 #include <cstdint>
 

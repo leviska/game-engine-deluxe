@@ -1,7 +1,7 @@
-#include "renderable.h"
+#include <components/renderable.h>
 
-#include "graphics.h"
-#include "editor_info.h"
+#include <resources/graphics.h>
+#include <resources/editor_info.h>
 
 #include <imgui.h>
 #include <imgui_stdlib.h>
@@ -101,13 +101,13 @@ void ComplexSpriteData::Edit() {
 
 
 void TilableSpriteData::Load(const nlohmann::json& data) {
-	data.at("Prefix").get_to(Prefix);
+	data.at("Id").get_to(Id);
 }
 
 void TilableSpriteData::Save(nlohmann::json& data) const {
-	data["Prefix"] = Prefix;
+	data["Id"] = Id;
 }
 
 void TilableSpriteData::Edit() {
-	ImGui::InputText("Tiling prefix", &Prefix);
+
 }

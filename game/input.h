@@ -1,6 +1,6 @@
 #pragma once
 
-#include "camera.h"
+#include <camera.h>
 
 #include <sdl2/SDL.h>
 #include <glm/glm.hpp>

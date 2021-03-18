@@ -1,8 +1,8 @@
 #pragma once
 
-#include "shader.h"
-#include "singleton.h"
-#include "named_vector.h"
+#include <shader.h>
+#include <singleton.h>
+#include <named_vector.h>
 
 #include <array>
 

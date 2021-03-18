@@ -1,13 +1,13 @@
-#include "sandbox_scene.h"
+#include <sandbox_scene.h>
 
-#include "game.h"
-#include "renderable.h"
-#include "input.h"
+#include <game.h>
+#include <components/renderable.h>
+#include <input.h>
 
-#include "consts.h"
-#include "shaders.h"
+#include <resources/consts.h>
+#include <resources/shaders.h>
 
-#include "imgui.h"
+#include <imgui.h>
 
 #include <fstream>
 #include <queue>

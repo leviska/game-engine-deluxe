@@ -1,9 +1,10 @@
-#include "shapes.h"
+#include <shapes.h>
 
-#include "utility.h"
-#include "shaders.h"
-#include "glbuffers.h"
-#include "consts.h"
+#include <utility.h>
+
+#include <resources/shaders.h>
+#include <resources/glbuffers.h>
+#include <resources/consts.h>
 
 #include <glad/glad.h>
 #include <vector>

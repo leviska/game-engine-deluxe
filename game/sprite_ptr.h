@@ -1,6 +1,6 @@
 #pragma once
 
-#include "sprite.h"
+#include <sprite.h>
 
 class Renderer;
 

@@ -1,9 +1,10 @@
-#include "framebuffer.h"
+#include <framebuffer.h>
 
-#include "image.h"
-#include "glbuffers.h"
-#include "consts.h"
-#include "assertion.h"
+#include <image.h>
+#include <assertion.h>
+
+#include <resources/glbuffers.h>
+#include <resources/consts.h>
 
 #include <stdexcept>
 
