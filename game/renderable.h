@@ -38,7 +38,6 @@ struct ComplexSpriteData {
 
 
 struct TilableSpriteData {
-	TilingBitset Data;
 	std::string Prefix;
 
 	inline static const std::string ComponentName{ "TilableSpriteData" };

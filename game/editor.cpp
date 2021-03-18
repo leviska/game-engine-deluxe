@@ -78,7 +78,7 @@ void EditorScene::Update() {
 
 void EditorScene::UpdateSystems() {
 	UpdateRenderer(reg, render);
-	UpdateMap(reg, map);
+	assert(MapValid(reg, map));
 	UpdateGridPositions(reg);
 }
 
@@ -86,8 +86,10 @@ void EditorScene::UpdateMoving() {
 	if (currentId != entt::null) {
 		GridElem* grid = reg.try_get<GridElem>(currentId);
 		if (grid) {
+			grid->ClearGridElem(currentId, map);
 			glm::ivec2 dir = Input().DirectionPressed(ARROWS);
 			grid->Pos += dir;
+			grid->UpdateGridElem(currentId, map);
 		}
 	}
 }
@@ -100,11 +102,10 @@ void EditorScene::UpdateMouseEditor() {
 	if (Input().KeyPressed(Mouse::Left)) {
 		if (Input().KeyDown(Keyboard::LSHIFT)) {
 			currentId = reg.create();
-			map[mapPos].insert(currentId);
 			
 			reg.emplace<EditorTag>(currentId);
 			if (curPreset.is_null()) {
-				reg.emplace<GridElem>(currentId, mapPos);
+				reg.emplace<GridElem>(currentId, mapPos).UpdateGridElem(currentId, map);
 				reg.emplace<SimpleSpriteData>(currentId);
 			}
 			else {
@@ -113,6 +114,7 @@ void EditorScene::UpdateMouseEditor() {
 				GridElem* grid = reg.try_get<GridElem>(currentId);
 				if (grid) {
 					grid->Pos = mapPos;
+					grid->UpdateGridElem(currentId, map);
 				}
 			}
 		}
@@ -154,7 +156,7 @@ void EditorScene::UpdateBB() {
 
 	curbb.Color = ColorRGBA{ 255, 0, 0, 0 };
 	if (currentId != entt::null) {
-		GridElem* grid = reg.try_get<GridElem>(currentId);
+		const GridElem* grid = reg.try_get<GridElem>(currentId);
 		if (grid) {
 			curbb.Center = GameToGlobalPos(GetSpritePos(grid->Pos), camera) + glm::ivec2{ 2, 2 };
 			curbb.Color = ColorRGBA{ 255, 0, 0, 255 };
@@ -195,6 +197,11 @@ void EditorScene::DrawEntityGui() {
 	if (currentId != entt::null) {
 		std::string sid = std::string("Entity: ") + std::to_string(static_cast<uint32_t>(currentId));
 		ImGui::Text(sid.c_str());
+
+		GridElem* grid = reg.try_get<GridElem>(currentId);
+		if (grid) {
+			grid->ClearGridElem(currentId, map);
+		}
 
 		if (ImGui::Button("Delete")) {
 			entityDeleted = true;
@@ -241,13 +248,18 @@ void EditorScene::DrawEntityGui() {
 		ImGui::Text("Edit Components");
 		ImGui::Separator();
 		ForEachType(EditorCompList(), showComponent);
+
+		grid = reg.try_get<GridElem>(currentId);
+		if (grid) {
+			grid->UpdateGridElem(currentId, map);
+		}
 	}
 	ImGui::End();
 
 	if (entityDeleted) {
 		GridElem* grid = reg.try_get<GridElem>(currentId);
 		if (grid) {
-			map[grid->Pos].erase(currentId);
+			grid->ClearGridElem(currentId, map);
 		}
 		reg.destroy(currentId);
 		currentId = entt::null;
@@ -332,7 +344,6 @@ void EditorScene::DrawEntityPresetsGui() {
 	
 	ImGui::Text("Presets list");
 	ImGui::Separator();
-	ImGui::BeginChild("Presets List", { ImGui::GetWindowContentRegionWidth(), 50 }, false, ImGuiWindowFlags_HorizontalScrollbar);
 	if (ImGui::RadioButton("Empty", curPreset.is_null())) {
 		curPreset = nlohmann::json();
 	}
@@ -342,7 +353,6 @@ void EditorScene::DrawEntityPresetsGui() {
 			curPreset = node;
 		}
 	}
-	ImGui::EndChild();
 
 	ImGui::End();
 }

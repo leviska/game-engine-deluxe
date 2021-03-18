@@ -62,6 +62,7 @@ void UpdateRenderer(entt::registry& reg, Renderer& render) {
 		rend->emplace_back(sptr);
 	}
 
+	/*
 	auto tilingView = reg.view<TilableSpriteData>();
 	for (auto id : tilingView) {
 		auto [data] = tilingView.get(id);
@@ -71,6 +72,7 @@ void UpdateRenderer(entt::registry& reg, Renderer& render) {
 			}
 		}
 	}
+	*/
 }
 
 void UpdateMap(entt::registry& reg, MapView& map) {
@@ -81,6 +83,30 @@ void UpdateMap(entt::registry& reg, MapView& map) {
 		auto [grid] = view.get(id);
 		map[grid.Pos].insert(id);
 	}
+}
+
+bool MapValid(const entt::registry& reg, const MapView& map) {
+	auto view = reg.view<const GridElem>();
+	if (view) {
+		for (auto id : view) {
+			auto [grid] = view.get(id);
+			auto it = map.find(grid.Pos);
+			if (it == map.end() || it->second.find(id) == it->second.end()) {
+				return false;
+			}
+		}
+	}
+	
+	for (const auto& pr : map) {
+		for (auto id : pr.second) {
+			const GridElem* grid = reg.try_get<GridElem>(id);
+			if (!grid || grid->Pos != pr.first) {
+				return false;
+			}
+		}
+	}
+
+	return true;
 }
 
 void UpdateGridPositions(entt::registry& reg) {

@@ -10,10 +10,14 @@
 #include <nlohmann/json.hpp>
 #include <entt/entt.hpp>
 
-class GameInst;
+using MapView = std::unordered_map<glm::ivec2, std::unordered_set<entt::entity>>;
 
 struct GridElem {
 	glm::ivec2 Pos;
+
+	void ClearGridElem(entt::entity id, MapView& map);
+	void UpdateGridElem(entt::entity id, MapView& map);
+
 
 	inline static const std::string ComponentName{ "GridElem" };
 
@@ -22,8 +26,6 @@ struct GridElem {
 
 	void Edit();
 };
-
-using MapView = std::unordered_map<glm::ivec2, std::unordered_set<entt::entity>>;
 
 template<typename Callback>
 void ForEachMapEntity(Callback& f, glm::ivec2 pos, const MapView& map) {

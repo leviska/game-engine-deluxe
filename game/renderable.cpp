@@ -101,15 +101,10 @@ void ComplexSpriteData::Edit() {
 
 
 void TilableSpriteData::Load(const nlohmann::json& data) {
-	std::string tmpData;
-	data.at("Data").get_to(tmpData);
-	Data = TilingBitset(tmpData);
-
 	data.at("Prefix").get_to(Prefix);
 }
 
 void TilableSpriteData::Save(nlohmann::json& data) const {
-	data["Data"] = Data.to_string();
 	data["Prefix"] = Prefix;
 }
 
