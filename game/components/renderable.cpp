@@ -98,16 +98,3 @@ void ComplexSpriteData::Edit() {
 	}
 	EditSprite(Info);
 }
-
-
-void TilableSpriteData::Load(const nlohmann::json& data) {
-	data.at("Id").get_to(Id);
-}
-
-void TilableSpriteData::Save(nlohmann::json& data) const {
-	data["Id"] = Id;
-}
-
-void TilableSpriteData::Edit() {
-
-}

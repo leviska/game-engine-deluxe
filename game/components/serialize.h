@@ -5,6 +5,17 @@
 #include <nlohmann/json.hpp>
 #include <entt/entt.hpp>
 
+template<typename T>
+using HasLoadT = decltype(std::declval<T&>().Load(nlohmann::json()));
+
+template<typename T>
+constexpr bool HasLoad = detect_v<T, HasLoadT>::value;
+
+template<typename T>
+using HasSaveT = decltype(std::declval<T&>().Save(nlohmann::json()));
+
+template<typename T>
+constexpr bool HasSave = detect_v<T, HasSaveT>::value;
 
 template<typename... Comp, template<typename...> typename List>
 void LoadEntity(List<Comp...>, entt::entity id, const nlohmann::json& data, entt::registry& reg) {

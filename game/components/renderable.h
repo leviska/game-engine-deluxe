@@ -38,13 +38,9 @@ struct ComplexSpriteData {
 };
 
 
-struct TilableSpriteData {
-	size_t Id;
+struct TilableRender {
+	inline static const std::string ComponentName{ "TilableRender" };
 
-	inline static const std::string ComponentName{ "TilableSpriteData" };
-
-	void Load(const nlohmann::json& data);
-	void Save(nlohmann::json& data) const;
-
-	void Edit();
+	void Load(const nlohmann::json& data) {};
+	void Save(nlohmann::json& data) const {};
 };

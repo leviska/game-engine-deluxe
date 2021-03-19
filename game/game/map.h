@@ -43,7 +43,7 @@ void ForEachMapEntity(Callback& f, glm::ivec2 pos, const MapView& map) {
 
 // returns null if nothing found
 template<typename Type>
-entt::entity GetFirstTypeInMap(glm::ivec2 pos, const MapView& map, const entt::registry& reg) {
+entt::entity FirstTypeInMap(glm::ivec2 pos, const MapView& map, const entt::registry& reg) {
 	entt::entity res = entt::null;
 	auto callback = [&](entt::entity id) {
 		if (reg.has<Type>(id)) {

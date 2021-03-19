@@ -177,6 +177,9 @@
     <ClCompile Include="utility\assertion.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
+    <ClCompile Include="tilable.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="components\animation.h">
@@ -192,9 +195,6 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="components\serialize.h">
-      <Filter>Header Files\Components</Filter>
-    </ClInclude>
-    <ClInclude Include="components\tiling.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="resources\consts.h">
@@ -314,6 +314,9 @@
     <ClInclude Include="utility\casts.h">
       <Filter>Header Files\Utility</Filter>
     </ClInclude>
+    <ClInclude Include="components\tilable.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="glm.natvis" />
@@ -369,9 +372,6 @@
     </None>
     <None Include="..\assets\graphics\spritesheet.json">
       <Filter>Resource Files\Graphics</Filter>
-    </None>
-    <None Include="..\assets\levels\level000.json">
-      <Filter>Resource Files\Levels</Filter>
     </None>
     <None Include="..\assets\levels\sandboxLevel.json">
       <Filter>Resource Files\Levels</Filter>

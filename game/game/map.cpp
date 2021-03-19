@@ -18,7 +18,7 @@ void GridElem::Edit() {
 }
 
 void GridElem::ClearGridElem(entt::entity id, MapView& map) {
-	auto set = map.at(Pos);
+	auto& set = map.at(Pos);
 	set.erase(id);
 	if (set.empty()) {
 		map.erase(Pos);

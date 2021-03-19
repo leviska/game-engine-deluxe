@@ -82,7 +82,9 @@ void EditorScene::Update() {
 void EditorScene::UpdateSystems() {
 	UpdateRenderer(reg, render);
 	assert(MapValid(reg, map));
-	UpdateGridPositions(reg);
+	UpdateRenderPositions(reg);
+	LoadTiling(reg);
+	UpdateTiling(reg, map);
 }
 
 void EditorScene::UpdateMoving() {
@@ -190,6 +192,7 @@ void EditorScene::DrawMainGui() {
 	ImGui::SameLine();
 	if (ImGui::Button("Clear")) {
 		ResetMap();
+		LoadMap();
 	}
 	ImGui::End();
 }

@@ -41,10 +41,7 @@ void AddSprite(const std::string& name, entt::entity id, entt::registry& reg, Re
 }
 
 void UpdateRenderer(entt::registry& reg, Renderer& render) {
-	auto rendView = reg.view<Renderable>();
-	for (auto id : rendView) {
-		reg.remove<Renderable>(id);
-	}
+	RemoveAll<Renderable>(reg);
 
 	auto simpleView = reg.view<SimpleSpriteData>();
 	for (auto id : simpleView) {
@@ -63,15 +60,16 @@ void UpdateRenderer(entt::registry& reg, Renderer& render) {
 		rend->emplace_back(sptr);
 	}
 
-	/*auto tilingView = reg.view<TilableSpriteData>();
+	auto tilingView = reg.view<TilableInfo, TilingData, TilableRender>();
+	const auto& tilingNames = Graphics().TilingNames;
 	for (auto id : tilingView) {
-		auto [data] = tilingView.get(id);
+		auto [info, data] = tilingView.get(id);
 		for (const auto& p : TilingNames) {
-			if (data.Data[to_ui32(p.first)]) {
-				AddSprite(data.Prefix + p.second, id, reg, render);
+			if (data.Data[to_ui32(p.first)] && info.Id < tilingNames.size()) {
+				AddSprite(tilingNames[info.Id] + p.second, id, reg, render);
 			}
 		}
-	}*/
+	}
 }
 
 void UpdateMap(entt::registry& reg, MapView& map) {
@@ -108,7 +106,7 @@ bool MapValid(const entt::registry& reg, const MapView& map) {
 	return true;
 }
 
-void UpdateGridPositions(entt::registry& reg) {
+void UpdateRenderPositions(entt::registry& reg) {
 	auto view = reg.view<GridElem, Renderable>();
 	for (auto id : view) {
 		auto [grid, rend] = view.get(id);
@@ -120,7 +118,11 @@ void UpdateGridPositions(entt::registry& reg) {
 
 void LoadLevel(const std::string& name, entt::registry& reg, Renderer& render, MapView& map) {
 	LoadLevelData(reg, name);
-	UpdateRenderer(reg, render);
 	UpdateMap(reg, map);
-	UpdateGridPositions(reg);
+
+	LoadTiling(reg);
+	UpdateTiling(reg, map);
+	
+	UpdateRenderer(reg, render);
+	UpdateRenderPositions(reg);
 }

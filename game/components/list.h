@@ -3,7 +3,7 @@
 #include <game/map.h>
 
 #include <components/renderable.h>
-#include <components/tiling.h>
+#include <components/tilable.h>
 
 #include <entt/entt.hpp>
 
@@ -18,8 +18,9 @@ using AllCompList = entt::type_list<
 
 using LevelCompList = entt::type_list<
 	SimpleSpriteData,
-	TilableSpriteData,
 	ComplexSpriteData,
+	TilableData,
+	TilableRender,
 	GridElem
 >;
 

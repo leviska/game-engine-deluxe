@@ -1,9 +1,10 @@
 #pragma once
 
-#include <bitset>
-#include <array>
+#include <game/map.h>
 
-#include <components/tiling.h>
+#include <components/tilable.h>
+
+#include <array>
 
 TilingBitset GetTiling(NeighbourBitset neigh);
 
@@ -30,3 +31,5 @@ inline const std::array TilingNames = {
 	std::pair{ TilingId::TRCorner, std::string{"TRCorner"} },
 };
 
+void LoadTiling(entt::registry& reg);
+void UpdateTiling(entt::registry& reg, const MapView& map);

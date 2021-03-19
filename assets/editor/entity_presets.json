@@ -1,1 +1,1 @@
-{"Player":{"Components":{"GridElem":{"Pos":[-7,-3]},"SimpleSpriteData":{"Name":"Player"}},"Name":"Player"}}
+{"Tiling":{"Components":{"GridElem":{"Pos":[-5,-2]},"TilableData":{"Name":"Tiling"}},"Name":"Tiling"}}

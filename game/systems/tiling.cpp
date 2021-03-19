@@ -1,5 +1,9 @@
 #include <systems/tiling.h>
 
+#include <components/utility.h>
+
+#include <resources/graphics.h>
+
 #include <utility/casts.h>
 
 TilingBitset GetTiling(NeighbourBitset neigh) {
@@ -54,4 +58,39 @@ TilingBitset GetTiling(NeighbourBitset neigh) {
 	}
 
 	return res;
+}
+
+void LoadTiling(entt::registry& reg) {
+	RemoveAll<TilableInfo>(reg);
+
+	auto view = reg.view<TilableData>();
+	const std::vector<std::string>& names = Graphics().TilingNames;
+	for (auto id : view) {
+		auto [data] = view.get(id);
+		
+		uint32_t nameId = std::distance(names.begin(), std::find(names.begin(), names.end(), data.Name));
+		reg.emplace<TilableInfo>(id, nameId);
+	}
+}
+
+void UpdateTiling(entt::registry& reg, const MapView& map) {
+	RemoveAll<TilingData>(reg);
+
+	const std::array shifts = {
+		glm::ivec2{ 1, 0 }, glm::ivec2{ 1, 1 }, glm::ivec2{ 0, 1 }, glm::ivec2{ -1, 1 },
+		glm::ivec2{ -1, 0 }, glm::ivec2{ -1, -1 }, glm::ivec2{ 0, -1 }, glm::ivec2{ 1, -1 }
+	};
+
+	auto view = reg.view<TilableInfo, GridElem>();
+	for (auto id : view) {
+		auto [info, grid] = view.get(id);
+		NeighbourBitset neigh;
+		for (int i = 0; i < 8; i++) {
+			glm::ivec2 cur = grid.Pos + shifts[i];
+			entt::entity other = FirstTypeInMap<TilableInfo>(cur, map, reg);
+			neigh[i] = (other != entt::null && reg.get<TilableInfo>(other).Id == info.Id);
+		}
+		TilingBitset tiling = GetTiling(neigh);
+		reg.emplace<TilingData>(id, tiling);
+	}
 }

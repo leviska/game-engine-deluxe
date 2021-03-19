@@ -4,11 +4,6 @@
 
 #include <entt/entt.hpp>
 
-template<typename Func, typename... Comp, template<typename...> typename List>
-void ForEachType(List<Comp...>, Func f) {
-	(f(entt::type_identity<Comp>()), ...);
-}
-
 // Primary template handles all types not supporting the operation.
 template <typename, template <typename> class, typename = std::void_t<>>
 struct detect_v : std::false_type {};
@@ -24,3 +19,16 @@ using foo_t = decltype(std::declval<T&>().foo(int()));
 template<typename T>
 constexpr bool has_foo = detect_v<T, foo_t>::value;
 */
+
+template<typename Func, typename... Comp, template<typename...> typename List>
+void ForEachType(List<Comp...>, Func f) {
+	(f(entt::type_identity<Comp>()), ...);
+}
+
+template<typename Comp>
+void RemoveAll(entt::registry& reg) {
+	auto view = reg.view<Comp>();
+	for (auto id : view) {
+		reg.remove<Comp>(id);
+	}
+}
