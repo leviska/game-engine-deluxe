@@ -1,6 +1,7 @@
 #include <systems/tiling.h>
 
 #include <components/utility.h>
+#include <components/movable.h>
 
 #include <resources/graphics.h>
 
@@ -61,7 +62,7 @@ TilingBitset GetTiling(NeighbourBitset neigh) {
 }
 
 void LoadTiling(entt::registry& reg) {
-	RemoveAll<TilableInfo>(reg);
+	reg.clear<TilableInfo>();
 
 	auto view = reg.view<TilableData>();
 	const std::vector<std::string>& names = Graphics().TilingNames;
@@ -74,7 +75,7 @@ void LoadTiling(entt::registry& reg) {
 }
 
 void UpdateTiling(entt::registry& reg, const MapView& map) {
-	RemoveAll<TilingData>(reg);
+	reg.clear<TilingData>();
 
 	const std::array shifts = {
 		glm::ivec2{ 1, 0 }, glm::ivec2{ 1, 1 }, glm::ivec2{ 0, 1 }, glm::ivec2{ -1, 1 },

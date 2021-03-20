@@ -6,6 +6,7 @@
 #include <utility/casts.h>
 
 #include <components/serialize.h>
+#include <components/movable.h>
 #include <components/list.h>
 
 #include <resources/paths.h>
@@ -27,37 +28,32 @@ void SaveLevelData(const entt::registry& reg, const std::string& name) {
 	SaveJson(res, Paths::Levels + name + std::string(".json"));
 }
 
-glm::vec2 GetSpritePos(glm::ivec2 pos) {
-	return glm::vec2(pos) * static_cast<float>(Consts().TileSize) + static_cast<float>(Consts().TileSize / 2);
-}
+SpritePtr AddSprite(const SpriteInfo& info, entt::entity id, entt::registry& reg, Renderer& render) {
+	reg.emplace_or_replace<UpdateRendPositionFlag>(id);
 
-void AddSprite(const std::string& name, entt::entity id, entt::registry& reg, Renderer& render) {
-	SpritePtr sptr = render.Stage(Graphics().Sprites[name]);
+	SpritePtr sptr = render.Stage(info);
 	Renderable* rend = reg.try_get<Renderable>(id);
 	if (!rend) {
 		rend = &reg.emplace<Renderable>(id);
 	}
 	rend->emplace_back(sptr);
+	return sptr;
 }
 
 void UpdateRenderer(entt::registry& reg, Renderer& render) {
-	RemoveAll<Renderable>(reg);
+	reg.clear<Renderable>();
 
 	auto simpleView = reg.view<SimpleSpriteData>();
 	for (auto id : simpleView) {
 		auto [data] = simpleView.get(id);
-		AddSprite(data.Name, id, reg, render);
+		SpritePtr ptr = AddSprite(Graphics().Sprites[data.Name], id, reg, render);
+		ptr->Layer = data.Layer;
 	}
 
 	auto complexView = reg.view<ComplexSpriteData>();
 	for (auto id : complexView) {
 		auto [data] = complexView.get(id);
-		SpritePtr sptr = render.Stage(data.Info);
-		Renderable* rend = reg.try_get<Renderable>(id);
-		if (!rend) {
-			rend = &reg.emplace<Renderable>(id);
-		}
-		rend->emplace_back(sptr);
+		AddSprite(data.Info, id, reg, render);
 	}
 
 	auto tilingView = reg.view<TilableInfo, TilingData, TilableRender>();
@@ -66,7 +62,7 @@ void UpdateRenderer(entt::registry& reg, Renderer& render) {
 		auto [info, data] = tilingView.get(id);
 		for (const auto& p : TilingNames) {
 			if (data.Data[to_ui32(p.first)] && info.Id < tilingNames.size()) {
-				AddSprite(tilingNames[info.Id] + p.second, id, reg, render);
+				AddSprite(Graphics().Sprites[tilingNames[info.Id] + p.second], id, reg, render);
 			}
 		}
 	}
@@ -107,12 +103,13 @@ bool MapValid(const entt::registry& reg, const MapView& map) {
 }
 
 void UpdateRenderPositions(entt::registry& reg) {
-	auto view = reg.view<GridElem, Renderable>();
+	auto view = reg.view<GridElem, Renderable, UpdateRendPositionFlag>();
 	for (auto id : view) {
 		auto [grid, rend] = view.get(id);
 		for (auto& sptr : rend) {
 			sptr->Pos = GetSpritePos(grid.Pos);
 		}
+		reg.remove<UpdateRendPositionFlag>(id);
 	}
 }
 

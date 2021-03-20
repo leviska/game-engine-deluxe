@@ -30,6 +30,10 @@ void Camera::UpdateFreeCamera() {
 }
 
 
+glm::vec2 GetSpritePos(glm::ivec2 pos) {
+	return glm::vec2(pos) * static_cast<float>(Consts().TileSize) + static_cast<float>(Consts().TileSize / 2);
+}
+
 glm::ivec2 GlobalToGamePos(glm::ivec2 pos) {
 	glm::ivec2 centerShift = Consts().WindowSize / (Consts().Scale * 2) - (Consts().CanvasSize >> 1u);
 	return pos / static_cast<int32_t>(Consts().Scale) - centerShift;

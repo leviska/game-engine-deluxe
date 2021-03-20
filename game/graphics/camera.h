@@ -16,6 +16,8 @@ struct Camera {
 };
 
 
+glm::vec2 GetSpritePos(glm::ivec2 pos);
+
 glm::ivec2 GlobalToGamePos(glm::ivec2 pos);
 glm::ivec2 GlobalToGamePos(glm::ivec2 pos, const Camera& camera);
 glm::ivec2 GlobalToGridPos(glm::ivec2 pos, const Camera& camera);

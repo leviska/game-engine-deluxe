@@ -13,7 +13,8 @@
 using Renderable = std::vector<SpriteOwner>;
 
 struct SimpleSpriteData {
-	std::string Name = "Square"; 
+	std::string Name = "Square";
+	float Layer = 0;
 
 	inline static const std::string ComponentName{ "SimpleSpriteData" };
 
@@ -44,3 +45,6 @@ struct TilableRender {
 	void Load(const nlohmann::json& data) {};
 	void Save(nlohmann::json& data) const {};
 };
+
+
+struct UpdateRendPositionFlag {};

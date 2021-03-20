@@ -9,8 +9,6 @@
 void LoadLevelData(entt::registry& reg, const std::string& name);
 void SaveLevelData(const entt::registry& reg, const std::string& name);
 
-glm::vec2 GetSpritePos(glm::ivec2 pos);
-
 void UpdateRenderer(entt::registry& reg, Renderer& render);
 void UpdateMap(entt::registry& reg, MapView& map);
 bool MapValid(const entt::registry& reg, const MapView& map);

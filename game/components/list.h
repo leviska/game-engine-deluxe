@@ -2,7 +2,9 @@
 
 #include <game/map.h>
 
+#include <components/movable.h>
 #include <components/renderable.h>
+#include <components/obstructable.h>
 #include <components/tilable.h>
 
 #include <entt/entt.hpp>
@@ -21,6 +23,10 @@ using LevelCompList = entt::type_list<
 	ComplexSpriteData,
 	TilableData,
 	TilableRender,
+	InputMovableFlag,
+	FollowCameraFlag,
+	ObstructFlag,
+	CheckForObstructFlag,
 	GridElem
 >;
 

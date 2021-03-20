@@ -52,6 +52,5 @@ private:
 
 	void UpdateSystems();
 	void UpdateMouseEditor();
-	void UpdateMoving();
 	void UpdateBB();
 };

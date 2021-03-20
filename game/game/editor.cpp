@@ -5,9 +5,11 @@
 #include <utility/casts.h>
 
 #include <systems/level.h>
+#include <systems/moving.h>
 
 #include <components/serialize.h>
 #include <components/renderable.h>
+#include <components/movable.h>
 #include <components/utility.h>
 #include <components/list.h>
 
@@ -29,6 +31,11 @@ void EditorScene::Load(const std::string& name) {
 	levelName = name;
 	presetsName = "entity_presets.json";
 	entityPresets = nlohmann::json::object();
+
+	std::ifstream presetsFile(Paths::Editor + presetsName);
+	if (presetsFile.good()) {
+		presetsFile >> entityPresets;
+	}
 
 	LoadMap();
 
@@ -75,28 +82,21 @@ void EditorScene::Update() {
 
 	UpdateSystems();
 	UpdateMouseEditor();
-	UpdateMoving();
 	UpdateBB();
 }
 
 void EditorScene::UpdateSystems() {
 	UpdateRenderer(reg, render);
 	assert(MapValid(reg, map));
-	UpdateRenderPositions(reg);
 	LoadTiling(reg);
 	UpdateTiling(reg, map);
-}
-
-void EditorScene::UpdateMoving() {
 	if (currentId != entt::null) {
-		GridElem* grid = reg.try_get<GridElem>(currentId);
-		if (grid) {
-			grid->ClearGridElem(currentId, map);
-			glm::ivec2 dir = Input().DirectionPressed(ARROWS);
-			grid->Pos += dir;
-			grid->UpdateGridElem(currentId, map);
-		}
+		reg.emplace<InputMovableEditorFlag>(currentId);
+		UpdateMovingEditor(reg);
+		MoveEntities(reg, map);
+		reg.remove<InputMovableEditorFlag>(currentId);
 	}
+	UpdateRenderPositions(reg);
 }
 
 struct EditorTag {};
@@ -325,6 +325,13 @@ void EditorScene::DrawSelectorGui() {
 void EditorScene::DrawEntityPresetsGui() {
 	ImGui::Begin("Entity Presets");
 
+	if (ImGui::Button("Load presets")) {
+		std::ifstream presetsFile(Paths::Editor + presetsName);
+		if (presetsFile.good()) {
+			presetsFile >> entityPresets;
+		}
+	}
+	ImGui::SameLine();
 	if (ImGui::Button("Save presets")) {
 		std::ofstream file(Paths::Editor + presetsName);
 		if (!file.good()) {
@@ -332,13 +339,6 @@ void EditorScene::DrawEntityPresetsGui() {
 		}
 		else {
 			file << entityPresets;
-		}
-	}
-	ImGui::SameLine();
-	if (ImGui::Button("Load presets")) {
-		std::ifstream presetsFile(Paths::Editor + presetsName);
-		if (presetsFile.good()) {
-			presetsFile >> entityPresets;
 		}
 	}
 
@@ -361,9 +361,11 @@ void EditorScene::DrawEntityPresetsGui() {
 		curPreset = nlohmann::json();
 	}
 	for (const auto& node : entityPresets) {
-		bool cur = !curPreset.is_null() && curPreset["Name"] == node["Name"];
-		if (ImGui::RadioButton(node.at("Name").get<std::string>().c_str(), cur)) {
+		const std::string& name = node.at("Name").get<std::string>();
+		bool cur = !curPreset.is_null() && curPreset["Name"] == name;
+		if (ImGui::RadioButton(name.c_str(), cur)) {
 			curPreset = node;
+			curPresetName = name;
 		}
 	}
 

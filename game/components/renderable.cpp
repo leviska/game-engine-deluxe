@@ -9,10 +9,14 @@
 
 void SimpleSpriteData::Load(const nlohmann::json& data) {
 	data.at("Name").get_to(Name);
+	if (data.find("Layer") != data.end()) {
+		data.at("Layer").get_to(Layer);
+	}
 }
 
 void SimpleSpriteData::Save(nlohmann::json& data) const {
 	data["Name"] = Name;
+	data["Layer"] = Layer;
 }
 
 
@@ -69,6 +73,7 @@ int32_t ShowSpriteSelector() {
 
 
 void SimpleSpriteData::Edit() {
+	ImGui::InputFloat("Layer", &Layer);
 	const std::vector<std::string>& names = EditorInfo().SpriteNames;
 	int32_t id = ShowSpriteSelector();
 	if (id >= 0) {

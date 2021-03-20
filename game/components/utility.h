@@ -24,11 +24,3 @@ template<typename Func, typename... Comp, template<typename...> typename List>
 void ForEachType(List<Comp...>, Func f) {
 	(f(entt::type_identity<Comp>()), ...);
 }
-
-template<typename Comp>
-void RemoveAll(entt::registry& reg) {
-	auto view = reg.view<Comp>();
-	for (auto id : view) {
-		reg.remove<Comp>(id);
-	}
-}

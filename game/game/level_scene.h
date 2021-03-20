@@ -21,9 +21,11 @@ public:
 	void Draw();
 private:
 	Renderer render;
-	FrameBuffer gameScreen;
-	Camera camera;
-
 	entt::registry reg;
 	MapView map;
+
+	FrameBuffer gameScreen;
+	entt::entity camera = entt::null;
+
+	void UpdateSystems();
 };

@@ -177,8 +177,17 @@
     <ClCompile Include="utility\assertion.cpp">
       <Filter>Source Files\Utility</Filter>
     </ClCompile>
-    <ClCompile Include="tilable.cpp">
+    <ClCompile Include="components\tilable.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="components\movable.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="systems\moving.cpp">
+      <Filter>Source Files\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="systems\obstructing.cpp">
+      <Filter>Source Files\Systems</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -317,6 +326,18 @@
     <ClInclude Include="components\tilable.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
+    <ClInclude Include="components\movable.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="systems\moving.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="components\obstructable.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="systems\obstructing.h">
+      <Filter>Header Files\Systems</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Natvis Include="glm.natvis" />
@@ -381,6 +402,9 @@
     </None>
     <None Include="..\assets\editor\sprites_names.json">
       <Filter>Resource Files\Editor</Filter>
+    </None>
+    <None Include="..\assets\graphics\tile_names.json">
+      <Filter>Resource Files\Graphics</Filter>
     </None>
   </ItemGroup>
 </Project>
